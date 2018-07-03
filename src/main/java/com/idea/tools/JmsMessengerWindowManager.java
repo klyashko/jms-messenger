@@ -17,33 +17,35 @@
 package com.idea.tools;
 
 import com.idea.tools.view.BrowserPanel;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.DumbAwareRunnable;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.startup.StartupManager;
-import com.intellij.openapi.wm.*;
+import com.intellij.openapi.wm.StatusBar;
+import com.intellij.openapi.wm.ToolWindow;
+import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.openapi.wm.WindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManager;
 
 import javax.swing.*;
 
+import static com.idea.tools.ApplicationManager.*;
 import static com.idea.tools.utils.GuiUtils.icon;
+import static com.intellij.openapi.wm.ToolWindowAnchor.RIGHT;
 
 public class JmsMessengerWindowManager {
 
     public static final String JMS_MESSENGER_WINDOW_ID = "Jms Messenger";
     private static final Icon JMS_MESSENGER_ICON = icon("jms.png");
-    private final Project project;
 
     public JmsMessengerWindowManager(final Project project) {
-        this.project = project;
+        ApplicationManager.setProject(project);
 
-        final BrowserPanel browserPanel = BrowserPanel.of(project);
+        final BrowserPanel browserPanel = BrowserPanel.of();
 
         Content content = ContentFactory.SERVICE.getInstance().createContent(browserPanel, null, false);
-        ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
-        ToolWindow toolWindow = toolWindowManager.registerToolWindow(JMS_MESSENGER_WINDOW_ID, false, ToolWindowAnchor.RIGHT);
+        ToolWindowManager toolWindowManager = toolWindowManager();
+        ToolWindow toolWindow = toolWindowManager.registerToolWindow(JMS_MESSENGER_WINDOW_ID, false, RIGHT);
         toolWindow.setIcon(JMS_MESSENGER_ICON);
         ContentManager contentManager = toolWindow.getContentManager();
         contentManager.addContent(content);
@@ -55,15 +57,15 @@ public class JmsMessengerWindowManager {
 //
 //        final RssLogic rssLogic = RssLogic.of(project);
 
-        StartupManager.getInstance(project).registerPostStartupActivity((DumbAwareRunnable) browserPanel::init);
+        startupManager().registerPostStartupActivity((DumbAwareRunnable) browserPanel::init);
     }
 
-    public static JmsMessengerWindowManager of(Project project) {
-        return ServiceManager.getService(project, JmsMessengerWindowManager.class);
+    public static JmsMessengerWindowManager of() {
+        return fetch(JmsMessengerWindowManager.class);
     }
 
     public void unregister() {
-        BrowserPanel.of(project).dispose();
+        BrowserPanel.of().dispose();
     }
 
 }

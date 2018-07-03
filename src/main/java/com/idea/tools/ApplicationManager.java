@@ -4,6 +4,7 @@ import com.idea.tools.service.ServerService;
 import com.idea.tools.settings.Settings;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.wm.ToolWindowManager;
 
 import java.util.function.Consumer;
@@ -30,11 +31,19 @@ public class ApplicationManager {
     }
 
     public static ServerService serverService() {
-        return getOrCreate(serverService, fetch(ServerService.class), ApplicationManager::setServerService);
+        return getOrCreate(serverService, fetchSupplier(ServerService.class), ApplicationManager::setServerService);
     }
 
     public static ToolWindowManager toolWindowManager() {
         return ToolWindowManager.getInstance(project);
+    }
+
+    public static StartupManager startupManager() {
+        return StartupManager.getInstance(project);
+    }
+
+    public static <T> T fetch(Class<T> clazz) {
+        return ServiceManager.getService(project, clazz);
     }
 
     private static void setSettings(Settings settings) {
@@ -54,7 +63,7 @@ public class ApplicationManager {
         return value;
     }
 
-    private static <T> Supplier<T> fetch(Class<T> clazz) {
-        return () -> ServiceManager.getService(project, clazz);
+    private static <T> Supplier<T> fetchSupplier(Class<T> clazz) {
+        return () -> fetch(clazz);
     }
 }

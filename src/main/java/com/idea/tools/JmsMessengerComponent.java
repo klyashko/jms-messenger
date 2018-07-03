@@ -51,12 +51,12 @@ public class JmsMessengerComponent implements ProjectComponent, SearchableConfig
 
     @Override
     public void projectOpened() {
-        JmsMessengerWindowManager.of(project);
+        JmsMessengerWindowManager.of();
     }
 
     @Override
     public void projectClosed() {
-        JmsMessengerWindowManager.of(project).unregister();
+        JmsMessengerWindowManager.of().unregister();
     }
 
     @Override

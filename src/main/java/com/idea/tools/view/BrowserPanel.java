@@ -18,14 +18,12 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.Server;
 import com.idea.tools.settings.Settings;
-import com.idea.tools.utils.GuiUtils;
 import com.idea.tools.view.action.AddServerAction;
 import com.idea.tools.view.action.RemoveServerAction;
 import com.idea.tools.view.render.TreeRender;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.ScrollPaneFactory;
@@ -43,6 +41,7 @@ import java.util.List;
 import static com.idea.tools.ApplicationManager.*;
 import static com.idea.tools.JmsMessengerWindowManager.JMS_MESSENGER_WINDOW_ID;
 import static com.idea.tools.markers.Listener.simple;
+import static com.idea.tools.utils.GuiUtils.installActionGroupInToolBar;
 import static com.intellij.ui.PopupHandler.installPopupHandler;
 
 public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
@@ -71,8 +70,8 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         setContent(rootPanel);
     }
 
-    public static BrowserPanel of(Project project) {
-        return ServiceManager.getService(project, BrowserPanel.class);
+    public static BrowserPanel of() {
+        return fetch(BrowserPanel.class);
     }
 
     @Override
@@ -95,7 +94,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         actionGroup.add(new AddServerAction(this));
         actionGroup.add(new RemoveServerAction(this));
 
-        GuiUtils.installActionGroupInToolBar(actionGroup, this, "JmsMessengerBrowserActions");
+        installActionGroupInToolBar(actionGroup, this, "JmsMessengerBrowserActions");
     }
 
     private void installActionsInPopupMenu() {
