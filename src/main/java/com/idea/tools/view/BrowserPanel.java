@@ -38,11 +38,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 
-import static com.idea.tools.ApplicationManager.*;
+import static com.idea.tools.App.*;
 import static com.idea.tools.JmsMessengerWindowManager.JMS_MESSENGER_WINDOW_ID;
 import static com.idea.tools.markers.Listener.simple;
 import static com.idea.tools.utils.GuiUtils.installActionGroupInToolBar;
+import static com.idea.tools.utils.Utils.cast;
 import static com.intellij.ui.PopupHandler.installPopupHandler;
 
 public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
@@ -90,30 +92,34 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
     }
 
     private void installActionsInToolbar() {
-        DefaultActionGroup actionGroup = new DefaultActionGroup("JmsMessengerToolbarGroup", false);
-        actionGroup.add(new AddServerAction(this));
-        actionGroup.add(new RemoveServerAction(this));
+        DefaultActionGroup actions = new DefaultActionGroup("JmsMessengerToolbarGroup", false);
+        actions.add(new AddServerAction(this));
+        actions.add(new RemoveServerAction(this));
 
-        installActionGroupInToolBar(actionGroup, this, "JmsMessengerBrowserActions");
+        installActionGroupInToolBar(actions, this, "JmsMessengerBrowserActions");
     }
 
     private void installActionsInPopupMenu() {
-        DefaultActionGroup popupGroup = new DefaultActionGroup("JmsMessengerPopupAction", true);
+        DefaultActionGroup popup = new DefaultActionGroup("JmsMessengerPopupAction", true);
 
-        installPopupHandler(serversTree, popupGroup, "POPUP", ActionManager.getInstance());
+        popup.add(new RemoveServerAction(this));
+
+        installPopupHandler(serversTree, popup, "POPUP", ActionManager.getInstance());
     }
 
     private void fillServerTree() {
         List<Server> servers = settings.getState().getServersList();
 
+
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(servers);
         DefaultTreeModel model = new DefaultTreeModel(rootNode);
+
         serversTree.setModel(model);
 
         servers.forEach(s -> {
-            DefaultMutableTreeNode jobNode = new DefaultMutableTreeNode(s);
-            fillQueueTree(s, jobNode);
-            rootNode.add(jobNode);
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode(s);
+            fillQueueTree(s, node);
+            rootNode.add(node);
         });
 
         serversTree.setRootVisible(true);
@@ -140,6 +146,13 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         });
 
         return tree;
+    }
+
+    public <T> Optional<T> getSelectedValue(Class<T> clazz) {
+        return Optional.ofNullable(serversTree.getLastSelectedPathComponent())
+                       .map(cast(DefaultMutableTreeNode.class))
+                       .map(DefaultMutableTreeNode::getUserObject)
+                       .map(cast(clazz));
     }
 
 }

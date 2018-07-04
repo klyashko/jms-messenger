@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-import static com.idea.tools.ApplicationManager.settings;
+import static com.idea.tools.App.settings;
 
 
 public class JmsMessengerComponent implements ProjectComponent, SearchableConfigurable {
@@ -44,7 +44,7 @@ public class JmsMessengerComponent implements ProjectComponent, SearchableConfig
 
     public JmsMessengerComponent(Project project) {
         this.project = project;
-        ApplicationManager.setProject(project);
+        App.setProject(project);
         this.settings = settings();
     }
 

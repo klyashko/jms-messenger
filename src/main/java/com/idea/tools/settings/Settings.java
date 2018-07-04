@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static com.idea.tools.ApplicationManager.settings;
+import static com.idea.tools.App.settings;
 
 @State(
         name = "Messenger.Application.Settings",

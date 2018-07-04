@@ -10,7 +10,7 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class ApplicationManager {
+public class App {
 
     private static Project project;
 
@@ -23,15 +23,15 @@ public class ApplicationManager {
     }
 
     public static void setProject(Project project) {
-        ApplicationManager.project = project;
+        App.project = project;
     }
 
     public static Settings settings() {
-        return getOrCreate(settings, () -> Settings.getOrCreate(project), ApplicationManager::setSettings);
+        return getOrCreate(settings, () -> Settings.getOrCreate(project), App::setSettings);
     }
 
     public static ServerService serverService() {
-        return getOrCreate(serverService, fetchSupplier(ServerService.class), ApplicationManager::setServerService);
+        return getOrCreate(serverService, fetchSupplier(ServerService.class), App::setServerService);
     }
 
     public static ToolWindowManager toolWindowManager() {
@@ -47,11 +47,11 @@ public class ApplicationManager {
     }
 
     private static void setSettings(Settings settings) {
-        ApplicationManager.settings = settings;
+        App.settings = settings;
     }
 
     private static void setServerService(ServerService serverService) {
-        ApplicationManager.serverService = serverService;
+        App.serverService = serverService;
     }
 
     private static <T> T getOrCreate(T value, Supplier<T> creator, Consumer<T> setter) {

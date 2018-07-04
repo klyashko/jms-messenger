@@ -16,8 +16,7 @@ import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 
-import static com.idea.tools.ApplicationManager.serverService;
-import static javax.swing.JOptionPane.*;
+import static com.idea.tools.App.serverService;
 
 public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Listener<Server> {
 
@@ -70,16 +69,7 @@ public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Li
 
     @Override
     protected boolean removeItem(Server server) {
-        if (server == null) {
-            return false;
-        }
-        String msg = String.format("Do you want to delete server %s", server.getName());
-        int response = showConfirmDialog(null, msg, "Confirm", YES_NO_OPTION, WARNING_MESSAGE);
-        boolean delete = response == YES_OPTION;
-        if (delete) {
-            serverService().remove(server);
-        }
-        return delete;
+        return serverService().remove(server);
     }
 
     @Nullable

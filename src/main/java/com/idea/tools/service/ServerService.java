@@ -11,7 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.idea.tools.ApplicationManager.settings;
+import static com.idea.tools.App.settings;
+import static javax.swing.JOptionPane.*;
 
 public class ServerService {
 
@@ -55,8 +56,17 @@ public class ServerService {
         }
     }
 
-    public void remove(Server server) {
-        listeners.forEach(listener -> listener.remove(server));
+    public boolean remove(Server server) {
+        if (server == null) {
+            return false;
+        }
+        String msg = String.format("Do you want to delete server %s", server.getName());
+        int response = showConfirmDialog(null, msg, "Confirm", YES_NO_OPTION, WARNING_MESSAGE);
+        boolean delete = response == YES_OPTION;
+        if (delete) {
+            listeners.forEach(listener -> listener.remove(server));
+        }
+        return delete;
     }
 
     public void addListener(Listener<Server> listener) {

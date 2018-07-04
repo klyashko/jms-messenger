@@ -29,7 +29,7 @@ import com.intellij.ui.content.ContentManager;
 
 import javax.swing.*;
 
-import static com.idea.tools.ApplicationManager.*;
+import static com.idea.tools.App.*;
 import static com.idea.tools.utils.GuiUtils.icon;
 import static com.intellij.openapi.wm.ToolWindowAnchor.RIGHT;
 
@@ -39,7 +39,7 @@ public class JmsMessengerWindowManager {
     private static final Icon JMS_MESSENGER_ICON = icon("jms.png");
 
     public JmsMessengerWindowManager(final Project project) {
-        ApplicationManager.setProject(project);
+        App.setProject(project);
 
         final BrowserPanel browserPanel = BrowserPanel.of();
 

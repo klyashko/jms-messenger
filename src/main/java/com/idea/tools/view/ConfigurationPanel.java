@@ -16,7 +16,7 @@
 
 package com.idea.tools.view;
 
-import com.idea.tools.ApplicationManager;
+import com.idea.tools.App;
 import com.idea.tools.dto.Server;
 import com.idea.tools.view.components.ServerEditPanel;
 import com.idea.tools.view.components.ServiceConfigTable;
@@ -28,8 +28,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-import static com.idea.tools.ApplicationManager.serverService;
-import static com.idea.tools.ApplicationManager.settings;
+import static com.idea.tools.App.serverService;
+import static com.idea.tools.App.settings;
 
 public class ConfigurationPanel {
 
@@ -38,7 +38,7 @@ public class ConfigurationPanel {
     private ServerEditPanel panel;
 
     public ConfigurationPanel(Project project) {
-        ApplicationManager.setProject(project);
+        App.setProject(project);
         render();
     }
 

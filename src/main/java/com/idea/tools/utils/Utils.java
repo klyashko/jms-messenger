@@ -36,4 +36,8 @@ public class Utils {
         return value != null ? value : defaultValue;
     }
 
+    public static <T, R> Function<T, R> cast(Class<R> clazz) {
+        return value -> clazz.isInstance(value) ? clazz.cast(value) : null;
+    }
+
 }

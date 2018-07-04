@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.text.NumberFormat;
 import java.util.Objects;
 
-import static com.idea.tools.ApplicationManager.serverService;
+import static com.idea.tools.App.serverService;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static com.idea.tools.utils.Utils.getOrDefault;
 import static com.idea.tools.utils.Utils.isNotEmpty;
