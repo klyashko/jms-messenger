@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 import static com.idea.tools.ApplicationManager.settings;
-import static com.idea.tools.utils.GuiUtils.cleanUp;
 
 
 public class JmsMessengerComponent implements ProjectComponent, SearchableConfigurable {
@@ -75,7 +74,7 @@ public class JmsMessengerComponent implements ProjectComponent, SearchableConfig
 
     @Override
     public void disposeUIResources() {
-        cleanUp(configurationPanel);
+        configurationPanel.dispose();
         configurationPanel = null;
     }
 

@@ -17,6 +17,7 @@
 package com.idea.tools.view;
 
 import com.idea.tools.dto.Server;
+import com.idea.tools.markers.Listener;
 import com.idea.tools.settings.Settings;
 import com.idea.tools.view.action.AddServerAction;
 import com.idea.tools.view.action.RemoveServerAction;
@@ -55,6 +56,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
     private final Settings settings;
     private JPanel rootPanel;
     private JPanel serverPanel;
+    private Listener<Server> listener;
 
     public BrowserPanel(final Project project) {
         super(true);
@@ -62,7 +64,8 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         setProvideQuickActions(false);
         serversTree = createTree();
 
-        serverService().addListener(simple(server -> fillServerTree()));
+        this.listener = simple(server -> fillServerTree());
+        serverService().addListener(listener);
 
         serverPanel.setLayout(new BorderLayout());
         serverPanel.add(ScrollPaneFactory.createScrollPane(serversTree), BorderLayout.CENTER);
@@ -76,14 +79,11 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
 
     @Override
     public void dispose() {
+        serverService().removeListener(listener);
         toolWindowManager().unregisterToolWindow(JMS_MESSENGER_WINDOW_ID);
     }
 
     public void init() {
-        initGui();
-    }
-
-    private void initGui() {
         installActionsInToolbar();
         installActionsInPopupMenu();
         fillServerTree();

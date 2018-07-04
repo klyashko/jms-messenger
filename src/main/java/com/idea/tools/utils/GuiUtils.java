@@ -1,6 +1,5 @@
 package com.idea.tools.utils;
 
-import com.idea.tools.markers.Closable;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.application.Application;
@@ -67,12 +66,6 @@ public class GuiUtils {
                 consumer.accept(e);
             }
         };
-    }
-
-    public static void cleanUp(Object obj) {
-        if (obj instanceof Closable) {
-            ((Closable) obj).close();
-        }
     }
 
 }

@@ -18,7 +18,6 @@ package com.idea.tools.view;
 
 import com.idea.tools.ApplicationManager;
 import com.idea.tools.dto.Server;
-import com.idea.tools.markers.Closable;
 import com.idea.tools.view.components.ServerEditPanel;
 import com.idea.tools.view.components.ServiceConfigTable;
 import com.intellij.openapi.project.Project;
@@ -32,7 +31,7 @@ import java.util.List;
 import static com.idea.tools.ApplicationManager.serverService;
 import static com.idea.tools.ApplicationManager.settings;
 
-public class ConfigurationPanel implements Closable {
+public class ConfigurationPanel {
 
     private JPanel rootPanel;
     private ServiceConfigTable table;
@@ -76,8 +75,7 @@ public class ConfigurationPanel implements Closable {
         // TODO: place custom component creation code here
     }
 
-    @Override
-    public void close() {
+    public void dispose() {
         serverService().removeListener(table);
     }
 }
