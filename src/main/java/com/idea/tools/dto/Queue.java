@@ -1,8 +1,10 @@
 package com.idea.tools.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Queue {
 
     private Integer id;

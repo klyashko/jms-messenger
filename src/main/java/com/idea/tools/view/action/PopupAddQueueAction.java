@@ -2,6 +2,7 @@ package com.idea.tools.view.action;
 
 import com.idea.tools.dto.Server;
 import com.idea.tools.view.BrowserPanel;
+import com.idea.tools.view.QueueEditDialog;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ public class PopupAddQueueAction extends AbstractBrowserPanelAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-
+        browserPanel.getSelectedValue(Server.class).ifPresent(QueueEditDialog::showDialog);
     }
 
     @Override
