@@ -77,9 +77,11 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
     private void installActionsInToolbar() {
         DefaultActionGroup actions = new DefaultActionGroup("JmsMessengerToolbarGroup", false);
 
-        actions.add(new AddServerAction(this));
+        actions.add(new ToolBarAddServerAction());
         actions.add(new ToolBarRemoveServerAction(this));
         actions.add(new ToolBarEditServerAction(this));
+        actions.addSeparator();
+        actions.add(new ToolBarOpenPluginSettingsAction());
 
         installActionGroupInToolBar(actions, this, "JmsMessengerBrowserActions");
     }

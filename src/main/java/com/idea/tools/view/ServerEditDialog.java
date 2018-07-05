@@ -4,27 +4,21 @@ import com.idea.tools.dto.Server;
 import com.idea.tools.view.components.ServerEditPanel;
 
 import javax.swing.*;
+import java.util.Optional;
 
 public class ServerEditDialog extends JDialog {
 
-    private final ServerEditPanel panel;
-
-    private ServerEditDialog() {
-        this(new Server());
-    }
-
     private ServerEditDialog(Server server) {
-        this.panel = new ServerEditPanel(server);
+        ServerEditPanel panel = new ServerEditPanel(server);
         add(panel);
         panel.getCancelButton().addActionListener(event -> dispose());
         panel.getSaveButton().addActionListener(event -> dispose());
     }
 
-    public static void showDialog(Server server) {
+    public static void showDialog(Optional<Server> server) {
         SwingUtilities.invokeLater(() -> {
-            ServerEditDialog dialog = new ServerEditDialog(server);
+            ServerEditDialog dialog = new ServerEditDialog(server.orElseGet(Server::new));
             dialog.setLocationRelativeTo(null);
-//                dialog.setMaximumSize(new Dimension(300, 200));
             dialog.pack();
             dialog.setVisible(true);
         });

@@ -3,6 +3,7 @@ package com.idea.tools;
 import com.idea.tools.service.ServerService;
 import com.idea.tools.settings.Settings;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -40,6 +41,10 @@ public class App {
 
     public static StartupManager startupManager() {
         return StartupManager.getInstance(project);
+    }
+
+    public static void showSettingsDialog(Class<?> clazz) {
+        ShowSettingsUtil.getInstance().showSettingsDialog(App.getProject(), clazz);
     }
 
     public static <T> T fetch(Class<T> clazz) {

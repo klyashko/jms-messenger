@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.util.IconUtil;
 
 import javax.swing.*;
+import java.util.Optional;
 
 public abstract class AbstractEditServerAction extends AbstractBrowserPanelAction {
 
@@ -18,7 +19,7 @@ public abstract class AbstractEditServerAction extends AbstractBrowserPanelActio
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        browserPanel.getSelectedValue(Server.class).ifPresent(ServerEditDialog::showDialog);
+        browserPanel.getSelectedValue(Server.class).ifPresent(server -> ServerEditDialog.showDialog(Optional.of(server)));
     }
 
     boolean isServerSelected() {
