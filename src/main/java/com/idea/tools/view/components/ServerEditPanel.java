@@ -135,8 +135,8 @@ public class ServerEditPanel extends JPanel {
         // TODO: place custom component creation code here
         typeComboBox = new ComboBox<>(new EnumComboBoxModel<>(ServerType.class));
         connectionType = new ComboBox<>();
-        NumberFormat integerFieldFormatter = NumberFormat.getIntegerInstance();
-        integerFieldFormatter.setGroupingUsed(false);
-        portField = new JFormattedTextField(integerFieldFormatter);
+        NumberFormat format = NumberFormat.getIntegerInstance();
+        format.setGroupingUsed(false);
+        portField = new JFormattedTextField(format);
     }
 }
