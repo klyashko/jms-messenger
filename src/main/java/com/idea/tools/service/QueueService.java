@@ -52,4 +52,12 @@ public class QueueService {
         return delete;
     }
 
+    public void addListener(Listener<Queue> listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(Listener<Queue> listener) {
+        listeners.remove(listener);
+    }
+
 }

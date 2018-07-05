@@ -1,10 +1,14 @@
 package com.idea.tools.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
+@ToString(exclude = "server")
+@EqualsAndHashCode(exclude = "server")
 public class Queue {
 
     private Integer id;

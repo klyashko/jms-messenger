@@ -1,5 +1,6 @@
 package com.idea.tools.view;
 
+import com.idea.tools.dto.Queue;
 import com.idea.tools.dto.Server;
 import com.idea.tools.markers.Listener;
 import com.idea.tools.settings.Settings;
@@ -22,6 +23,7 @@ import java.awt.*;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static com.idea.tools.App.*;
 import static com.idea.tools.JmsMessengerWindowManager.JMS_MESSENGER_WINDOW_ID;
@@ -42,7 +44,8 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
     private final Settings settings;
     private JPanel rootPanel;
     private JPanel serverPanel;
-    private Listener<Server> listener;
+    private Listener<Server> serverListener;
+    private Listener<Queue> queueListener;
 
     public BrowserPanel(final Project project) {
         super(true);
@@ -50,12 +53,20 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         setProvideQuickActions(false);
         serversTree = createTree();
 
-        this.listener = Listener.<Server>builder()
+        this.serverListener = Listener.<Server>builder()
                 .add(this::addServer)
                 .edit(this::editServer)
                 .remove(this::removeServer)
                 .build();
-        serverService().addListener(listener);
+
+        this.queueListener = Listener.<Queue>builder()
+                .add(this::addQueue)
+                .edit(this::editQueue)
+                .remove(this::removeQueue)
+                .build();
+
+        serverService().addListener(serverListener);
+        queueService().addListener(queueListener);
 
         serverPanel.setLayout(new BorderLayout());
         serverPanel.add(createScrollPane(serversTree), CENTER);
@@ -69,7 +80,8 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
 
     @Override
     public void dispose() {
-        serverService().removeListener(listener);
+        serverService().removeListener(serverListener);
+        queueService().removeListener(queueListener);
         toolWindowManager().unregisterToolWindow(JMS_MESSENGER_WINDOW_ID);
     }
 
@@ -104,6 +116,21 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         installPopupHandler(serversTree, popup, "POPUP", ActionManager.getInstance());
     }
 
+    private void addQueue(Queue queue) {
+        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        @SuppressWarnings("unchecked")
+        Enumeration<DefaultMutableTreeNode> data = root.children();
+
+        findServerNode(data, queue.getServer()).ifPresent(node -> {
+            node.removeAllChildren();
+            fillQueueTree(queue.getServer(), node);
+            model.nodeChanged(node);
+        });
+
+        serversTree.setModel(new DefaultTreeModel(root));
+    }
+
     private void addServer(Server server) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) serversTree.getModel().getRoot();
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(server);
@@ -127,9 +154,12 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         });
     }
 
+    private void editQueue(Queue queue) {
+        editServer(queue.getServer());
+    }
+
     private void removeServer(Server server) {
-        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) serversTree.getModel().getRoot();
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> data = root.children();
 
@@ -139,15 +169,31 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         });
     }
 
+    private void removeQueue(Queue queue) {
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) serversTree.getModel().getRoot();
+        @SuppressWarnings("unchecked")
+        Enumeration<DefaultMutableTreeNode> data = root.children();
+
+        findServerNode(data, queue.getServer()).ifPresent(serverNode -> {
+            @SuppressWarnings("unchecked")
+            Enumeration<DefaultMutableTreeNode> queuesData = serverNode.children();
+            findNode(queuesData, Queue.class, q -> q.getId().equals(queue.getId())).ifPresent(queueNode -> {
+                serverNode.remove(queueNode);
+                serversTree.setModel(new DefaultTreeModel(root));
+            });
+        });
+    }
+
     private Optional<DefaultMutableTreeNode> findServerNode(Enumeration<DefaultMutableTreeNode> data, Server server) {
+        return findNode(data, Server.class, s -> s.getId().equals(server.getId()));
+    }
+
+    private <T> Optional<DefaultMutableTreeNode> findNode(Enumeration<DefaultMutableTreeNode> data, Class<T> clazz, Predicate<T> predicate) {
         while (data.hasMoreElements()) {
             DefaultMutableTreeNode node = data.nextElement();
             Object value = node.getUserObject();
-            if (value instanceof Server) {
-                Server s = (Server) value;
-                if (s.getId().equals(server.getId())) {
-                    return Optional.of(node);
-                }
+            if (clazz.isInstance(value) && predicate.test(clazz.cast(value))) {
+                return Optional.of(node);
             }
         }
         return Optional.empty();
