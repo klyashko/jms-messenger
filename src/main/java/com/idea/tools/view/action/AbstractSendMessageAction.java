@@ -1,8 +1,8 @@
 package com.idea.tools.view.action;
 
 import com.idea.tools.dto.Queue;
-import com.idea.tools.view.BrowserPanel;
 import com.idea.tools.view.SendMessageDialog;
+import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import javax.swing.*;
@@ -13,13 +13,13 @@ public abstract class AbstractSendMessageAction extends AbstractBrowserPanelActi
 
     private static final Icon ICON = getSendMessageIcon();
 
-    AbstractSendMessageAction(BrowserPanel browserPanel) {
-        super("Send message", "", ICON, browserPanel);
+    AbstractSendMessageAction(ServersBrowseToolPanel serversBrowseToolPanel) {
+        super("Send message", "", ICON, serversBrowseToolPanel);
     }
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        browserPanel.getSelectedValue(Queue.class).ifPresent(SendMessageDialog::showDialog);
+        serversBrowseToolPanel.getSelectedValue(Queue.class).ifPresent(SendMessageDialog::showDialog);
     }
 
     boolean isQueueSelected() {

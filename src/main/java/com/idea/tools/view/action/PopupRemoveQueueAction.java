@@ -1,7 +1,7 @@
 package com.idea.tools.view.action;
 
 import com.idea.tools.dto.Queue;
-import com.idea.tools.view.BrowserPanel;
+import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import javax.swing.*;
@@ -13,13 +13,13 @@ public class PopupRemoveQueueAction extends AbstractBrowserPanelAction {
 
     private static final Icon ICON = getRemoveIcon();
 
-    public PopupRemoveQueueAction(BrowserPanel browserPanel) {
-        super("Remove queue", "", ICON, browserPanel);
+    public PopupRemoveQueueAction(ServersBrowseToolPanel serversBrowseToolPanel) {
+        super("Remove queue", "", ICON, serversBrowseToolPanel);
     }
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        browserPanel.getSelectedValue(Queue.class).ifPresent(queueService()::remove);
+        serversBrowseToolPanel.getSelectedValue(Queue.class).ifPresent(queueService()::remove);
     }
 
     @Override

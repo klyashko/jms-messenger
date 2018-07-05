@@ -31,8 +31,10 @@
         <projectConfigurable groupId="tools" groupWeight="110" dynamic="true" displayName="Jms Messenger"
                              id="preferences.jms.messenger" instance="com.idea.tools.JmsMessengerComponent"/>
 
-        <projectService serviceInterface="com.idea.tools.view.BrowserPanel"
-                        serviceImplementation="com.idea.tools.view.BrowserPanel"/>
+        <projectService serviceInterface="com.idea.tools.view.ServersBrowseToolPanel"
+                        serviceImplementation="com.idea.tools.view.ServersBrowseToolPanel"/>
+        <projectService serviceInterface="com.idea.tools.view.QueueBrowseToolPanel"
+                        serviceImplementation="com.idea.tools.view.QueueBrowseToolPanel"/>
         <projectService serviceInterface="com.idea.tools.JmsMessengerWindowManager"
                         serviceImplementation="com.idea.tools.JmsMessengerWindowManager"/>
 

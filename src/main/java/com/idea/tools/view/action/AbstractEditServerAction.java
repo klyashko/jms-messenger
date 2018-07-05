@@ -1,8 +1,8 @@
 package com.idea.tools.view.action;
 
 import com.idea.tools.dto.Server;
-import com.idea.tools.view.BrowserPanel;
 import com.idea.tools.view.ServerEditDialog;
+import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import javax.swing.*;
@@ -14,13 +14,13 @@ public abstract class AbstractEditServerAction extends AbstractBrowserPanelActio
 
     private static final Icon ICON = getEditIcon();
 
-    AbstractEditServerAction(BrowserPanel browserPanel) {
-        super("Edit server", "", ICON, browserPanel);
+    AbstractEditServerAction(ServersBrowseToolPanel serversBrowseToolPanel) {
+        super("Edit server", "", ICON, serversBrowseToolPanel);
     }
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        browserPanel.getSelectedValue(Server.class).ifPresent(server -> ServerEditDialog.showDialog(Optional.of(server)));
+        serversBrowseToolPanel.getSelectedValue(Server.class).ifPresent(server -> ServerEditDialog.showDialog(Optional.of(server)));
     }
 
     boolean isServerSelected() {

@@ -1,7 +1,7 @@
 package com.idea.tools.view.action;
 
 import com.idea.tools.dto.Server;
-import com.idea.tools.view.BrowserPanel;
+import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import javax.swing.*;
@@ -13,13 +13,13 @@ public class PopupRemoveServerAction extends AbstractBrowserPanelAction {
 
     private static final Icon ICON = getRemoveIcon();
 
-    public PopupRemoveServerAction(BrowserPanel browserPanel) {
-        super("Remove server", "", ICON, browserPanel);
+    public PopupRemoveServerAction(ServersBrowseToolPanel serversBrowseToolPanel) {
+        super("Remove server", "", ICON, serversBrowseToolPanel);
     }
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        browserPanel.getSelectedValue(Server.class).ifPresent(serverService()::remove);
+        serversBrowseToolPanel.getSelectedValue(Server.class).ifPresent(serverService()::remove);
     }
 
     @Override

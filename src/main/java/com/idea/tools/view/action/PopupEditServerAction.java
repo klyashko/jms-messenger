@@ -1,12 +1,12 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.view.BrowserPanel;
+import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 public class PopupEditServerAction extends AbstractEditServerAction {
 
-    public PopupEditServerAction(BrowserPanel browserPanel) {
-        super(browserPanel);
+    public PopupEditServerAction(ServersBrowseToolPanel serversBrowseToolPanel) {
+        super(serversBrowseToolPanel);
     }
 
     @Override

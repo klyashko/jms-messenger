@@ -39,4 +39,8 @@ public class IconUtils extends IconUtil {
     public static Icon getSendMessageIcon() {
         return icon("send_message.png");
     }
+
+    public static Icon getBrowseIcon() {
+        return icon("browse.png");
+    }
 }

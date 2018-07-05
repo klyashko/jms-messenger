@@ -16,15 +16,12 @@
 
 package com.idea.tools;
 
-import com.idea.tools.view.BrowserPanel;
+import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.project.DumbAwareRunnable;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.openapi.wm.WindowManager;
 import com.intellij.ui.content.Content;
-import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManager;
 
 import javax.swing.*;
@@ -38,26 +35,19 @@ public class JmsMessengerWindowManager {
     public static final String JMS_MESSENGER_WINDOW_ID = "Jms Messenger";
     private static final Icon JMS_MESSENGER_ICON = getJmsIcon();
 
-    public JmsMessengerWindowManager(final Project project) {
+    public JmsMessengerWindowManager(Project project) {
         App.setProject(project);
 
-        final BrowserPanel browserPanel = BrowserPanel.of();
+        ServersBrowseToolPanel serversBrowseToolPanel = ServersBrowseToolPanel.of();
 
-        Content content = ContentFactory.SERVICE.getInstance().createContent(browserPanel, null, false);
+        Content content = contentFactory().createContent(serversBrowseToolPanel, null, false);
         ToolWindowManager toolWindowManager = toolWindowManager();
         ToolWindow toolWindow = toolWindowManager.registerToolWindow(JMS_MESSENGER_WINDOW_ID, false, RIGHT);
         toolWindow.setIcon(JMS_MESSENGER_ICON);
         ContentManager contentManager = toolWindow.getContentManager();
         contentManager.addContent(content);
 
-        final StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
-//        final JenkinsWidget jenkinsWidget = JenkinsWidget.of(project);
-//        statusBar.addWidget(jenkinsWidget);
-//        jenkinsWidget.install(statusBar);
-//
-//        final RssLogic rssLogic = RssLogic.of(project);
-
-        startupManager().registerPostStartupActivity((DumbAwareRunnable) browserPanel::init);
+        startupManager().registerPostStartupActivity((DumbAwareRunnable) serversBrowseToolPanel::init);
     }
 
     public static JmsMessengerWindowManager of() {
@@ -65,7 +55,7 @@ public class JmsMessengerWindowManager {
     }
 
     public void unregister() {
-        BrowserPanel.of().dispose();
+        ServersBrowseToolPanel.of().dispose();
     }
 
 }

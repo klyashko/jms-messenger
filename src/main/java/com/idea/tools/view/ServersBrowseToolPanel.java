@@ -33,9 +33,9 @@ import static com.intellij.ui.PopupHandler.installPopupHandler;
 import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
 import static java.awt.BorderLayout.CENTER;
 
-public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
+public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Disposable {
 
-    private static final Logger logger = Logger.getLogger(BrowserPanel.class);
+    private static final Logger logger = Logger.getLogger(ServersBrowseToolPanel.class);
 
     private static final String UNAVAILABLE = "No server available";
 
@@ -47,7 +47,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
     private Listener<Server> serverListener;
     private Listener<Queue> queueListener;
 
-    public BrowserPanel(final Project project) {
+    public ServersBrowseToolPanel(final Project project) {
         super(true);
         settings = settings();
         setProvideQuickActions(false);
@@ -74,8 +74,8 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         setContent(rootPanel);
     }
 
-    public static BrowserPanel of() {
-        return fetch(BrowserPanel.class);
+    public static ServersBrowseToolPanel of() {
+        return fetch(ServersBrowseToolPanel.class);
     }
 
     @Override
@@ -99,6 +99,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         actions.add(new ToolBarEditServerAction(this));
         actions.addSeparator();
         actions.add(new ToolBarSendMessageAction(this));
+        actions.add(new ToolBarBrowseQueueAction(this));
         actions.addSeparator();
         actions.add(new ToolBarOpenPluginSettingsAction());
 
@@ -113,6 +114,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         popup.add(new PopupAddQueueAction(this));
         popup.addSeparator();
         popup.add(new PopupSendMessageAction(this));
+        popup.add(new PopupBrowseQueueAction(this));
         popup.addSeparator();
         popup.add(new PopupEditServerAction(this));
         popup.add(new PopupRemoveServerAction(this));

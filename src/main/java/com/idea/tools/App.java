@@ -8,6 +8,7 @@ import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.ui.content.ContentFactory;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -49,6 +50,10 @@ public class App {
 
     public static void showSettingsDialog(Class<?> clazz) {
         ShowSettingsUtil.getInstance().showSettingsDialog(App.getProject(), clazz);
+    }
+
+    public static ContentFactory contentFactory() {
+        return ContentFactory.SERVICE.getInstance();
     }
 
     public static <T> T fetch(Class<T> clazz) {
