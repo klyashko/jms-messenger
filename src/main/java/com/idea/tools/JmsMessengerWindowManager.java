@@ -30,13 +30,13 @@ import com.intellij.ui.content.ContentManager;
 import javax.swing.*;
 
 import static com.idea.tools.App.*;
-import static com.idea.tools.utils.GuiUtils.icon;
+import static com.idea.tools.utils.IconUtils.getJmsIcon;
 import static com.intellij.openapi.wm.ToolWindowAnchor.RIGHT;
 
 public class JmsMessengerWindowManager {
 
     public static final String JMS_MESSENGER_WINDOW_ID = "Jms Messenger";
-    private static final Icon JMS_MESSENGER_ICON = icon("jms.png");
+    private static final Icon JMS_MESSENGER_ICON = getJmsIcon();
 
     public JmsMessengerWindowManager(final Project project) {
         App.setProject(project);

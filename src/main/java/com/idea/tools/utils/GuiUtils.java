@@ -4,7 +4,6 @@ import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
-import com.intellij.openapi.util.IconLoader;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -14,17 +13,6 @@ import java.util.function.Consumer;
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
 
 public class GuiUtils {
-
-    private static final String ICON_FOLDER = "/images/";
-
-    public static Icon icon(String iconFilename) {
-        return IconLoader.findIcon(ICON_FOLDER + iconFilename);
-    }
-
-
-    public static Icon icon(String parentPath, String iconFilename) {
-        return IconLoader.findIcon(parentPath + iconFilename);
-    }
 
     public static void installActionGroupInToolBar(ActionGroup actionGroup,
                                                    SimpleToolWindowPanel toolWindowPanel,

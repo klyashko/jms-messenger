@@ -4,7 +4,7 @@ import com.idea.tools.dto.Queue;
 import com.idea.tools.dto.Server;
 import com.idea.tools.dto.ServerType;
 import com.idea.tools.markers.Listener;
-import com.idea.tools.settings.Settings.StateServerListener;
+import com.idea.tools.settings.StateServerListener;
 
 import java.util.Arrays;
 import java.util.LinkedList;

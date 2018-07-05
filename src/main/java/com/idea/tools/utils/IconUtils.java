@@ -23,4 +23,16 @@ public class IconUtils extends IconUtil {
     public static Icon getSettingsIcon() {
         return isUnderDarcula() ? icon("settings_dark.png") : icon("settings.png");
     }
+
+    public static Icon getWildflyIcon() {
+        return icon("wildfly.png");
+    }
+
+    public static Icon getActiveMqIcon() {
+        return icon("activemq.png");
+    }
+
+    public static Icon getJmsIcon() {
+        return icon("jms.png");
+    }
 }

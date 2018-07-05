@@ -17,7 +17,6 @@
 package com.idea.tools.settings;
 
 import com.idea.tools.dto.Server;
-import com.idea.tools.markers.Listener;
 import com.idea.tools.service.ServerService;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
@@ -25,8 +24,6 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-
-import static com.idea.tools.App.settings;
 
 @State(
         name = "Messenger.Application.Settings",
@@ -91,21 +88,4 @@ public class Settings implements PersistentStateComponent<Settings.State> {
         }
     }
 
-    public static class StateServerListener implements Listener<Server> {
-
-        @Override
-        public void add(Server item) {
-            settings().getState().put(item);
-        }
-
-        @Override
-        public void edit(Server item) {
-            settings().getState().put(item);
-        }
-
-        @Override
-        public void remove(Server item) {
-            settings().getState().remove(item);
-        }
-    }
 }
