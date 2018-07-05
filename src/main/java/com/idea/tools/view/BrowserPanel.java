@@ -1,27 +1,9 @@
-/*
- * Copyright (c) 2013 David Boissier
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.idea.tools.view;
 
 import com.idea.tools.dto.Server;
 import com.idea.tools.markers.Listener;
 import com.idea.tools.settings.Settings;
-import com.idea.tools.view.action.AddServerAction;
-import com.idea.tools.view.action.PopupRemoveServerAction;
-import com.idea.tools.view.action.ToolBarRemoveServerAction;
+import com.idea.tools.view.action.*;
 import com.idea.tools.view.render.TreeRender;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -52,7 +34,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
 
     private static final Logger logger = Logger.getLogger(BrowserPanel.class);
 
-    private static final String UNAVAILABLE = "No server server available";
+    private static final String UNAVAILABLE = "No server available";
 
     private static final String LOADING = "Loading...";
     private final Tree serversTree;
@@ -94,8 +76,10 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
 
     private void installActionsInToolbar() {
         DefaultActionGroup actions = new DefaultActionGroup("JmsMessengerToolbarGroup", false);
+
         actions.add(new AddServerAction(this));
         actions.add(new ToolBarRemoveServerAction(this));
+        actions.add(new ToolBarEditServerAction(this));
 
         installActionGroupInToolBar(actions, this, "JmsMessengerBrowserActions");
     }
@@ -104,6 +88,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         DefaultActionGroup popup = new DefaultActionGroup("JmsMessengerPopupAction", true);
 
         popup.add(new PopupRemoveServerAction(this));
+        popup.add(new PopupEditServerAction(this));
 
         installPopupHandler(serversTree, popup, "POPUP", ActionManager.getInstance());
     }

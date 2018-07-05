@@ -6,6 +6,7 @@ import com.idea.tools.dto.ServerType;
 import com.idea.tools.utils.Utils;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.text.NumberFormat;
@@ -29,7 +30,9 @@ public class ServerEditPanel extends JPanel {
     private JPasswordField passwordField;
     private JTextField classField;
     private JButton testConnectionButton;
+    @Getter
     private JButton cancelButton;
+    @Getter
     private JButton saveButton;
     private JTextField idField;
     private JTextField nameField;
