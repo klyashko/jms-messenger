@@ -20,12 +20,12 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 
 import static com.idea.tools.App.*;
 import static com.idea.tools.JmsMessengerWindowManager.JMS_MESSENGER_WINDOW_ID;
-import static com.idea.tools.markers.Listener.simple;
 import static com.idea.tools.utils.GuiUtils.installActionGroupInToolBar;
 import static com.idea.tools.utils.Utils.cast;
 import static com.intellij.ui.PopupHandler.installPopupHandler;
@@ -49,7 +49,11 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         setProvideQuickActions(false);
         serversTree = createTree();
 
-        this.listener = simple(server -> fillServerTree());
+        this.listener = Listener.<Server>builder()
+                .add(this::addServer)
+                .edit(this::editServer)
+                .remove(this::removeServer)
+                .build();
         serverService().addListener(listener);
 
         serverPanel.setLayout(new BorderLayout());
@@ -95,9 +99,57 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         installPopupHandler(serversTree, popup, "POPUP", ActionManager.getInstance());
     }
 
+    private void addServer(Server server) {
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) serversTree.getModel().getRoot();
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(server);
+        fillQueueTree(server, node);
+        root.add(node);
+
+        serversTree.setModel(new DefaultTreeModel(root));
+    }
+
+    private void editServer(Server server) {
+        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        @SuppressWarnings("unchecked")
+        Enumeration<DefaultMutableTreeNode> data = root.children();
+
+        findServerNode(data, server).ifPresent(node -> {
+            node.removeAllChildren();
+            node.setUserObject(server);
+            fillQueueTree(server, node);
+            model.nodeChanged(node);
+        });
+    }
+
+    private void removeServer(Server server) {
+        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        @SuppressWarnings("unchecked")
+        Enumeration<DefaultMutableTreeNode> data = root.children();
+
+        findServerNode(data, server).ifPresent(node -> {
+            root.remove(node);
+            serversTree.setModel(new DefaultTreeModel(root));
+        });
+    }
+
+    private Optional<DefaultMutableTreeNode> findServerNode(Enumeration<DefaultMutableTreeNode> data, Server server) {
+        while (data.hasMoreElements()) {
+            DefaultMutableTreeNode node = data.nextElement();
+            Object value = node.getUserObject();
+            if (value instanceof Server) {
+                Server s = (Server) value;
+                if (s.getId().equals(server.getId())) {
+                    return Optional.of(node);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     private void fillServerTree() {
         List<Server> servers = settings.getState().getServersList();
-
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(servers);
         DefaultTreeModel model = new DefaultTreeModel(rootNode);
