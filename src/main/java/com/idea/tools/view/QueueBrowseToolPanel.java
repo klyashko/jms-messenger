@@ -1,6 +1,7 @@
 package com.idea.tools.view;
 
 import com.idea.tools.dto.Queue;
+import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.tabs.TabInfo;
@@ -44,7 +45,7 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
     }
 
     private TabInfo renderNewTab(Queue queue) {
-        TabInfo info = new TabInfo(new JPanel());
+        TabInfo info = new TabInfo(new QueueBrowserTable(queue));
         info.setText(String.format("Server: %s queue: %s", queue.getServer().getName(), queue.getName()));
         return info;
     }

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Queue;
 
 import static com.idea.tools.App.serverService;
+import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
 import static com.intellij.ui.IdeBorderFactory.createTitledBorder;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static com.intellij.util.ui.UIUtil.addBorder;
@@ -27,8 +28,8 @@ public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Li
     private final ConfigurationPanel panel;
     private Queue<Server> newServers = new ArrayDeque<>();
 
-    public ServiceConfigTable(TableModel<Server> model, List<Server> data, ConfigurationPanel panel) {
-        super(model, data);
+    public ServiceConfigTable(List<Server> data, ConfigurationPanel panel) {
+        super(new MyTableModel(), data);
         this.panel = panel;
         render();
     }
@@ -64,7 +65,8 @@ public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Li
                 .setMinimumSize(new Dimension(250, -1))
                 .setPreferredSize(new Dimension(250, -1))
                 .setAddAction(button -> panel.editServer(null))
-                .setRemoveAction(button -> doRemove());
+                .setRemoveAction(button -> doRemove())
+                .setToolbarPosition(TOP);
 
         final JPanel panel = decorator.createPanel();
         add(panel, CENTER);

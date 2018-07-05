@@ -4,6 +4,7 @@ import com.idea.tools.dto.Message;
 import com.idea.tools.dto.Queue;
 import com.idea.tools.markers.Listener;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,6 +36,14 @@ public class QueueService {
 
     public void send(Message message) {
         System.out.println(String.format("Message %s has been sent to queue %s", message, message.getQueue()));
+    }
+
+    public List<Message> receive(Queue queue) {
+        return Collections.emptyList();
+    }
+
+    public boolean removeFromQueue(Message message, Queue queue) {
+        return false;
     }
 
     public void saveOrUpdate(Queue queue) {

@@ -21,7 +21,6 @@ import com.idea.tools.dto.Server;
 import com.idea.tools.view.components.ServerEditPanel;
 import com.idea.tools.view.components.ServiceConfigTable;
 import com.intellij.openapi.project.Project;
-import com.intellij.ui.AddEditRemovePanel;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -52,9 +51,7 @@ public class ConfigurationPanel {
     @NotNull
     private ServiceConfigTable renderTable() {
         List<Server> data = settings().getServersList();
-        AddEditRemovePanel.TableModel<Server> model = new ServiceConfigTable.MyTableModel();
-        ServiceConfigTable table = new ServiceConfigTable(model, data, this);
-        this.table = table;
+        table = new ServiceConfigTable(data, this);
         serverService().addListener(table);
         return table;
     }

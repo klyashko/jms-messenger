@@ -15,11 +15,6 @@ public class IconUtils extends IconUtil {
         return IconLoader.findIcon(ICON_FOLDER + iconFilename);
     }
 
-
-    public static Icon icon(String parentPath, String iconFilename) {
-        return IconLoader.findIcon(parentPath + iconFilename);
-    }
-
     public static Icon getSettingsIcon() {
         return isUnderDarcula() ? icon("settings_dark.png") : icon("settings.png");
     }
@@ -42,5 +37,9 @@ public class IconUtils extends IconUtil {
 
     public static Icon getBrowseIcon() {
         return icon("browse.png");
+    }
+
+    public static Icon getRefreshIcon() {
+        return isUnderDarcula() ? icon("refresh_dark.png") : icon("refresh.png");
     }
 }
