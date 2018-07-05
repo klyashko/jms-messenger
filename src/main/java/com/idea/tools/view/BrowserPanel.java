@@ -98,6 +98,8 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         actions.add(new ToolBarRemoveAction(this));
         actions.add(new ToolBarEditServerAction(this));
         actions.addSeparator();
+        actions.add(new ToolBarEditServerAction(this));
+        actions.addSeparator();
         actions.add(new ToolBarOpenPluginSettingsAction());
 
         installActionGroupInToolBar(actions, this, "JmsMessengerBrowserActions");
@@ -107,6 +109,8 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         DefaultActionGroup popup = new DefaultActionGroup("JmsMessengerPopupAction", true);
 
         popup.add(new PopupRemoveServerAction(this));
+        popup.add(new PopupEditServerAction(this));
+        popup.addSeparator();
         popup.add(new PopupEditServerAction(this));
         popup.addSeparator();
         popup.add(new PopupAddQueueAction(this));
