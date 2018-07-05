@@ -4,19 +4,23 @@ import com.idea.tools.dto.Server;
 import com.idea.tools.markers.Listener;
 import com.idea.tools.view.ConfigurationPanel;
 import com.intellij.ui.AddEditRemovePanel;
-import com.intellij.ui.IdeBorderFactory;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
-import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 
 import static com.idea.tools.App.serverService;
+import static com.intellij.ui.IdeBorderFactory.createTitledBorder;
+import static com.intellij.ui.ToolbarDecorator.createDecorator;
+import static com.intellij.util.ui.UIUtil.addBorder;
+import static java.awt.BorderLayout.CENTER;
 
 public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Listener<Server> {
 
@@ -26,10 +30,19 @@ public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Li
     public ServiceConfigTable(TableModel<Server> model, List<Server> data, ConfigurationPanel panel) {
         super(model, data);
         this.panel = panel;
-        getTable().getColumnModel().getColumn(0).setMaxWidth(40);
-        getTable().getColumnModel().getColumn(0).setMinWidth(40);
-        getTable().getColumnModel().getColumn(1).setMaxWidth(100);
-        getTable().getColumnModel().getColumn(1).setMinWidth(100);
+        render();
+    }
+
+    private void render() {
+        TableColumnModel model = getTable().getColumnModel();
+
+        TableColumn iconColumn = model.getColumn(0);
+        iconColumn.setMinWidth(40);
+        iconColumn.setMaxWidth(40);
+
+        TableColumn nameColumn = model.getColumn(1);
+        nameColumn.setMinWidth(100);
+        nameColumn.setMaxWidth(100);
     }
 
     @Override
@@ -47,17 +60,17 @@ public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Li
     @Override
     protected void initPanel() {
         setLayout(new BorderLayout());
-        ToolbarDecorator decorator = ToolbarDecorator.createDecorator(getTable())
-                                                     .setMinimumSize(new Dimension(250, -1))
-                                                     .setPreferredSize(new Dimension(250, -1))
-                                                     .setAddAction(button -> panel.editServer(null))
-                                                     .setRemoveAction(button -> doRemove());
+        ToolbarDecorator decorator = createDecorator(getTable())
+                .setMinimumSize(new Dimension(250, -1))
+                .setPreferredSize(new Dimension(250, -1))
+                .setAddAction(button -> panel.editServer(null))
+                .setRemoveAction(button -> doRemove());
 
         final JPanel panel = decorator.createPanel();
-        add(panel, BorderLayout.CENTER);
+        add(panel, CENTER);
         final String label = getLabelText();
         if (label != null) {
-            UIUtil.addBorder(panel, IdeBorderFactory.createTitledBorder(label, false));
+            addBorder(panel, createTitledBorder(label, false));
         }
     }
 
