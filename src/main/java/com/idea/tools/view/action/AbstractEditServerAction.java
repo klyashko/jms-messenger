@@ -4,14 +4,15 @@ import com.idea.tools.dto.Server;
 import com.idea.tools.view.BrowserPanel;
 import com.idea.tools.view.ServerEditDialog;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.util.IconUtil;
 
 import javax.swing.*;
 import java.util.Optional;
 
+import static com.intellij.util.IconUtil.getEditIcon;
+
 public abstract class AbstractEditServerAction extends AbstractBrowserPanelAction {
 
-    private static final Icon ICON = IconUtil.getEditIcon();
+    private static final Icon ICON = getEditIcon();
 
     AbstractEditServerAction(BrowserPanel browserPanel) {
         super("Edit server", "", ICON, browserPanel);
