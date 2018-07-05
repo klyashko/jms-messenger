@@ -9,10 +9,10 @@ import com.intellij.ui.EnumComboBoxModel;
 import lombok.Getter;
 
 import javax.swing.*;
-import java.text.NumberFormat;
 import java.util.Objects;
 
 import static com.idea.tools.App.serverService;
+import static com.idea.tools.utils.GuiUtils.createNumberInputField;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static com.idea.tools.utils.Utils.getOrDefault;
 import static com.idea.tools.utils.Utils.isNotEmpty;
@@ -135,8 +135,6 @@ public class ServerEditPanel extends JPanel {
         // TODO: place custom component creation code here
         typeComboBox = new ComboBox<>(new EnumComboBoxModel<>(ServerType.class));
         connectionType = new ComboBox<>();
-        NumberFormat format = NumberFormat.getIntegerInstance();
-        format.setGroupingUsed(false);
-        portField = new JFormattedTextField(format);
+        portField = createNumberInputField();
     }
 }

@@ -1,5 +1,6 @@
 package com.idea.tools.service;
 
+import com.idea.tools.dto.Message;
 import com.idea.tools.dto.Queue;
 import com.idea.tools.markers.Listener;
 
@@ -30,6 +31,10 @@ public class QueueService {
                 .build();
 
         listeners.add(listener);
+    }
+
+    public void send(Message message) {
+        System.out.println(String.format("Message %s has been sent to queue %s", message, message.getQueue()));
     }
 
     public void saveOrUpdate(Queue queue) {

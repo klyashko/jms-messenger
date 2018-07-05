@@ -8,6 +8,7 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.text.NumberFormat;
 import java.util.function.Consumer;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
@@ -17,6 +18,12 @@ public class GuiUtils {
 
     public static boolean showYesNoDialog(String msg) {
         return YES_OPTION == showConfirmDialog(null, msg, "Confirm", YES_NO_OPTION, WARNING_MESSAGE);
+    }
+
+    public static JFormattedTextField createNumberInputField() {
+        NumberFormat format = NumberFormat.getIntegerInstance();
+        format.setGroupingUsed(false);
+        return new JFormattedTextField(format);
     }
 
     public static void installActionGroupInToolBar(ActionGroup actionGroup,
