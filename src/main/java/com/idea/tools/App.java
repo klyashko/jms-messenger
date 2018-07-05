@@ -1,5 +1,6 @@
 package com.idea.tools;
 
+import com.idea.tools.service.QueueService;
 import com.idea.tools.service.ServerService;
 import com.idea.tools.settings.Settings;
 import com.intellij.openapi.components.ServiceManager;
@@ -14,10 +15,9 @@ import java.util.function.Supplier;
 public class App {
 
     private static Project project;
-
     private static Settings settings;
-
     private static ServerService serverService;
+    private static QueueService queueService;
 
     public static Project getProject() {
         return project;
@@ -33,6 +33,10 @@ public class App {
 
     public static ServerService serverService() {
         return getOrCreate(serverService, fetchSupplier(ServerService.class), App::setServerService);
+    }
+
+    public static QueueService queueService() {
+        return getOrCreate(queueService, fetchSupplier(QueueService.class), App::setQueueService);
     }
 
     public static ToolWindowManager toolWindowManager() {
@@ -57,6 +61,10 @@ public class App {
 
     private static void setServerService(ServerService serverService) {
         App.serverService = serverService;
+    }
+
+    private static void setQueueService(QueueService queueService) {
+        App.queueService = queueService;
     }
 
     private static <T> T getOrCreate(T value, Supplier<T> creator, Consumer<T> setter) {

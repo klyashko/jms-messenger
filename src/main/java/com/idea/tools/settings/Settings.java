@@ -1,21 +1,6 @@
-/*
- * Copyright (c) 2013 David Boissier
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.idea.tools.settings;
 
+import com.idea.tools.dto.Queue;
 import com.idea.tools.dto.Server;
 import com.idea.tools.service.ServerService;
 import com.intellij.openapi.components.*;
@@ -24,6 +9,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @State(
         name = "Messenger.Application.Settings",
@@ -59,6 +45,14 @@ public class Settings implements PersistentStateComponent<Settings.State> {
         return state;
     }
 
+    public List<Server> getServersList() {
+        return getState().getServersList();
+    }
+
+    public Stream<Server> getServersStream() {
+        return getState().getServersStream();
+    }
+
     @Override
     public void loadState(@NotNull State state) {
         XmlSerializerUtil.copyBean(state, this.state);
@@ -73,6 +67,19 @@ public class Settings implements PersistentStateComponent<Settings.State> {
             }
         }
 
+        public void put(Queue queue) {
+            Server server = queue.getServer();
+            List<Queue> queues = server.getQueues();
+            for (int i = 0; i < queues.size(); i++) {
+                Queue q = queues.get(i);
+                if (q.getId().equals(queue.getId())) {
+                    queues.set(i, queue);
+                    return;
+                }
+            }
+            queues.add(queue);
+        }
+
         public void putAll(Collection<Server> servers) {
             servers.forEach(this::put);
         }
@@ -83,8 +90,24 @@ public class Settings implements PersistentStateComponent<Settings.State> {
             }
         }
 
+        public void remove(Queue queue) {
+            Server server = queue.getServer();
+            List<Queue> queues = server.getQueues();
+            for (int i = 0; i < queues.size(); i++) {
+                Queue q = queues.get(i);
+                if (q.getId().equals(queue.getId())) {
+                    queues.remove(i);
+                    return;
+                }
+            }
+        }
+
         public List<Server> getServersList() {
             return new ArrayList<>(servers.values());
+        }
+
+        public Stream<Server> getServersStream() {
+            return getServersList().stream();
         }
     }
 

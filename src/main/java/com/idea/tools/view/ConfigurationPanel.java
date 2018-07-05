@@ -51,7 +51,7 @@ public class ConfigurationPanel {
 
     @NotNull
     private ServiceConfigTable renderTable() {
-        List<Server> data = settings().getState().getServersList();
+        List<Server> data = settings().getServersList();
         AddEditRemovePanel.TableModel<Server> model = new ServiceConfigTable.MyTableModel();
         ServiceConfigTable table = new ServiceConfigTable(model, data, this);
         this.table = table;

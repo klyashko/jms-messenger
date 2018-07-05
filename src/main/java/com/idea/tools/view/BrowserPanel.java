@@ -10,7 +10,6 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
-import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.TreeSpeedSearch;
 import com.intellij.ui.treeStructure.SimpleTree;
 import com.intellij.ui.treeStructure.Tree;
@@ -29,6 +28,8 @@ import static com.idea.tools.JmsMessengerWindowManager.JMS_MESSENGER_WINDOW_ID;
 import static com.idea.tools.utils.GuiUtils.installActionGroupInToolBar;
 import static com.idea.tools.utils.Utils.cast;
 import static com.intellij.ui.PopupHandler.installPopupHandler;
+import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
+import static java.awt.BorderLayout.CENTER;
 
 public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
 
@@ -57,7 +58,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
         serverService().addListener(listener);
 
         serverPanel.setLayout(new BorderLayout());
-        serverPanel.add(ScrollPaneFactory.createScrollPane(serversTree), BorderLayout.CENTER);
+        serverPanel.add(createScrollPane(serversTree), CENTER);
 
         setContent(rootPanel);
     }
@@ -149,7 +150,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
     }
 
     private void fillServerTree() {
-        List<Server> servers = settings.getState().getServersList();
+        List<Server> servers = settings.getServersList();
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(servers);
         DefaultTreeModel model = new DefaultTreeModel(rootNode);

@@ -4,7 +4,6 @@ import com.idea.tools.dto.Queue;
 import com.idea.tools.dto.Server;
 import com.idea.tools.dto.ServerType;
 import com.idea.tools.markers.Listener;
-import com.idea.tools.settings.StateServerListener;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.idea.tools.App.settings;
-import static javax.swing.JOptionPane.*;
+import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 
 public class ServerService {
 
@@ -20,14 +19,19 @@ public class ServerService {
     private AtomicInteger generator;
 
     public ServerService() {
-        int value = settings().getState()
-                              .getServersList()
-                              .stream()
+        int value = settings().getServersStream()
                               .map(Server::getId)
                               .max(Integer::compareTo)
                               .orElse(0);
         generator = new AtomicInteger(value);
-        listeners.add(new StateServerListener());
+
+        Listener<Server> listener = Listener.<Server>builder()
+                .add(settings().getState()::put)
+                .edit(settings().getState()::put)
+                .remove(settings().getState()::remove)
+                .build();
+
+        listeners.add(listener);
     }
 
     public static List<Server> getDummies() {
@@ -35,13 +39,13 @@ public class ServerService {
         Server wildfly = new Server();
         wildfly.setId(0);
         wildfly.setName("Wildfly 1");
-        wildfly.setQueues(Arrays.asList(new Queue("Q1"), new Queue("Q2")));
+        wildfly.setQueues(Arrays.asList(new Queue(0, "Q1", wildfly), new Queue(1, "Q2", wildfly)));
         wildfly.setType(ServerType.WILDFLY_11);
 
         Server activeMq = new Server();
         activeMq.setId(1);
         activeMq.setName("Active MQ 1");
-        activeMq.setQueues(Arrays.asList(new Queue("Q1"), new Queue("Q2")));
+        activeMq.setQueues(Arrays.asList(new Queue(2, "Q1", activeMq), new Queue(3, "Q2", activeMq)));
         activeMq.setType(ServerType.ACTIVE_MQ);
 
         return Arrays.asList(wildfly, activeMq);
@@ -60,9 +64,8 @@ public class ServerService {
         if (server == null) {
             return false;
         }
-        String msg = String.format("Do you want to delete server %s", server.getName());
-        int response = showConfirmDialog(null, msg, "Confirm", YES_NO_OPTION, WARNING_MESSAGE);
-        boolean delete = response == YES_OPTION;
+        boolean delete = showYesNoDialog(String.format("Do you want to delete server %s", server.getName()));
+
         if (delete) {
             listeners.forEach(listener -> listener.remove(server));
         }

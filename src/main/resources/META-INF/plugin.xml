@@ -38,6 +38,8 @@
 
         <projectService serviceInterface="com.idea.tools.service.ServerService"
                         serviceImplementation="com.idea.tools.service.ServerService"/>
+        <projectService serviceInterface="com.idea.tools.service.QueueService"
+                        serviceImplementation="com.idea.tools.service.QueueService"/>
     </extensions>
 
     <actions>

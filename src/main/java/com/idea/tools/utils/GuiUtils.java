@@ -11,8 +11,13 @@ import javax.swing.event.DocumentListener;
 import java.util.function.Consumer;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
+import static javax.swing.JOptionPane.*;
 
 public class GuiUtils {
+
+    public static boolean showYesNoDialog(String msg) {
+        return YES_OPTION == showConfirmDialog(null, msg, "Confirm", YES_NO_OPTION, WARNING_MESSAGE);
+    }
 
     public static void installActionGroupInToolBar(ActionGroup actionGroup,
                                                    SimpleToolWindowPanel toolWindowPanel,
