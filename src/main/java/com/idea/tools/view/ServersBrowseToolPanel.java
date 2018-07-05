@@ -98,10 +98,11 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         actions.add(new ToolBarRemoveAction(this));
         actions.add(new ToolBarEditServerAction(this));
         actions.addSeparator();
+        actions.add(new ToolBarReconnectAction(this));
         actions.add(new ToolBarSendMessageAction(this));
         actions.add(new ToolBarBrowseQueueAction(this));
         actions.addSeparator();
-        actions.add(new ToolBarOpenPluginSettingsAction());
+        actions.add(new ToolBarOpenSettingsAction());
 
         installActionGroupInToolBar(actions, this, "JmsMessengerBrowserActions");
     }
@@ -113,6 +114,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         popup.add(new PopupEditQueueAction(this));
         popup.add(new PopupAddQueueAction(this));
         popup.addSeparator();
+        popup.add(new PopupReconnectAction(this));
         popup.add(new PopupSendMessageAction(this));
         popup.add(new PopupBrowseQueueAction(this));
         popup.addSeparator();

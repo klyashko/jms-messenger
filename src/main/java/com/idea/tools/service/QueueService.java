@@ -35,10 +35,12 @@ public class QueueService {
     }
 
     public void send(Message message) {
+        //TODO implement sending message
         System.out.println(String.format("Message %s has been sent to queue %s", message, message.getQueue()));
     }
 
     public List<Message> receive(Queue queue) {
+        //TODO implement receiving messages
         return Collections.emptyList();
     }
 

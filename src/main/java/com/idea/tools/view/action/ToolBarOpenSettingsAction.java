@@ -11,12 +11,12 @@ import javax.swing.*;
 import static com.idea.tools.App.showSettingsDialog;
 import static com.idea.tools.utils.IconUtils.getSettingsIcon;
 
-public class ToolBarOpenPluginSettingsAction extends AnAction implements DumbAware {
+public class ToolBarOpenSettingsAction extends AnAction implements DumbAware {
 
 
     private static final Icon SETTINGS_ICON = getSettingsIcon();
 
-    public ToolBarOpenPluginSettingsAction() {
+    public ToolBarOpenSettingsAction() {
         super("Messenger Settings", "Edit the Messenger settings for the current project", SETTINGS_ICON);
     }
 

@@ -51,6 +51,11 @@ public class ServerService {
         return Arrays.asList(wildfly, activeMq);
     }
 
+    public void refresh(List<Server> servers) {
+        //TODO implement reconnect
+        listeners.forEach(listener -> servers.forEach(listener::edit));
+    }
+
     public void saveOrUpdate(Server server) {
         if (server.getId() == null) {
             server.setId(generator.incrementAndGet());
