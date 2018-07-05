@@ -20,7 +20,8 @@ import com.idea.tools.dto.Server;
 import com.idea.tools.markers.Listener;
 import com.idea.tools.settings.Settings;
 import com.idea.tools.view.action.AddServerAction;
-import com.idea.tools.view.action.RemoveServerAction;
+import com.idea.tools.view.action.PopupRemoveServerAction;
+import com.idea.tools.view.action.ToolBarRemoveServerAction;
 import com.idea.tools.view.render.TreeRender;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -94,7 +95,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
     private void installActionsInToolbar() {
         DefaultActionGroup actions = new DefaultActionGroup("JmsMessengerToolbarGroup", false);
         actions.add(new AddServerAction(this));
-        actions.add(new RemoveServerAction(this));
+        actions.add(new ToolBarRemoveServerAction(this));
 
         installActionGroupInToolBar(actions, this, "JmsMessengerBrowserActions");
     }
@@ -102,7 +103,7 @@ public class BrowserPanel extends SimpleToolWindowPanel implements Disposable {
     private void installActionsInPopupMenu() {
         DefaultActionGroup popup = new DefaultActionGroup("JmsMessengerPopupAction", true);
 
-        popup.add(new RemoveServerAction(this));
+        popup.add(new PopupRemoveServerAction(this));
 
         installPopupHandler(serversTree, popup, "POPUP", ActionManager.getInstance());
     }

@@ -7,17 +7,16 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
 
 import javax.swing.*;
-import java.util.Optional;
 
 import static com.idea.tools.App.serverService;
-import static com.idea.tools.utils.GuiUtils.icon;
+import static com.intellij.util.IconUtil.getRemoveIcon;
 
-public class RemoveServerAction extends AnAction implements DumbAware {
+public abstract class AbstractRemoveServerAction extends AnAction implements DumbAware {
 
-    private static final Icon ICON = icon("minus.png");
-    private final BrowserPanel browserPanel;
+    private static final Icon ICON = getRemoveIcon();
+    final BrowserPanel browserPanel;
 
-    public RemoveServerAction(BrowserPanel browserPanel) {
+    AbstractRemoveServerAction(BrowserPanel browserPanel) {
         super("Remove server", "", ICON);
         this.browserPanel = browserPanel;
     }
@@ -27,9 +26,8 @@ public class RemoveServerAction extends AnAction implements DumbAware {
         browserPanel.getSelectedValue(Server.class).ifPresent(serverService()::remove);
     }
 
-    @Override
-    public void update(AnActionEvent event) {
-        Optional<Server> server = browserPanel.getSelectedValue(Server.class);
-        event.getPresentation().setVisible(server.isPresent());
+    boolean isServerSelected() {
+        return browserPanel.getSelectedValue(Server.class).isPresent();
     }
+
 }

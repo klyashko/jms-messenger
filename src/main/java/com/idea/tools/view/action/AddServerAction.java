@@ -11,11 +11,11 @@ import com.intellij.openapi.project.Project;
 
 import javax.swing.*;
 
-import static com.idea.tools.utils.GuiUtils.icon;
+import static com.intellij.util.IconUtil.getAddIcon;
 
 public class AddServerAction extends AnAction implements DumbAware {
 
-    private static final Icon ICON = icon("plus.png");
+    private static final Icon ICON = getAddIcon();
     private final BrowserPanel browserPanel;
 
     public AddServerAction(BrowserPanel browserPanel) {
@@ -23,12 +23,12 @@ public class AddServerAction extends AnAction implements DumbAware {
         this.browserPanel = browserPanel;
     }
 
-    private static void showSettingsFor(Project project) {
-        ShowSettingsUtil.getInstance().showSettingsDialog(project, JmsMessengerComponent.class);
-    }
-
     @Override
     public void actionPerformed(AnActionEvent event) {
         showSettingsFor(ActionUtils.getProject(event));
+    }
+
+    private static void showSettingsFor(Project project) {
+        ShowSettingsUtil.getInstance().showSettingsDialog(project, JmsMessengerComponent.class);
     }
 }
