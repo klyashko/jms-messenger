@@ -1,7 +1,7 @@
 package com.idea.tools.view;
 
 import com.idea.tools.dto.ContentType;
-import com.idea.tools.dto.Message;
+import com.idea.tools.dto.MessageEntity;
 import com.idea.tools.dto.Queue;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
@@ -9,7 +9,7 @@ import com.intellij.ui.EnumComboBoxModel;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.idea.tools.App.queueService;
+import static com.idea.tools.App.jmsService;
 import static com.idea.tools.utils.GuiUtils.createNumberInputField;
 import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
 import static java.awt.BorderLayout.CENTER;
@@ -49,14 +49,14 @@ public class SendMessageDialog extends JDialog {
         setValues();
 
         sendButton.addActionListener(event -> {
-            Message msg = new Message();
+            MessageEntity msg = new MessageEntity();
             msg.setTimestamp((Long) timestampField.getValue());
             msg.setJmsType(jmsTypeField.getText());
             msg.setType(contentTypeField.getItemAt(contentTypeField.getSelectedIndex()));
             msg.setPayload(payloadField.getText());
             msg.setQueue(queue);
 
-            queueService().send(msg);
+            jmsService().send(msg);
         });
 
         closeButton.addActionListener(event -> dispose());

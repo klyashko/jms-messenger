@@ -7,7 +7,7 @@ import lombok.ToString;
 @Data
 @ToString(exclude = "queue")
 @EqualsAndHashCode(exclude = "queue")
-public class Message {
+public class MessageEntity {
 
     private Long timestamp;
     private String jmsType;

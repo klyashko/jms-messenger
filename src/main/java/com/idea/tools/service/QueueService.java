@@ -1,6 +1,6 @@
 package com.idea.tools.service;
 
-import com.idea.tools.dto.Message;
+import com.idea.tools.dto.MessageEntity;
 import com.idea.tools.dto.Queue;
 import com.idea.tools.markers.Listener;
 
@@ -34,17 +34,12 @@ public class QueueService {
         listeners.add(listener);
     }
 
-    public void send(Message message) {
-        //TODO implement sending message
-        System.out.println(String.format("Message %s has been sent to queue %s", message, message.getQueue()));
-    }
-
-    public List<Message> receive(Queue queue) {
+    public List<MessageEntity> receive(Queue queue) {
         //TODO implement receiving messages
         return Collections.emptyList();
     }
 
-    public boolean removeFromQueue(Message message, Queue queue) {
+    public boolean removeFromQueue(MessageEntity messageEntity, Queue queue) {
         return false;
     }
 

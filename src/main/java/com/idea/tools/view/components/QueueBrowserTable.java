@@ -1,6 +1,6 @@
 package com.idea.tools.view.components;
 
-import com.idea.tools.dto.Message;
+import com.idea.tools.dto.MessageEntity;
 import com.idea.tools.dto.Queue;
 import com.idea.tools.view.button.MessagesReloadButton;
 import com.intellij.ui.AddEditRemovePanel;
@@ -18,7 +18,7 @@ import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static com.intellij.util.ui.UIUtil.addBorder;
 import static java.awt.BorderLayout.CENTER;
 
-public class QueueBrowserTable extends AddEditRemovePanel<Message> {
+public class QueueBrowserTable extends AddEditRemovePanel<MessageEntity> {
 
     private Queue queue;
 
@@ -47,23 +47,23 @@ public class QueueBrowserTable extends AddEditRemovePanel<Message> {
 
     @Nullable
     @Override
-    protected Message addItem() {
+    protected MessageEntity addItem() {
         return null;
     }
 
     @Override
-    protected boolean removeItem(Message msg) {
+    protected boolean removeItem(MessageEntity msg) {
         boolean delete = showYesNoDialog("Delete message from the queue?");
         return delete && queueService().removeFromQueue(msg, queue);
     }
 
     @Nullable
     @Override
-    protected Message editItem(Message o) {
+    protected MessageEntity editItem(MessageEntity o) {
         return null;
     }
 
-    public static class MyTableModel extends TableModel<Message> {
+    public static class MyTableModel extends TableModel<MessageEntity> {
 
         private static final String[] COLUMNS = {"Payload"};
         private static final Class<?>[] COLUMN_TYPES = {String.class};
@@ -80,8 +80,8 @@ public class QueueBrowserTable extends AddEditRemovePanel<Message> {
         }
 
         @Override
-        public Object getField(Message message, int columnIndex) {
-            return message.getPayload();
+        public Object getField(MessageEntity messageEntity, int columnIndex) {
+            return messageEntity.getPayload();
         }
 
         @Override

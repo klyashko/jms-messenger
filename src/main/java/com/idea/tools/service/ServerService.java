@@ -1,5 +1,6 @@
 package com.idea.tools.service;
 
+import com.idea.tools.dto.ConnectionType;
 import com.idea.tools.dto.Queue;
 import com.idea.tools.dto.Server;
 import com.idea.tools.dto.ServerType;
@@ -45,6 +46,9 @@ public class ServerService {
         Server activeMq = new Server();
         activeMq.setId(1);
         activeMq.setName("Active MQ 1");
+        activeMq.setHost("localhost");
+        activeMq.setPort(61616);
+        activeMq.setConnectionType(ConnectionType.TCP);
         activeMq.setQueues(Arrays.asList(new Queue(2, "Q1", activeMq), new Queue(3, "Q2", activeMq)));
         activeMq.setType(ServerType.ACTIVE_MQ);
 
