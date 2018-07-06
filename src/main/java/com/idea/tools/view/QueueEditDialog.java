@@ -56,6 +56,7 @@ public class QueueEditDialog extends JDialog {
 
         saveButton.addActionListener(event -> {
             queue.setName(nameField.getText());
+            queue.setAddedManually(true);
             queueService().saveOrUpdate(queue);
             dispose();
         });

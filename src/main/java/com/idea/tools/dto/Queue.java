@@ -14,6 +14,7 @@ public class Queue {
     private Integer id;
     private String name;
     private Server server;
+    private boolean addedManually;
 
     public Queue(Integer id, String name, Server server) {
         this.id = id;
