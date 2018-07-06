@@ -56,10 +56,6 @@ public class ServerService {
         listeners.forEach(listener -> servers.forEach(listener::edit));
     }
 
-    public boolean testConnection(Server server) {
-        return false;
-    }
-
     public void saveOrUpdate(Server server) {
         if (server.getId() == null) {
             server.setId(generator.incrementAndGet());

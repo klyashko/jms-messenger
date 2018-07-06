@@ -1,5 +1,6 @@
 package com.idea.tools;
 
+import com.idea.tools.service.JmsService;
 import com.idea.tools.service.QueueService;
 import com.idea.tools.service.ServerService;
 import com.idea.tools.settings.Settings;
@@ -19,6 +20,7 @@ public class App {
     private static Settings settings;
     private static ServerService serverService;
     private static QueueService queueService;
+    private static JmsService jmsService;
 
     public static Project getProject() {
         return project;
@@ -38,6 +40,10 @@ public class App {
 
     public static QueueService queueService() {
         return getOrCreate(queueService, fetchSupplier(QueueService.class), App::setQueueService);
+    }
+
+    public static JmsService jmsService() {
+        return getOrCreate(jmsService, fetchSupplier(JmsService.class), App::setJmsService);
     }
 
     public static ToolWindowManager toolWindowManager() {
@@ -70,6 +76,10 @@ public class App {
 
     private static void setQueueService(QueueService queueService) {
         App.queueService = queueService;
+    }
+
+    private static void setJmsService(JmsService jmsService) {
+        App.jmsService = jmsService;
     }
 
     private static <T> T getOrCreate(T value, Supplier<T> creator, Consumer<T> setter) {

@@ -13,7 +13,7 @@ public class Server {
     private ServerType type;
     private ConnectionType connectionType;
     private String host;
-    private int port;
+    private Integer port;
     private String login;
     private String password;
     private String clazz;

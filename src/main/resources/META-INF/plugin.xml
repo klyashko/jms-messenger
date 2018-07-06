@@ -42,6 +42,8 @@
                         serviceImplementation="com.idea.tools.service.ServerService"/>
         <projectService serviceInterface="com.idea.tools.service.QueueService"
                         serviceImplementation="com.idea.tools.service.QueueService"/>
+        <projectService serviceInterface="com.idea.tools.service.JmsService"
+                        serviceImplementation="com.idea.tools.service.JmsService"/>
     </extensions>
 
     <actions>

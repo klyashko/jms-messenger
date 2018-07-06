@@ -13,18 +13,21 @@ import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import java.util.Objects;
 
+import static com.idea.tools.App.jmsService;
 import static com.idea.tools.App.serverService;
 import static com.idea.tools.utils.GuiUtils.createNumberInputField;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static com.idea.tools.utils.Utils.getOrDefault;
+import static com.intellij.ui.JBColor.GREEN;
+import static com.intellij.ui.JBColor.RED;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class ServerEditPanel extends JPanel {
 
     private static final String CONNECTION_SUCCESS_TEXT = "Success";
     private static final String CONNECTION_FAIL_TEXT = "Fail";
-    private static final JBColor CONNECTION_SUCCESS_COLOR = JBColor.GREEN;
-    private static final JBColor CONNECTION_FAIL_COLOR = JBColor.RED;
+    private static final JBColor CONNECTION_SUCCESS_COLOR = GREEN;
+    private static final JBColor CONNECTION_FAIL_COLOR = RED;
 
     private Server server;
 
@@ -83,14 +86,16 @@ public class ServerEditPanel extends JPanel {
 
         testConnectionButton.addActionListener(event -> {
             fillServer();
-            if (serverService().testConnection(server)) {
-                connectionStatus.setText(CONNECTION_SUCCESS_TEXT);
-                connectionStatus.setForeground(CONNECTION_SUCCESS_COLOR);
-            } else {
-                connectionStatus.setText(CONNECTION_FAIL_TEXT);
-                connectionStatus.setForeground(CONNECTION_FAIL_COLOR);
+            try {
+                if (jmsService().testConnection(server)) {
+                    updateStatusLabel(CONNECTION_SUCCESS_TEXT, CONNECTION_SUCCESS_COLOR);
+                } else {
+                    updateStatusLabel(CONNECTION_FAIL_TEXT, CONNECTION_FAIL_COLOR);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                updateStatusLabel(CONNECTION_FAIL_TEXT, CONNECTION_FAIL_COLOR);
             }
-            connectionStatus.setVisible(true);
         });
 
         saveButton.addActionListener(event -> {
@@ -104,6 +109,12 @@ public class ServerEditPanel extends JPanel {
         });
     }
 
+    private void updateStatusLabel(String text, JBColor color) {
+        connectionStatus.setText(text);
+        connectionStatus.setForeground(color);
+        connectionStatus.setVisible(true);
+    }
+
     private void enableButtons() {
         boolean requiredFieldsAreFilled = requiredFieldsAreFilled();
         saveButton.setEnabled(requiredFieldsAreFilled);
@@ -111,15 +122,14 @@ public class ServerEditPanel extends JPanel {
     }
 
     private boolean requiredFieldsAreFilled() {
-        return isNotEmpty(hostField.getText()) && isNotEmpty(portField.getText()) && !portField.getText().equals("0");
+        return isNotEmpty(hostField.getText()) && isNotEmpty(portField.getText());
     }
 
     private void fillServer() {
         server.setType(typeComboBox.getItemAt(typeComboBox.getSelectedIndex()));
         server.setConnectionType(connectionType.getItemAt(connectionType.getSelectedIndex()));
         server.setHost(hostField.getText());
-        Long portValue = (Long) portField.getValue();
-        server.setPort(portValue.intValue());
+        server.setPort((Integer) portField.getValue());
         server.setLogin(loginField.getText());
         server.setPassword(String.valueOf(passwordField.getPassword()));
         server.setClazz(classField.getText());
@@ -134,8 +144,8 @@ public class ServerEditPanel extends JPanel {
         } else {
             updateConnectionTypeModel();
         }
-        hostField.setText(server.getHost());
-        portField.setValue(server.getPort());
+        hostField.setText(getOrDefault(server.getHost(), "localhost"));
+        portField.setValue(getOrDefault(server.getPort(), 61616));
         nameField.setText(server.getName());
         loginField.setText(server.getLogin());
         passwordField.setText(server.getPassword());
