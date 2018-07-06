@@ -6,7 +6,6 @@ import com.idea.tools.dto.Server;
 import com.idea.tools.dto.ServerType;
 import com.idea.tools.jms.ActiveMQConnectionStrategy;
 import com.idea.tools.jms.ConnectionStrategy;
-import com.idea.tools.utils.Cleaner;
 import lombok.SneakyThrows;
 
 import javax.jms.*;
@@ -29,9 +28,9 @@ public class JmsService {
     public boolean testConnection(Server server) {
         return connectionStrategy(server)
                 .flatMap(strategy -> strategy.getConnectionFactory(server))
-                .filter(predicate(cf -> {
-                    try (Cleaner cleaner = new Cleaner()) {
-                        return connection(server, cf, cleaner) != null;
+                .filter(predicate(factory -> {
+                    try (Connection connection = connect(server, factory)) {
+                        return connection != null;
                     }
                 }))
                 .isPresent();
@@ -45,11 +44,11 @@ public class JmsService {
         Server server = queue.getServer();
 
         connectionStrategy(server).ifPresent(strategy ->
-                strategy.getConnectionFactory(server).ifPresent(consumer(cf -> {
-                    try (Cleaner cleaner = new Cleaner()) {
-                        Connection connection = connection(server, cf, cleaner);
-                        Session session = session(connection, cleaner);
-                        MessageProducer producer = producer(session, strategy, queue, cleaner);
+                strategy.getConnectionFactory(server).ifPresent(consumer(factory -> {
+                    try (Connection connection = connect(server, factory);
+                         Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
+                         MessageProducer producer = session.createProducer(strategy.createQueueDestination(queue))
+                    ) {
                         Message jmsMessage = msg.getType().create(session, msg);
                         jmsMessage.setJMSType(msg.getJmsType());
                         jmsMessage.setJMSTimestamp(msg.getTimestamp());
@@ -59,23 +58,30 @@ public class JmsService {
     }
 
     public List<MessageDto> receive(QueueDto queue) {
+        return Optional.ofNullable(queue.getServer())
+                       .flatMap(server -> connectionStrategy(server)
+                               .flatMap(strategy -> strategy.getConnectionFactory(server)
+                                                            .map(cf -> receive(server, strategy, cf, queue))
+                               )
+                       )
+                       .orElseGet(Collections::emptyList);
+    }
+
+    private List<MessageDto> receive(Server server, ConnectionStrategy strategy, ConnectionFactory factory, QueueDto queue) {
         List<MessageDto> msgs = new ArrayList<>();
-        Optional.ofNullable(queue.getServer())
-                .ifPresent(server ->
-                        connectionStrategy(server).ifPresent(
-                                strategy -> strategy.getConnectionFactory(server).ifPresent(consumer(cf -> {
-                                    try (Cleaner cleaner = new Cleaner()) {
-                                        Connection connection = connection(server, cf, cleaner);
-                                        Session session = session(connection, cleaner);
-                                        QueueBrowser browser = browser(session, strategy, queue, cleaner);
-                                        connection.start();
-                                        @SuppressWarnings("unchecked")
-                                        Enumeration<Message> enumeration = browser.getEnumeration();
-                                        while (enumeration.hasMoreElements()) {
-                                            strategy.map(enumeration.nextElement()).ifPresent(msgs::add);
-                                        }
-                                    }
-                                }))));
+        try (Connection connection = connect(server, factory);
+             Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
+             QueueBrowser browser = session.createBrowser(strategy.createQueueDestination(queue))
+        ) {
+            connection.start();
+            @SuppressWarnings("unchecked")
+            Enumeration<Message> enumeration = browser.getEnumeration();
+            while (enumeration.hasMoreElements()) {
+                strategy.map(enumeration.nextElement()).ifPresent(msgs::add);
+            }
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
         return msgs;
     }
 
@@ -93,22 +99,6 @@ public class JmsService {
 
     private Optional<ConnectionStrategy> connectionStrategy(Server server) {
         return Optional.ofNullable(server).map(s -> STRATEGIES.get(s.getType()));
-    }
-
-    private Connection connection(Server server, ConnectionFactory cf, Cleaner cleaner) {
-        return cleaner.register(() -> connect(server, cf), Connection::close);
-    }
-
-    private Session session(Connection connection, Cleaner cleaner) {
-        return cleaner.register(() -> connection.createSession(false, AUTO_ACKNOWLEDGE), Session::close);
-    }
-
-    private MessageProducer producer(Session session, ConnectionStrategy strategy, QueueDto queue, Cleaner cleaner) {
-        return cleaner.register(() -> session.createProducer(strategy.createQueueDestination(queue)), MessageProducer::close);
-    }
-
-    private QueueBrowser browser(Session session, ConnectionStrategy strategy, QueueDto queue, Cleaner cleaner) {
-        return cleaner.register(() -> session.createBrowser(strategy.createQueueDestination(queue)), QueueBrowser::close);
     }
 
 }
