@@ -10,8 +10,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.idea.tools.App.fetch;
 import static com.idea.tools.App.getProject;
@@ -25,7 +25,7 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
     private JPanel rootPanel;
     private JBTabsImpl queuesTabPanel;
 
-    private Map<Pair<Integer, Integer>, TabInfo> queueTabs = new HashMap<>();
+    private Map<Pair<Integer, Integer>, TabInfo> queueTabs = new ConcurrentHashMap<>();
 
     public QueueBrowseToolPanel() {
         super(true);
@@ -49,6 +49,8 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
             queuesTabPanel.addTab(tab);
             return tab;
         });
+        QueueBrowserTable table = (QueueBrowserTable) info.getComponent();
+        table.reload();
         queuesTabPanel.select(info, false);
     }
 

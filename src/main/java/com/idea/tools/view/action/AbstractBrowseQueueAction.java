@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static com.idea.tools.App.contentFactory;
 import static com.idea.tools.App.toolWindowManager;
+import static com.idea.tools.utils.GuiUtils.runInSwingThread;
 import static com.idea.tools.utils.IconUtils.getBrowseIcon;
 import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_ICON;
 import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_WINDOW_ID;
@@ -30,7 +31,11 @@ public abstract class AbstractBrowseQueueAction extends AbstractBrowserPanelActi
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversBrowseToolPanel.getSelectedValue(QueueDto.class).ifPresent(getOrCreate()::addQueueToBrowse);
+        serversBrowseToolPanel.getSelectedValue(QueueDto.class)
+                              .ifPresent(queue -> {
+                                  QueueBrowseToolPanel panel = getOrCreate();
+                                  runInSwingThread(() -> panel.addQueueToBrowse(queue));
+                              });
     }
 
     private QueueBrowseToolPanel getOrCreate() {

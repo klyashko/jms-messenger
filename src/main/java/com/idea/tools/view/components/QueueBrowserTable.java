@@ -19,6 +19,7 @@ import static com.intellij.ui.IdeBorderFactory.createTitledBorder;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static com.intellij.util.ui.UIUtil.addBorder;
 import static java.awt.BorderLayout.CENTER;
+import static java.util.Collections.emptyList;
 
 public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
 
@@ -26,7 +27,7 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     private QueueDto queue;
 
     public QueueBrowserTable(QueueDto queue) {
-        super(new MyTableModel(), jmsService().receive(queue));
+        super(new MyTableModel(), emptyList());
         this.queue = queue;
     }
 
@@ -64,6 +65,10 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     @Override
     protected MessageDto editItem(MessageDto o) {
         return null;
+    }
+
+    public void reload() {
+        setData(jmsService().receive(queue));
     }
 
     public static class MyTableModel extends TableModel<MessageDto> {
