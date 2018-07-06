@@ -1,4 +1,4 @@
-package com.idea.tools.utils;
+package com.idea.tools.utils.function;
 
 import lombok.SneakyThrows;
 

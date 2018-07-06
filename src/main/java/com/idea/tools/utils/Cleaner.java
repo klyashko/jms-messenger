@@ -1,5 +1,8 @@
 package com.idea.tools.utils;
 
+import com.idea.tools.utils.function.ThrowingConsumer;
+import com.idea.tools.utils.function.ThrowingSupplier;
+
 import java.util.HashMap;
 import java.util.Map;
 

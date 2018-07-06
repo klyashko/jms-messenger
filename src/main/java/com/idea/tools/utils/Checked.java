@@ -1,5 +1,9 @@
 package com.idea.tools.utils;
 
+import com.idea.tools.utils.function.ThrowingBiFunction;
+import com.idea.tools.utils.function.ThrowingConsumer;
+import com.idea.tools.utils.function.ThrowingFunction;
+
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
