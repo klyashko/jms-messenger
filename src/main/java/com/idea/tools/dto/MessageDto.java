@@ -4,15 +4,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Data
 @ToString(exclude = "queue")
 @EqualsAndHashCode(exclude = "queue")
-public class MessageEntity {
+public class MessageDto {
 
     private Long timestamp;
     private String jmsType;
     private ContentType type;
     private String payload;
-    private Queue queue;
+    private QueueDto queue;
+    private Map<String, Object> headers = new HashMap<>();
 
 }

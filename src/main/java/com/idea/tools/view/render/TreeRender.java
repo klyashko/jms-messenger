@@ -1,6 +1,6 @@
 package com.idea.tools.view.render;
 
-import com.idea.tools.dto.Queue;
+import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.Server;
 import com.intellij.ui.ColoredTreeCellRenderer;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +28,8 @@ public class TreeRender extends ColoredTreeCellRenderer {
             Server server = (Server) object;
             append(server.getName());
             setIcon(server.getType().getIcon());
-        } else if (object instanceof Queue) {
-            Queue queue = (Queue) object;
+        } else if (object instanceof QueueDto) {
+            QueueDto queue = (QueueDto) object;
             append(queue.getName(), REGULAR_ITALIC_ATTRIBUTES);
         }
     }

@@ -1,6 +1,6 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.dto.Queue;
+import com.idea.tools.dto.QueueDto;
 import com.idea.tools.view.QueueBrowseToolPanel;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -30,7 +30,7 @@ public abstract class AbstractBrowseQueueAction extends AbstractBrowserPanelActi
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversBrowseToolPanel.getSelectedValue(Queue.class).ifPresent(getOrCreate()::addQueueToBrowse);
+        serversBrowseToolPanel.getSelectedValue(QueueDto.class).ifPresent(getOrCreate()::addQueueToBrowse);
     }
 
     private QueueBrowseToolPanel getOrCreate() {
@@ -48,7 +48,7 @@ public abstract class AbstractBrowseQueueAction extends AbstractBrowserPanelActi
     }
 
     boolean isQueueSelected() {
-        return isSelected(Queue.class);
+        return isSelected(QueueDto.class);
     }
 
 }

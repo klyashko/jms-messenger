@@ -9,14 +9,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(exclude = "server")
 @EqualsAndHashCode(exclude = "server")
-public class Queue {
+public class QueueDto {
 
     private Integer id;
     private String name;
     private Server server;
     private boolean addedManually;
 
-    public Queue(Integer id, String name, Server server) {
+    public QueueDto(Integer id, String name, Server server) {
         this.id = id;
         this.name = name;
         this.server = server;

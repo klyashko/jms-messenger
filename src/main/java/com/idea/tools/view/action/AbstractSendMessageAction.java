@@ -1,6 +1,6 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.dto.Queue;
+import com.idea.tools.dto.QueueDto;
 import com.idea.tools.view.SendMessageDialog;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -19,11 +19,11 @@ public abstract class AbstractSendMessageAction extends AbstractBrowserPanelActi
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversBrowseToolPanel.getSelectedValue(Queue.class).ifPresent(SendMessageDialog::showDialog);
+        serversBrowseToolPanel.getSelectedValue(QueueDto.class).ifPresent(SendMessageDialog::showDialog);
     }
 
     boolean isQueueSelected() {
-        return isSelected(Queue.class);
+        return isSelected(QueueDto.class);
     }
 
 }

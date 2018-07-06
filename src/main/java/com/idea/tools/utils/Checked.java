@@ -3,11 +3,13 @@ package com.idea.tools.utils;
 import com.idea.tools.utils.function.ThrowingBiFunction;
 import com.idea.tools.utils.function.ThrowingConsumer;
 import com.idea.tools.utils.function.ThrowingFunction;
+import com.idea.tools.utils.function.ThrowingPredicate;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class Checked {
 
@@ -25,6 +27,10 @@ public class Checked {
 
     public static <T, U, R> BiFunction<T, U, R> biFunction(ThrowingBiFunction<T, U, R> biFunction) {
         return biFunction;
+    }
+
+    public static <T> Predicate<T> predicate(ThrowingPredicate<T> predicate) {
+        return predicate;
     }
 
 }

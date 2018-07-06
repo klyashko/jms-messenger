@@ -13,9 +13,9 @@ public enum ContentType {
 
     TEXT(biFunction((session, msg) -> session.createTextMessage(msg.getPayload())));
 
-    private final BiFunction<Session, MessageEntity, Message> creator;
+    private final BiFunction<Session, MessageDto, Message> creator;
 
-    public Message create(Session session, MessageEntity msg) {
+    public Message create(Session session, MessageDto msg) {
         return creator.apply(session, msg);
     }
 

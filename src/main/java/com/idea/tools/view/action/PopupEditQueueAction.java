@@ -1,6 +1,6 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.dto.Queue;
+import com.idea.tools.dto.QueueDto;
 import com.idea.tools.view.QueueEditDialog;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -19,11 +19,11 @@ public class PopupEditQueueAction extends AbstractBrowserPanelAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversBrowseToolPanel.getSelectedValue(Queue.class).ifPresent(QueueEditDialog::showDialog);
+        serversBrowseToolPanel.getSelectedValue(QueueDto.class).ifPresent(QueueEditDialog::showDialog);
     }
 
     @Override
     public void update(AnActionEvent event) {
-        event.getPresentation().setVisible(isSelected(Queue.class));
+        event.getPresentation().setVisible(isSelected(QueueDto.class));
     }
 }

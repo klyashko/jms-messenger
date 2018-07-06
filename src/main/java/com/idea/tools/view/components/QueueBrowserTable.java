@@ -1,15 +1,17 @@
 package com.idea.tools.view.components;
 
-import com.idea.tools.dto.MessageEntity;
-import com.idea.tools.dto.Queue;
+import com.idea.tools.dto.MessageDto;
+import com.idea.tools.dto.QueueDto;
 import com.idea.tools.view.button.MessagesReloadButton;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
+import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static com.idea.tools.App.jmsService;
 import static com.idea.tools.App.queueService;
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
@@ -18,12 +20,13 @@ import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static com.intellij.util.ui.UIUtil.addBorder;
 import static java.awt.BorderLayout.CENTER;
 
-public class QueueBrowserTable extends AddEditRemovePanel<MessageEntity> {
+public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
 
-    private Queue queue;
+    @Getter
+    private QueueDto queue;
 
-    public QueueBrowserTable(Queue queue) {
-        super(new MyTableModel(), queueService().receive(queue));
+    public QueueBrowserTable(QueueDto queue) {
+        super(new MyTableModel(), jmsService().receive(queue));
         this.queue = queue;
     }
 
@@ -34,7 +37,7 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageEntity> {
                 .setMoveDownAction(button -> doDown())
                 .setMoveUpAction(button -> doUp())
                 .setRemoveAction(button -> doRemove())
-                .addExtraAction(new MessagesReloadButton(this, queue))
+                .addExtraAction(new MessagesReloadButton(this))
                 .setToolbarPosition(TOP);
 
         final JPanel panel = decorator.createPanel();
@@ -47,23 +50,23 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageEntity> {
 
     @Nullable
     @Override
-    protected MessageEntity addItem() {
+    protected MessageDto addItem() {
         return null;
     }
 
     @Override
-    protected boolean removeItem(MessageEntity msg) {
+    protected boolean removeItem(MessageDto msg) {
         boolean delete = showYesNoDialog("Delete message from the queue?");
         return delete && queueService().removeFromQueue(msg, queue);
     }
 
     @Nullable
     @Override
-    protected MessageEntity editItem(MessageEntity o) {
+    protected MessageDto editItem(MessageDto o) {
         return null;
     }
 
-    public static class MyTableModel extends TableModel<MessageEntity> {
+    public static class MyTableModel extends TableModel<MessageDto> {
 
         private static final String[] COLUMNS = {"Payload"};
         private static final Class<?>[] COLUMN_TYPES = {String.class};
@@ -80,8 +83,8 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageEntity> {
         }
 
         @Override
-        public Object getField(MessageEntity messageEntity, int columnIndex) {
-            return messageEntity.getPayload();
+        public Object getField(MessageDto messageDto, int columnIndex) {
+            return messageDto.getPayload();
         }
 
         @Override

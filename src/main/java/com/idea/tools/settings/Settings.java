@@ -1,6 +1,6 @@
 package com.idea.tools.settings;
 
-import com.idea.tools.dto.Queue;
+import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.Server;
 import com.idea.tools.service.ServerService;
 import com.intellij.openapi.components.*;
@@ -67,11 +67,11 @@ public class Settings implements PersistentStateComponent<Settings.State> {
             }
         }
 
-        public void put(Queue queue) {
+        public void put(QueueDto queue) {
             Server server = queue.getServer();
-            List<Queue> queues = server.getQueues();
+            List<QueueDto> queues = server.getQueues();
             for (int i = 0; i < queues.size(); i++) {
-                Queue q = queues.get(i);
+                QueueDto q = queues.get(i);
                 if (q.getId().equals(queue.getId())) {
                     queues.set(i, queue);
                     return;
@@ -90,11 +90,11 @@ public class Settings implements PersistentStateComponent<Settings.State> {
             }
         }
 
-        public void remove(Queue queue) {
+        public void remove(QueueDto queue) {
             Server server = queue.getServer();
-            List<Queue> queues = server.getQueues();
+            List<QueueDto> queues = server.getQueues();
             for (int i = 0; i < queues.size(); i++) {
-                Queue q = queues.get(i);
+                QueueDto q = queues.get(i);
                 if (q.getId().equals(queue.getId())) {
                     queues.remove(i);
                     return;

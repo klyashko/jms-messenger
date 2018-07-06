@@ -1,14 +1,17 @@
 package com.idea.tools.view;
 
-import com.idea.tools.dto.Queue;
+import com.idea.tools.dto.QueueDto;
 import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.idea.tools.App.fetch;
 import static com.idea.tools.App.getProject;
@@ -21,6 +24,8 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
 
     private JPanel rootPanel;
     private JBTabsImpl queuesTabPanel;
+
+    private Map<Pair<Integer, Integer>, TabInfo> queueTabs = new HashMap<>();
 
     public QueueBrowseToolPanel() {
         super(true);
@@ -38,13 +43,16 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
         setContent(rootPanel);
     }
 
-    public void addQueueToBrowse(Queue queue) {
-        TabInfo info = renderNewTab(queue);
-        queuesTabPanel.addTab(info);
+    public void addQueueToBrowse(QueueDto queue) {
+        TabInfo info = queueTabs.computeIfAbsent(Pair.of(queue.getServer().getId(), queue.getId()), pair -> {
+            TabInfo tab = renderNewTab(queue);
+            queuesTabPanel.addTab(tab);
+            return tab;
+        });
         queuesTabPanel.select(info, false);
     }
 
-    private TabInfo renderNewTab(Queue queue) {
+    private TabInfo renderNewTab(QueueDto queue) {
         TabInfo info = new TabInfo(new QueueBrowserTable(queue));
         info.setText(String.format("Server: %s queue: %s", queue.getServer().getName(), queue.getName()));
         return info;

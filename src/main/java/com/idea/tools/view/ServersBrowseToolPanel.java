@@ -1,6 +1,6 @@
 package com.idea.tools.view;
 
-import com.idea.tools.dto.Queue;
+import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.Server;
 import com.idea.tools.markers.Listener;
 import com.idea.tools.settings.Settings;
@@ -45,7 +45,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     private JPanel rootPanel;
     private JPanel serverPanel;
     private Listener<Server> serverListener;
-    private Listener<Queue> queueListener;
+    private Listener<QueueDto> queueListener;
 
     public ServersBrowseToolPanel(final Project project) {
         super(true);
@@ -59,7 +59,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
                 .remove(this::removeServer)
                 .build();
 
-        this.queueListener = Listener.<Queue>builder()
+        this.queueListener = Listener.<QueueDto>builder()
                 .add(this::addQueue)
                 .edit(this::editQueue)
                 .remove(this::removeQueue)
@@ -124,7 +124,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         installPopupHandler(serversTree, popup, "POPUP", ActionManager.getInstance());
     }
 
-    private void addQueue(Queue queue) {
+    private void addQueue(QueueDto queue) {
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         @SuppressWarnings("unchecked")
@@ -162,7 +162,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         });
     }
 
-    private void editQueue(Queue queue) {
+    private void editQueue(QueueDto queue) {
         editServer(queue.getServer());
     }
 
@@ -177,7 +177,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         });
     }
 
-    private void removeQueue(Queue queue) {
+    private void removeQueue(QueueDto queue) {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) serversTree.getModel().getRoot();
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> data = root.children();
@@ -185,7 +185,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         findServerNode(data, queue.getServer()).ifPresent(serverNode -> {
             @SuppressWarnings("unchecked")
             Enumeration<DefaultMutableTreeNode> queuesData = serverNode.children();
-            findNode(queuesData, Queue.class, q -> q.getId().equals(queue.getId())).ifPresent(queueNode -> {
+            findNode(queuesData, QueueDto.class, q -> q.getId().equals(queue.getId())).ifPresent(queueNode -> {
                 serverNode.remove(queueNode);
                 serversTree.setModel(new DefaultTreeModel(root));
             });
