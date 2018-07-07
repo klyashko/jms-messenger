@@ -8,6 +8,7 @@ import com.intellij.ui.ToolbarDecorator;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
+import javax.jms.JMSException;
 import javax.swing.*;
 import java.awt.*;
 
@@ -68,7 +69,12 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     }
 
     public void reload() {
-        setData(jmsService().receive(queue));
+        //        TODO implement feedback
+        try {
+            setData(jmsService().receive(queue));
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
     }
 
     public static class MyTableModel extends TableModel<MessageDto> {

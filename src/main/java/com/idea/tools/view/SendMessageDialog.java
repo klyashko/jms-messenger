@@ -6,6 +6,7 @@ import com.idea.tools.dto.QueueDto;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
 
+import javax.jms.JMSException;
 import javax.swing.*;
 import java.awt.*;
 
@@ -56,7 +57,12 @@ public class SendMessageDialog extends JDialog {
             msg.setPayload(payloadField.getText());
             msg.setQueue(queue);
 
-            jmsService().send(msg);
+//            TODO implement feedback
+            try {
+                jmsService().send(msg);
+            } catch (JMSException e) {
+                e.printStackTrace();
+            }
         });
 
         closeButton.addActionListener(event -> dispose());
