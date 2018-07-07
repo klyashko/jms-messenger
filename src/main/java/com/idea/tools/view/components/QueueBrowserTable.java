@@ -8,11 +8,9 @@ import com.intellij.ui.ToolbarDecorator;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
-import javax.jms.JMSException;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.idea.tools.App.jmsService;
 import static com.idea.tools.App.queueService;
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
@@ -66,15 +64,6 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     @Override
     protected MessageDto editItem(MessageDto o) {
         return null;
-    }
-
-    public void reload() {
-        //        TODO implement feedback
-        try {
-            setData(jmsService().receive(queue));
-        } catch (JMSException e) {
-            e.printStackTrace();
-        }
     }
 
     public static class MyTableModel extends TableModel<MessageDto> {

@@ -44,15 +44,15 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
         setContent(rootPanel);
     }
 
-    public void addQueueToBrowse(QueueDto queue) {
+    public QueueBrowserTable addQueueToBrowse(QueueDto queue) {
         TabInfo info = queueTabs.computeIfAbsent(Pair.of(queue.getServer().getId(), queue.getId()), pair -> {
             TabInfo tab = renderNewTab(queue);
             queuesTabPanel.addTab(tab);
             return tab;
         });
         QueueBrowserTable table = (QueueBrowserTable) info.getComponent();
-        table.reload();
         queuesTabPanel.select(info, false);
+        return table;
     }
 
     private TabInfo renderNewTab(QueueDto queue) {

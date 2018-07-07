@@ -1,8 +1,10 @@
 package com.idea.tools.view.action;
 
 import com.idea.tools.dto.QueueDto;
+import com.idea.tools.task.LoadMessagesTask;
 import com.idea.tools.view.QueueBrowseToolPanel;
 import com.idea.tools.view.ServersBrowseToolPanel;
+import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -14,7 +16,6 @@ import java.util.Optional;
 
 import static com.idea.tools.App.contentFactory;
 import static com.idea.tools.App.toolWindowManager;
-import static com.idea.tools.utils.GuiUtils.runInSwingThread;
 import static com.idea.tools.utils.IconUtils.getBrowseIcon;
 import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_ICON;
 import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_WINDOW_ID;
@@ -34,7 +35,8 @@ public abstract class AbstractBrowseQueueAction extends AbstractBrowserPanelActi
         serversBrowseToolPanel.getSelectedValue(QueueDto.class)
                               .ifPresent(queue -> {
                                   QueueBrowseToolPanel panel = getOrCreate();
-                                  runInSwingThread(() -> panel.addQueueToBrowse(queue));
+                                  QueueBrowserTable table = panel.addQueueToBrowse(queue);
+                                  new LoadMessagesTask(table, queue).queue();
                               });
     }
 
