@@ -2,8 +2,11 @@ package com.idea.tools.utils;
 
 import lombok.extern.apachecommons.CommonsLog;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @CommonsLog
@@ -11,6 +14,14 @@ public class Utils {
 
     public static <T, R> List<R> map(List<T> source, Function<T, R> function) {
         return source.stream().map(function).collect(Collectors.toList());
+    }
+
+    public static <S, K, V> Map<K, V> toMap(Collection<S> source, Function<S, K> key, Function<S, V> value) {
+        return source.stream().collect(Collectors.toMap(key, value));
+    }
+
+    public static <T> Map<Boolean, List<T>> partitioningBy(Collection<T> source, Predicate<T> predicate) {
+        return source.stream().collect(Collectors.partitioningBy(predicate));
     }
 
     public static boolean isNotEmpty(String str) {

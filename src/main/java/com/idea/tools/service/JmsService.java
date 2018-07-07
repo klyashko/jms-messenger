@@ -11,9 +11,14 @@ import lombok.SneakyThrows;
 import javax.jms.*;
 import java.util.*;
 
+import static com.idea.tools.App.queueService;
+import static com.idea.tools.App.serverService;
 import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
 import static com.idea.tools.utils.Checked.consumer;
 import static com.idea.tools.utils.Checked.predicate;
+import static com.idea.tools.utils.Utils.partitioningBy;
+import static com.idea.tools.utils.Utils.toMap;
+import static java.util.function.Function.identity;
 import static javax.jms.Session.AUTO_ACKNOWLEDGE;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -65,6 +70,36 @@ public class JmsService {
                                )
                        )
                        .orElseGet(Collections::emptyList);
+    }
+
+    public void refresh(List<Server> servers) {
+        servers.forEach(server -> {
+            Map<Boolean, List<QueueDto>> tmp = partitioningBy(server.getQueues(), QueueDto::isAddedManually);
+            Map<String, QueueDto> toKeep = toMap(tmp.get(true), QueueDto::getName, identity());
+
+            connectionStrategy(server)
+                    .ifPresent(strategy -> {
+                        strategy.getConnectionFactory(server).ifPresent(factory -> {
+                            try (Connection connection = connect(server, factory)) {
+                                List<QueueDto> serverQueues = strategy.getQueues(connection);
+
+                                serverQueues.forEach(dto -> {
+                                    toKeep.computeIfAbsent(dto.getName(), name -> {
+                                        dto.setServer(server);
+                                        queueService().persist(dto);
+                                        return dto;
+                                    });
+                                });
+                            } catch (JMSException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    });
+
+            server.setQueues(new ArrayList<>(toKeep.values()));
+            serverService().saveOrUpdate(server);
+        });
+//        serverService().update(servers);
     }
 
     private List<MessageDto> receive(Server server, ConnectionStrategy strategy, ConnectionFactory factory, QueueDto queue) {

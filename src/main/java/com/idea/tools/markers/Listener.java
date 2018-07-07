@@ -4,14 +4,6 @@ import java.util.function.Consumer;
 
 public interface Listener<T> {
 
-    static <T> Listener<T> simple(Consumer<T> consumer) {
-        return Listener.<T>builder()
-                .add(consumer)
-                .edit(consumer)
-                .remove(consumer)
-                .build();
-    }
-
     static <T> Builder<T> builder() {
         return new Builder<>();
     }
@@ -23,9 +15,9 @@ public interface Listener<T> {
     default void remove(T item) {}
 
     class Builder<T> {
-        private Consumer<T> add = s -> {};
-        private Consumer<T> edit = s -> {};
-        private Consumer<T> remove = s -> {};
+        private Consumer<T> add = item -> {};
+        private Consumer<T> edit = item -> {};
+        private Consumer<T> remove = item -> {};
 
         public Builder<T> add(Consumer<T> add) {
             this.add = add;

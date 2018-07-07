@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.Optional;
 
-import static com.idea.tools.App.serverService;
+import static com.idea.tools.App.jmsService;
 import static com.idea.tools.App.settings;
 import static com.idea.tools.utils.IconUtils.getRefreshIcon;
 
@@ -24,9 +24,9 @@ public abstract class AbstractReconnectAction extends AbstractBrowserPanelAction
     public void actionPerformed(AnActionEvent event) {
         Optional<Server> server = serversBrowseToolPanel.getSelectedValue(Server.class);
         if (server.isPresent()) {
-            server.ifPresent(s -> serverService().refresh(Collections.singletonList(s)));
+            server.ifPresent(s -> jmsService().refresh(Collections.singletonList(s)));
         } else {
-            serverService().refresh(settings().getServersList());
+            jmsService().refresh(settings().getServersList());
         }
     }
 

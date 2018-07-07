@@ -21,4 +21,9 @@ public class QueueDto {
         this.name = name;
         this.server = server;
     }
+
+    public QueueDto(Integer id, String name, Server server, boolean addedManually) {
+        this(id, name, server);
+        this.addedManually = addedManually;
+    }
 }

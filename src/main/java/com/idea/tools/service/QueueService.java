@@ -37,9 +37,15 @@ public class QueueService {
         return false;
     }
 
+    public void persist(QueueDto dto) {
+        if (dto.getId() == null) {
+            dto.setId(generator.incrementAndGet());
+        }
+    }
+
     public void saveOrUpdate(QueueDto queue) {
         if (queue.getId() == null) {
-            queue.setId(generator.incrementAndGet());
+            persist(queue);
             listeners.forEach(listener -> listener.add(queue));
         } else {
             listeners.forEach(listener -> listener.edit(queue));

@@ -6,6 +6,7 @@ import com.idea.tools.dto.Server;
 import com.idea.tools.dto.ServerType;
 import com.idea.tools.markers.Listener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class ServerService {
         Server wildfly = new Server();
         wildfly.setId(0);
         wildfly.setName("Wildfly 1");
-        wildfly.setQueues(Arrays.asList(new QueueDto(0, "Q1", wildfly), new QueueDto(1, "Q2", wildfly)));
+        wildfly.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(0, "Q1", wildfly), new QueueDto(1, "Q2", wildfly))));
         wildfly.setType(ServerType.WILDFLY_11);
 
         Server activeMq = new Server();
@@ -49,15 +50,10 @@ public class ServerService {
         activeMq.setHost("localhost");
         activeMq.setPort(61616);
         activeMq.setConnectionType(ConnectionType.TCP);
-        activeMq.setQueues(Arrays.asList(new QueueDto(2, "Q1", activeMq), new QueueDto(3, "Q2", activeMq)));
+        activeMq.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(2, "Q1", activeMq, true), new QueueDto(3, "Q2", activeMq))));
         activeMq.setType(ServerType.ACTIVE_MQ);
 
         return Arrays.asList(wildfly, activeMq);
-    }
-
-    public void refresh(List<Server> servers) {
-        //TODO implement reconnect
-        listeners.forEach(listener -> servers.forEach(listener::edit));
     }
 
     public void saveOrUpdate(Server server) {
