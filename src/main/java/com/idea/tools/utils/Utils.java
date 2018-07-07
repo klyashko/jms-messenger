@@ -24,10 +24,6 @@ public class Utils {
         return source.stream().collect(Collectors.partitioningBy(predicate));
     }
 
-    public static boolean isNotEmpty(String str) {
-        return str != null && !str.isEmpty();
-    }
-
     public static Integer toInteger(String value) {
         if (value != null) {
             try {

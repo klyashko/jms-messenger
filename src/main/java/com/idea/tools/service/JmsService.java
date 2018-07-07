@@ -31,10 +31,8 @@ public class JmsService {
         STRATEGIES.put(ACTIVE_MQ, new ActiveMQConnectionStrategy());
     }
 
-    public boolean testConnection(Server server) throws JMSException {
-        ConnectionStrategy strategy = connectionStrategy(server);
-        strategy.connect(server).close();
-        return true;
+    public void testConnection(Server server) throws JMSException {
+        connectionStrategy(server).connect(server).close();
     }
 
     public void send(MessageDto msg) throws JMSException {
