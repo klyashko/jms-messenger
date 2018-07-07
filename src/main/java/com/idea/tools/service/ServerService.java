@@ -10,23 +10,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.idea.tools.App.settings;
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
+import static java.util.UUID.randomUUID;
 
 public class ServerService {
 
     private List<Listener<Server>> listeners = new LinkedList<>();
-    private AtomicInteger generator;
 
     public ServerService() {
-        int value = settings().getServersStream()
-                              .map(Server::getId)
-                              .max(Integer::compareTo)
-                              .orElse(0);
-        generator = new AtomicInteger(value);
-
         Listener<Server> listener = Listener.<Server>builder()
                 .add(settings().getState()::put)
                 .edit(settings().getState()::put)
@@ -39,18 +32,18 @@ public class ServerService {
     public static List<Server> getDummies() {
 
         Server wildfly = new Server();
-        wildfly.setId(0);
+        wildfly.setId(randomUUID());
         wildfly.setName("Wildfly 1");
-        wildfly.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(0, "Q1", wildfly), new QueueDto(1, "Q2", wildfly))));
+        wildfly.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(randomUUID(), "Q1", wildfly), new QueueDto(randomUUID(), "Q2", wildfly))));
         wildfly.setType(ServerType.WILDFLY_11);
 
         Server activeMq = new Server();
-        activeMq.setId(1);
+        activeMq.setId(randomUUID());
         activeMq.setName("Active MQ 1");
         activeMq.setHost("localhost");
         activeMq.setPort(61616);
         activeMq.setConnectionType(ConnectionType.TCP);
-        activeMq.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(2, "Q1", activeMq, true), new QueueDto(3, "Q2", activeMq))));
+        activeMq.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(randomUUID(), "Q1", activeMq, true), new QueueDto(randomUUID(), "Q2", activeMq))));
         activeMq.setType(ServerType.ACTIVE_MQ);
 
         return Arrays.asList(wildfly, activeMq);
@@ -58,7 +51,7 @@ public class ServerService {
 
     public void saveOrUpdate(Server server) {
         if (server.getId() == null) {
-            server.setId(generator.incrementAndGet());
+            server.setId(randomUUID());
             listeners.forEach(listener -> listener.add(server));
         } else {
             listeners.forEach(listener -> listener.edit(server));

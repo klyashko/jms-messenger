@@ -247,7 +247,7 @@
         </constraints>
         <properties>
           <columns value="0"/>
-          <visible value="true"/>
+          <visible value="false"/>
         </properties>
       </component>
     </children>

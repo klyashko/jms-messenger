@@ -49,17 +49,13 @@ public class Settings implements PersistentStateComponent<Settings.State> {
         return getState().getServersList();
     }
 
-    public Stream<Server> getServersStream() {
-        return getState().getServersStream();
-    }
-
     @Override
     public void loadState(@NotNull State state) {
         XmlSerializerUtil.copyBean(state, this.state);
     }
 
     public static class State {
-        private Map<Integer, Server> servers = new HashMap<>();
+        private Map<UUID, Server> servers = new HashMap<>();
 
         public void put(Server server) {
             if (server != null) {
