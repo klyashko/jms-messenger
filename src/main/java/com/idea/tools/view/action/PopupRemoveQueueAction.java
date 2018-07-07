@@ -19,7 +19,7 @@ public class PopupRemoveQueueAction extends AbstractBrowserPanelAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversBrowseToolPanel.getSelectedValue(QueueDto.class).ifPresent(queueService()::remove);
+        serversPanel.getSelectedValue(QueueDto.class).ifPresent(queueService()::remove);
     }
 
     @Override

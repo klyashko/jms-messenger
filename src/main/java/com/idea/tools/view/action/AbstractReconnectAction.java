@@ -1,14 +1,14 @@
 package com.idea.tools.view.action;
 
 import com.idea.tools.dto.Server;
+import com.idea.tools.task.LoadQueuesTask;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import javax.swing.*;
 import java.util.Collections;
-import java.util.Optional;
+import java.util.List;
 
-import static com.idea.tools.App.jmsService;
 import static com.idea.tools.App.settings;
 import static com.idea.tools.utils.IconUtils.getRefreshIcon;
 
@@ -22,12 +22,10 @@ public abstract class AbstractReconnectAction extends AbstractBrowserPanelAction
 
     @Override
     public void actionPerformed(AnActionEvent event) {
-        Optional<Server> server = serversBrowseToolPanel.getSelectedValue(Server.class);
-        if (server.isPresent()) {
-            server.ifPresent(s -> jmsService().refresh(Collections.singletonList(s)));
-        } else {
-            jmsService().refresh(settings().getServersList());
-        }
+        List<Server> servers = serversPanel.getSelectedValue(Server.class)
+                                           .map(Collections::singletonList)
+                                           .orElseGet(settings()::getServersList);
+        new LoadQueuesTask(servers).queue();
     }
 
     boolean isServerSelected() {

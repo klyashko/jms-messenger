@@ -8,15 +8,15 @@ import javax.swing.*;
 
 abstract class AbstractBrowserPanelAction extends AnAction implements DumbAware {
 
-    final ServersBrowseToolPanel serversBrowseToolPanel;
+    final ServersBrowseToolPanel serversPanel;
 
-    AbstractBrowserPanelAction(String text, String description, Icon icon, ServersBrowseToolPanel serversBrowseToolPanel) {
+    AbstractBrowserPanelAction(String text, String description, Icon icon, ServersBrowseToolPanel serversPanel) {
         super(text, description, icon);
-        this.serversBrowseToolPanel = serversBrowseToolPanel;
+        this.serversPanel = serversPanel;
     }
 
     boolean isSelected(Class<?> clazz) {
-        return serversBrowseToolPanel.getSelectedValue(clazz).isPresent();
+        return serversPanel.getSelectedValue(clazz).isPresent();
     }
 
 }

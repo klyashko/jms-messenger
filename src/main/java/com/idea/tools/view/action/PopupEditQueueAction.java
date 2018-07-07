@@ -19,7 +19,7 @@ public class PopupEditQueueAction extends AbstractBrowserPanelAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversBrowseToolPanel.getSelectedValue(QueueDto.class).ifPresent(QueueEditDialog::showDialog);
+        serversPanel.getSelectedValue(QueueDto.class).ifPresent(QueueEditDialog::showDialog);
     }
 
     @Override

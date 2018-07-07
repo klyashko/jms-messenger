@@ -19,7 +19,7 @@ public class PopupRemoveServerAction extends AbstractBrowserPanelAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversBrowseToolPanel.getSelectedValue(Server.class).ifPresent(serverService()::remove);
+        serversPanel.getSelectedValue(Server.class).ifPresent(serverService()::remove);
     }
 
     @Override

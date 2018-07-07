@@ -22,9 +22,9 @@ public class ToolBarRemoveAction extends AbstractBrowserPanelAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         if (isSelected(Server.class)) {
-            serversBrowseToolPanel.getSelectedValue(Server.class).ifPresent(serverService()::remove);
+            serversPanel.getSelectedValue(Server.class).ifPresent(serverService()::remove);
         } else if (isSelected(QueueDto.class)) {
-            serversBrowseToolPanel.getSelectedValue(QueueDto.class).ifPresent(queueService()::remove);
+            serversPanel.getSelectedValue(QueueDto.class).ifPresent(queueService()::remove);
         }
     }
 

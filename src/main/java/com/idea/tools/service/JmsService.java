@@ -81,15 +81,17 @@ public class JmsService {
             Map<Boolean, List<QueueDto>> tmp = partitioningBy(server.getQueues(), QueueDto::isAddedManually);
             Map<String, QueueDto> toKeep = toMap(tmp.get(true), QueueDto::getName, identity());
 
-            ConnectionStrategy strategy = connectionStrategy(server);
-            try (Connection connection = strategy.connect(server)) {
-                strategy.getQueues(connection).forEach(dto ->
-                        toKeep.computeIfAbsent(dto.getName(), name -> {
-                            dto.setServer(server);
-                            queueService().persist(dto);
-                            return dto;
-                        }));
-            } catch (JMSException e) {
+            try {
+                ConnectionStrategy strategy = connectionStrategy(server);
+                try (Connection connection = strategy.connect(server)) {
+                    strategy.getQueues(connection).forEach(dto ->
+                            toKeep.computeIfAbsent(dto.getName(), name -> {
+                                dto.setServer(server);
+                                queueService().persist(dto);
+                                return dto;
+                            }));
+                }
+            } catch (Exception e) {
                 LOGGER.error("An exception has been thrown during connecting to a server", e, server.getName());
             }
 

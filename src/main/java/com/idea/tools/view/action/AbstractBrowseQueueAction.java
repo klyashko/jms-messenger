@@ -32,12 +32,12 @@ public abstract class AbstractBrowseQueueAction extends AbstractBrowserPanelActi
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversBrowseToolPanel.getSelectedValue(QueueDto.class)
-                              .ifPresent(queue -> {
-                                  QueueBrowseToolPanel panel = getOrCreate();
-                                  QueueBrowserTable table = panel.addQueueToBrowse(queue);
-                                  new LoadMessagesTask(table, queue).queue();
-                              });
+        serversPanel.getSelectedValue(QueueDto.class)
+                    .ifPresent(queue -> {
+                        QueueBrowseToolPanel panel = getOrCreate();
+                        QueueBrowserTable table = panel.addQueueToBrowse(queue);
+                        new LoadMessagesTask(table, queue).queue();
+                    });
     }
 
     private QueueBrowseToolPanel getOrCreate() {

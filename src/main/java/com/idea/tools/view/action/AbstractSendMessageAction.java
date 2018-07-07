@@ -19,7 +19,7 @@ public abstract class AbstractSendMessageAction extends AbstractBrowserPanelActi
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversBrowseToolPanel.getSelectedValue(QueueDto.class).ifPresent(SendMessageDialog::showDialog);
+        serversPanel.getSelectedValue(QueueDto.class).ifPresent(SendMessageDialog::showDialog);
     }
 
     boolean isQueueSelected() {
