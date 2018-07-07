@@ -134,18 +134,18 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
             node.removeAllChildren();
             fillQueueTree(queue.getServer(), node);
             model.nodeChanged(node);
+            model.reload(node);
         });
-
-        serversTree.setModel(new DefaultTreeModel(root));
     }
 
     private void addServer(Server server) {
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) serversTree.getModel().getRoot();
+        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(server);
         fillQueueTree(server, node);
         root.add(node);
 
-        serversTree.setModel(new DefaultTreeModel(root));
+        model.reload(root);
     }
 
     private void editServer(Server server) {
@@ -159,6 +159,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
             node.setUserObject(server);
             fillQueueTree(server, node);
             model.nodeChanged(node);
+            model.reload(node);
         });
     }
 
@@ -167,18 +168,20 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     }
 
     private void removeServer(Server server) {
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) serversTree.getModel().getRoot();
+        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> data = root.children();
 
         findServerNode(data, server).ifPresent(node -> {
             root.remove(node);
-            serversTree.setModel(new DefaultTreeModel(root));
+            model.reload(root);
         });
     }
 
     private void removeQueue(QueueDto queue) {
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) serversTree.getModel().getRoot();
+        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> data = root.children();
 
@@ -187,7 +190,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
             Enumeration<DefaultMutableTreeNode> queuesData = serverNode.children();
             findNode(queuesData, QueueDto.class, q -> q.getId().equals(queue.getId())).ifPresent(queueNode -> {
                 serverNode.remove(queueNode);
-                serversTree.setModel(new DefaultTreeModel(root));
+                model.reload(serverNode);
             });
         });
     }
