@@ -36,7 +36,7 @@ public abstract class AbstractBrowseQueueAction extends AbstractBrowserPanelActi
                     .ifPresent(queue -> {
                         QueueBrowseToolPanel panel = getOrCreate();
                         QueueBrowserTable table = panel.addQueueToBrowse(queue);
-                        new LoadMessagesTask(table, queue).queue();
+                        new LoadMessagesTask(table).queue();
                     });
     }
 

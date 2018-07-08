@@ -2,7 +2,6 @@ package com.idea.tools.task;
 
 import com.idea.tools.App;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
@@ -19,22 +18,20 @@ public class LoadMessagesTask extends Task.Backgroundable {
     private static final Logger LOGGER = Logger.getInstance(LoadMessagesTask.class);
 
     private final QueueBrowserTable table;
-    private final QueueDto queue;
     private List<MessageDto> messages;
 
-    public LoadMessagesTask(@NotNull QueueBrowserTable table, QueueDto queue) {
+    public LoadMessagesTask(@NotNull QueueBrowserTable table) {
         super(App.getProject(), "Loading Messages");
         this.table = table;
-        this.queue = queue;
     }
 
     @Override
     public void run(@NotNull ProgressIndicator indicator) {
         try {
-            messages = jmsService().receive(queue);
+            messages = jmsService().receive(table.getQueue());
         } catch (Exception e) {
             e.printStackTrace();
-            LOGGER.error("An exception han been thrown during loading messages from a queue", e, queue.getName());
+            LOGGER.error("An exception han been thrown during loading messages from a queue", e, table.getQueue().getName());
             messages = Collections.emptyList();
         }
     }
