@@ -100,6 +100,21 @@ public class JmsService {
         });
     }
 
+    public boolean removeFromQueue(MessageDto messageDto, QueueDto queue) throws JMSException {
+        Assert.notNull(queue.getServer(), "Server must not be null");
+
+        Server server = queue.getServer();
+        ConnectionStrategy strategy = connectionStrategy(server);
+        String selector = String.format("JMSMessageID='%s'", messageDto.getMessageID());
+        try (Connection connection = strategy.connect(server);
+             Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
+             MessageConsumer consumer = session.createConsumer(strategy.createQueueDestination(queue), selector)
+        ) {
+            connection.start();
+            return consumer.receive(100) != null;
+        }
+    }
+
     private ConnectionStrategy connectionStrategy(Server server) {
         ConnectionStrategy strategy = STRATEGIES.get(server.getType());
         Assert.notNull(strategy, String.format("Unsupported server type %s", server.getType()), IllegalStateException::new);

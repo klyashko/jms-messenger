@@ -12,6 +12,8 @@ import java.util.Map;
 @EqualsAndHashCode(exclude = "queue")
 public class MessageDto {
 
+    private String messageID;
+    private String correlationId;
     private Long timestamp;
     private String jmsType;
     private ContentType type;

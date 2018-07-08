@@ -3,15 +3,17 @@ package com.idea.tools.view.components;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
 import com.idea.tools.view.button.MessagesReloadButton;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
+import javax.jms.JMSException;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.idea.tools.App.queueService;
+import static com.idea.tools.App.jmsService;
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
 import static com.intellij.ui.IdeBorderFactory.createTitledBorder;
@@ -21,6 +23,8 @@ import static java.awt.BorderLayout.CENTER;
 import static java.util.Collections.emptyList;
 
 public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
+
+    private static final Logger LOGGER = Logger.getInstance(QueueBrowserTable.class);
 
     @Getter
     private QueueDto queue;
@@ -57,7 +61,13 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     @Override
     protected boolean removeItem(MessageDto msg) {
         boolean delete = showYesNoDialog("Delete message from the queue?");
-        return delete && queueService().removeFromQueue(msg, queue);
+        try {
+            return delete && jmsService().removeFromQueue(msg, queue);
+        } catch (JMSException ex) {
+            LOGGER.error("An exception has been thrown during receiving message", ex);
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     @Nullable

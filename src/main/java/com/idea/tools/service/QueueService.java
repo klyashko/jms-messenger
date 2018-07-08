@@ -1,6 +1,5 @@
 package com.idea.tools.service;
 
-import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
 import com.idea.tools.markers.Listener;
 
@@ -23,10 +22,6 @@ public class QueueService {
                 .build();
 
         listeners.add(listener);
-    }
-
-    public boolean removeFromQueue(MessageDto messageDto, QueueDto queue) {
-        return false;
     }
 
     public void persist(QueueDto dto) {

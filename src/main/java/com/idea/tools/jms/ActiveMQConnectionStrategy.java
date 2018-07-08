@@ -90,6 +90,8 @@ public class ActiveMQConnectionStrategy implements ConnectionStrategy {
     private MessageDto mapTextMessage(ActiveMQTextMessage msg) {
         try {
             MessageDto dto = new MessageDto();
+            dto.setMessageID(msg.getJMSMessageID());
+            dto.setCorrelationId(msg.getCorrelationId());
             dto.setJmsType(msg.getJMSType());
             dto.setTimestamp(msg.getTimestamp());
             dto.setType(TEXT);
