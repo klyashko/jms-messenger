@@ -3,6 +3,10 @@ package com.idea.tools.view;
 import com.idea.tools.dto.ContentType;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
 
@@ -16,6 +20,11 @@ import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
 import static java.awt.BorderLayout.CENTER;
 
 public class SendMessageDialog extends JDialog {
+
+    private static final Logger LOGGER = Logger.getInstance(SendMessageDialog.class);
+
+    private static final String SEND_SUCCESS_TEMPLATE = "Message has been successfully sent to queue %s";
+    private static final String SEND_FAIL_TEMPLATE = "Message hasn't been sent. Reason: \n%s";
 
     private QueueDto queue;
 
@@ -57,11 +66,15 @@ public class SendMessageDialog extends JDialog {
             msg.setPayload(payloadField.getText());
             msg.setQueue(queue);
 
-//            TODO implement feedback
             try {
                 jmsService().send(msg);
-            } catch (JMSException e) {
-                e.printStackTrace();
+                String content = String.format(SEND_SUCCESS_TEMPLATE, msg.getQueue().getName());
+                Notifications.Bus.notify(new Notification("jms", "Success", content, NotificationType.INFORMATION));
+            } catch (JMSException ex) {
+                String content = String.format(SEND_FAIL_TEMPLATE, ex.getMessage());
+                Notifications.Bus.notify(new Notification("jms", "Failure", content, NotificationType.ERROR));
+                LOGGER.error("An exception has been thrown during a message sending", ex);
+                ex.printStackTrace();
             }
         });
 
