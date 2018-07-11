@@ -2,7 +2,9 @@ plugins {
     id 'org.jetbrains.intellij' version '0.3.4'
 }
 
+//noinspection GroovyAssignabilityCheck
 group 'com.tool.plugins'
+//noinspection GroovyAssignabilityCheck
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
@@ -33,6 +35,7 @@ dependencies {
 }
 
 intellij {
+    //noinspection GroovyAssignabilityCheck
     version '2018.1'
 }
 patchPluginXml {
