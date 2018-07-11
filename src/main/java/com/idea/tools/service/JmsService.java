@@ -52,7 +52,7 @@ public class JmsService {
 
         try (Connection connection = strategy.connect(server);
              Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
-             MessageProducer producer = session.createProducer(strategy.createQueueDestination(queue))
+             MessageProducer producer = session.createProducer(session.createQueue(queue.getName()))
         ) {
             Message jmsMessage = msg.getType().create(session, msg);
             jmsMessage.setJMSType(msg.getJmsType());
@@ -69,7 +69,7 @@ public class JmsService {
         List<MessageDto> msgs = new ArrayList<>();
         try (Connection connection = strategy.connect(server);
              Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
-             QueueBrowser browser = session.createBrowser(strategy.createQueueDestination(queue))
+             QueueBrowser browser = session.createBrowser(session.createQueue(queue.getName()))
         ) {
             connection.start();
             @SuppressWarnings("unchecked")
@@ -113,7 +113,7 @@ public class JmsService {
         String selector = String.format("JMSMessageID='%s'", messageDto.getMessageID());
         try (Connection connection = strategy.connect(server);
              Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
-             MessageConsumer consumer = session.createConsumer(strategy.createQueueDestination(queue), selector)
+             MessageConsumer consumer = session.createConsumer(session.createQueue(queue.getName()), selector)
         ) {
             connection.start();
             return consumer.receive(100) != null;

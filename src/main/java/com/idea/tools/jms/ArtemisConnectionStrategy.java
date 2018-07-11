@@ -11,7 +11,6 @@ import org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Message;
-import javax.jms.Queue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +27,6 @@ public class ArtemisConnectionStrategy extends AbstractConnectionStrategy {
 
         ConnectionFactory factory = connectionFactory(server);
         return connect(server, factory);
-    }
-
-    @Override
-    public Queue createQueueDestination(QueueDto messageEntity) {
-        throw new UnsupportedOperationException();
     }
 
     @Override

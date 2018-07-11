@@ -7,13 +7,11 @@ import com.idea.tools.utils.Assert;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.advisory.DestinationSource;
-import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTextMessage;
 
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.Queue;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -35,11 +33,6 @@ public class ActiveMQConnectionStrategy extends AbstractConnectionStrategy {
         String url = getUrlString(server);
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(uri(url));
         return connect(server, factory);
-    }
-
-    @Override
-    public Queue createQueueDestination(QueueDto queue) {
-        return new ActiveMQQueue(queue.getName());
     }
 
     @Override
