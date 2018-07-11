@@ -42,7 +42,6 @@ public class ServerEditPanel extends JPanel {
     private JFormattedTextField portField;
     private JTextField loginField;
     private JPasswordField passwordField;
-    private JTextField classField;
     private JButton testConnectionButton;
     @Getter
     private JButton cancelButton;
@@ -157,23 +156,22 @@ public class ServerEditPanel extends JPanel {
         server.setPort(toInteger(portField.getText()));
         server.setLogin(loginField.getText());
         server.setPassword(String.valueOf(passwordField.getPassword()));
-        server.setClazz(classField.getText());
         server.setName(nameField.getText());
     }
 
     private void setValues() {
         idField.setText(Utils.toString(server.getId()));
-        typeComboBox.setSelectedItem(getOrDefault(server.getType(), ServerType.WILDFLY_11));
+        typeComboBox.setSelectedItem(getOrDefault(server.getType(), ServerType.ARTEMIS));
         updateConnectionTypeModel();
         if (server.getConnectionType() != null) {
             connectionType.setSelectedItem(server.getConnectionType());
         }
         hostField.setText(getOrDefault(server.getHost(), "localhost"));
-        portField.setValue(getOrDefault(server.getPort(), 61616));
+//        portField.setValue(getOrDefault(server.getPort(), 61616));
+        portField.setValue(getOrDefault(server.getPort(), 8080));
         nameField.setText(server.getName());
         loginField.setText(server.getLogin());
         passwordField.setText(server.getPassword());
-        classField.setText(server.getClazz());
     }
 
     private void updateNameFieldValue() {

@@ -27,6 +27,10 @@ public class IconUtils extends IconUtil {
         return icon("activemq.png");
     }
 
+    public static Icon getArtemisIcon() {
+        return icon("artemis.png");
+    }
+
     public static Icon getJmsIcon() {
         return icon("jms.png");
     }

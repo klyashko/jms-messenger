@@ -9,7 +9,6 @@ import com.intellij.ui.ToolbarDecorator;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
-import javax.jms.JMSException;
 import javax.swing.*;
 import java.awt.*;
 
@@ -63,7 +62,7 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
         boolean delete = showYesNoDialog("Delete message from the queue?");
         try {
             return delete && jmsService().removeFromQueue(msg, queue);
-        } catch (JMSException ex) {
+        } catch (Exception ex) {
             LOGGER.error("An exception has been thrown during receiving message", ex);
             ex.printStackTrace();
         }

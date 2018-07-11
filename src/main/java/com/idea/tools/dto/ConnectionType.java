@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum ConnectionType {
 
-    JNDI,
+    HTTP("http"),
     TCP("tcp");
 
-    public static final ConnectionType[] WILDFLY_CONNECTION_TYPES = {JNDI};
+    public static final ConnectionType[] ARTEMIS_CONNECTION_TYPES = {HTTP};
     public static final ConnectionType[] ACTIVE_MQ_CONNECTION_TYPES = {TCP};
 
     private String extension;

@@ -10,7 +10,6 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
 
-import javax.jms.JMSException;
 import javax.swing.*;
 import java.awt.*;
 
@@ -70,7 +69,7 @@ public class SendMessageDialog extends JDialog {
                 jmsService().send(msg);
                 String content = String.format(SEND_SUCCESS_TEMPLATE, msg.getQueue().getName());
                 Notifications.Bus.notify(new Notification("jms", "Success", content, NotificationType.INFORMATION));
-            } catch (JMSException ex) {
+            } catch (Exception ex) {
                 String content = String.format(SEND_FAIL_TEMPLATE, ex.getMessage());
                 Notifications.Bus.notify(new Notification("jms", "Failure", content, NotificationType.ERROR));
                 LOGGER.error("An exception has been thrown during a message sending", ex);

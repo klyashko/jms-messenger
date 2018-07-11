@@ -31,11 +31,14 @@ public class ServerService {
 
     public static List<Server> getDummies() {
 
-        Server wildfly = new Server();
-        wildfly.setId(randomUUID());
-        wildfly.setName("Wildfly 1");
-        wildfly.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(randomUUID(), "Q1", wildfly), new QueueDto(randomUUID(), "Q2", wildfly))));
-        wildfly.setType(ServerType.WILDFLY_11);
+        Server artemis = new Server();
+        artemis.setId(randomUUID());
+        artemis.setName("Artemis 1");
+        artemis.setHost("localhost");
+        artemis.setPort(8080);
+        artemis.setConnectionType(ConnectionType.HTTP);
+        artemis.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(randomUUID(), "Q1", artemis), new QueueDto(randomUUID(), "Q2", artemis))));
+        artemis.setType(ServerType.ARTEMIS);
 
         Server activeMq = new Server();
         activeMq.setId(randomUUID());
@@ -46,7 +49,7 @@ public class ServerService {
         activeMq.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(randomUUID(), "Q1", activeMq, true), new QueueDto(randomUUID(), "Q2", activeMq))));
         activeMq.setType(ServerType.ACTIVE_MQ);
 
-        return Arrays.asList(wildfly, activeMq);
+        return Arrays.asList(artemis, activeMq);
     }
 
     public void saveOrUpdate(Server server) {

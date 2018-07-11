@@ -5,6 +5,7 @@ import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.Server;
 import com.idea.tools.dto.ServerType;
 import com.idea.tools.jms.ActiveMQConnectionStrategy;
+import com.idea.tools.jms.ArtemisConnectionStrategy;
 import com.idea.tools.jms.ConnectionStrategy;
 import com.idea.tools.utils.Assert;
 import com.intellij.openapi.diagnostic.Logger;
@@ -16,6 +17,7 @@ import java.util.*;
 import static com.idea.tools.App.queueService;
 import static com.idea.tools.App.serverService;
 import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
+import static com.idea.tools.dto.ServerType.ARTEMIS;
 import static com.idea.tools.utils.Utils.partitioningBy;
 import static com.idea.tools.utils.Utils.toMap;
 import static java.util.function.Function.identity;
@@ -29,13 +31,16 @@ public class JmsService {
 
     static {
         STRATEGIES.put(ACTIVE_MQ, new ActiveMQConnectionStrategy());
+        STRATEGIES.put(ARTEMIS, new ArtemisConnectionStrategy());
     }
 
-    public void testConnection(Server server) throws JMSException {
-        connectionStrategy(server).connect(server).close();
+    public void testConnection(Server server) throws Exception {
+        try (Connection connection = connectionStrategy(server).connect(server)) {
+            connection.start();
+        }
     }
 
-    public void send(MessageDto msg) throws JMSException {
+    public void send(MessageDto msg) throws Exception {
         Assert.notNull(msg.getQueue(), "Queue must not be null");
         Assert.notNull(msg.getQueue().getServer(), "Server must not be null");
         Assert.notNull(msg.getType(), "Message type must not be null");
@@ -56,7 +61,7 @@ public class JmsService {
         }
     }
 
-    public List<MessageDto> receive(QueueDto queue) throws JMSException {
+    public List<MessageDto> receive(QueueDto queue) throws Exception {
         Assert.notNull(queue.getServer(), "Server must not be null");
 
         Server server = queue.getServer();
@@ -100,7 +105,7 @@ public class JmsService {
         });
     }
 
-    public boolean removeFromQueue(MessageDto messageDto, QueueDto queue) throws JMSException {
+    public boolean removeFromQueue(MessageDto messageDto, QueueDto queue) throws Exception {
         Assert.notNull(queue.getServer(), "Server must not be null");
 
         Server server = queue.getServer();
