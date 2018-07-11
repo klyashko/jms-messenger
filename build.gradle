@@ -16,6 +16,7 @@ repositories {
 configurations {
     all*.exclude group: 'org.slf4j', module: 'slf4j-api'
     all*.exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jms_1.1_spec'
+    all*.exclude group: 'org.apache.geronimo.specs', module: 'geronimo-jms_2.0_spec'
 }
 
 dependencies {
