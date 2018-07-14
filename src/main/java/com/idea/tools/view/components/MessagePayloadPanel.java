@@ -4,12 +4,12 @@ import com.idea.tools.dto.MessageDto;
 
 import javax.swing.*;
 
-public class SendMessagePayloadPanel extends JPanel {
+public class MessagePayloadPanel extends JPanel {
 
     private JPanel rootPanel;
     private JTextArea payloadField;
 
-    public SendMessagePayloadPanel() {
+    public MessagePayloadPanel() {
         render();
     }
 

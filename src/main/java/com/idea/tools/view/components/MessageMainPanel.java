@@ -13,7 +13,7 @@ import static com.idea.tools.utils.GuiUtils.createNumberInputField;
 import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
 import static java.awt.BorderLayout.CENTER;
 
-public class SendMessageMainPanel extends JPanel {
+public class MessageMainPanel extends JPanel {
 
     private QueueDto queue;
 
@@ -24,7 +24,7 @@ public class SendMessageMainPanel extends JPanel {
     private JFormattedTextField timestampField;
     private JComboBox<ContentType> contentTypeField;
 
-    public SendMessageMainPanel(QueueDto queue) {
+    public MessageMainPanel(QueueDto queue) {
         this.queue = queue;
         render();
     }

@@ -2,8 +2,8 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
-import com.idea.tools.view.components.SendMessageMainPanel;
-import com.idea.tools.view.components.SendMessagePayloadPanel;
+import com.idea.tools.view.components.MessageMainPanel;
+import com.idea.tools.view.components.MessagePayloadPanel;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -32,8 +32,8 @@ public class SendMessageDialog extends JDialog {
     private JButton closeButton;
     private JPanel tabPanel;
 
-    private SendMessageMainPanel mainPanel;
-    private SendMessagePayloadPanel payloadPanel;
+    private MessageMainPanel mainPanel;
+    private MessagePayloadPanel payloadPanel;
 
     private SendMessageDialog(QueueDto queue) {
         this.queue = queue;
@@ -43,8 +43,8 @@ public class SendMessageDialog extends JDialog {
     private void render() {
         tabs = new JBTabsImpl(getProject());
 
-        mainPanel = new SendMessageMainPanel(queue);
-        payloadPanel = new SendMessagePayloadPanel();
+        mainPanel = new MessageMainPanel(queue);
+        payloadPanel = new MessagePayloadPanel();
 
         TabInfo main = new TabInfo(mainPanel).setText("Mail");
         tabs.addTab(main);
