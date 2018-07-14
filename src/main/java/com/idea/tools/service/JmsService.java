@@ -57,6 +57,7 @@ public class JmsService {
             Message jmsMessage = msg.getType().create(session, msg);
             jmsMessage.setJMSType(msg.getJmsType());
             jmsMessage.setJMSTimestamp(msg.getTimestamp());
+            setMessageProperties(jmsMessage, msg.getHeaders());
             producer.send(jmsMessage);
         }
     }
@@ -124,6 +125,12 @@ public class JmsService {
         ConnectionStrategy strategy = STRATEGIES.get(server.getType());
         Assert.notNull(strategy, String.format("Unsupported server type %s", server.getType()), IllegalStateException::new);
         return strategy;
+    }
+
+    private void setMessageProperties(Message msg, Map<String, Object> properties) throws JMSException {
+        for (String name : properties.keySet()) {
+            msg.setObjectProperty(name, properties.get(name));
+        }
     }
 
 }

@@ -2,17 +2,19 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
+import com.idea.tools.view.components.MessageHeadersPanel;
 import com.idea.tools.view.components.MessageMainPanel;
 import com.idea.tools.view.components.MessagePayloadPanel;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.wm.impl.IdeGlassPaneImpl;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.ArrayList;
 
 import static com.idea.tools.App.getProject;
 import static com.idea.tools.App.jmsService;
@@ -27,13 +29,13 @@ public class SendMessageDialog extends JDialog {
     private QueueDto queue;
 
     private JPanel rootPanel;
-    private JBTabsImpl tabs;
     private JButton sendButton;
     private JButton closeButton;
     private JPanel tabPanel;
 
     private MessageMainPanel mainPanel;
     private MessagePayloadPanel payloadPanel;
+    private MessageHeadersPanel headersPanel;
 
     private SendMessageDialog(QueueDto queue) {
         this.queue = queue;
@@ -41,24 +43,27 @@ public class SendMessageDialog extends JDialog {
     }
 
     private void render() {
-        tabs = new JBTabsImpl(getProject());
-
         mainPanel = new MessageMainPanel(queue);
         payloadPanel = new MessagePayloadPanel();
+        headersPanel = new MessageHeadersPanel(new ArrayList<>());
 
-        TabInfo main = new TabInfo(mainPanel).setText("Mail");
-        tabs.addTab(main);
+        JBTabsImpl tabs = new JBTabsImpl(getProject());
+        tabs.addTab(new TabInfo(mainPanel).setText("Mail"));
+        tabs.addTab(new TabInfo(headersPanel).setText("Headers"));
+        tabs.addTab(new TabInfo(payloadPanel).setText("Payload"));
 
-        TabInfo payload = new TabInfo(payloadPanel).setText("Payload");
-        tabs.addTab(payload);
-
-        tabPanel.setLayout(new BorderLayout());
         tabPanel.add(tabs);
+
+        JRootPane rootPane = new JRootPane();
+        IdeGlassPaneImpl pane = new IdeGlassPaneImpl(rootPane);
+        setGlassPane(pane);
+
         add(rootPanel);
 
         sendButton.addActionListener(event -> {
             MessageDto msg = new MessageDto();
             mainPanel.fillMessage(msg);
+            headersPanel.fillMessage(msg);
             payloadPanel.fillMessage(msg);
 
             try {
