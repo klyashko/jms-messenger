@@ -18,6 +18,9 @@ public class MessageDto {
     private String jmsType;
     private ContentType type;
     private String payload;
+    private Integer deliveryMode;
+    private Integer priority;
+    private Long expiration;
     private QueueDto queue;
     private Map<String, Object> headers = new HashMap<>();
 

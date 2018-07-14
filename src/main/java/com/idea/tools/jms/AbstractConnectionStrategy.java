@@ -45,6 +45,9 @@ public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
         dto.setType(TEXT);
         dto.setPayload(msg.getText());
         dto.setHeaders(mapProperties(msg));
+        dto.setPriority(msg.getJMSPriority());
+        dto.setExpiration(msg.getJMSExpiration());
+        dto.setDeliveryMode(msg.getJMSDeliveryMode());
         return dto;
     }
 
