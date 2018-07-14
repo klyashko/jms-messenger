@@ -10,10 +10,7 @@ import org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory;
 import org.apache.activemq.artemis.jms.client.ActiveMQTextMessage;
 
 import javax.jms.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.idea.tools.dto.ServerType.ARTEMIS;
 
@@ -38,7 +35,7 @@ public class ArtemisConnectionStrategy extends AbstractConnectionStrategy {
 
     @Override
     public List<QueueDto> getQueues(Connection connection) {
-        throw new UnsupportedOperationException();
+        return Collections.emptyList();
     }
 
     private ActiveMQJMSConnectionFactory connectionFactory(Server server) {
