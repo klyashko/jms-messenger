@@ -10,7 +10,11 @@ import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.idea.tools.App.jmsService;
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
@@ -31,6 +35,39 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     public QueueBrowserTable(QueueDto queue) {
         super(new MyTableModel(), emptyList());
         this.queue = queue;
+        render();
+    }
+
+    private void render() {
+        TableColumnModel model = getTable().getColumnModel();
+
+        TableColumn idColumn = model.getColumn(0);
+        idColumn.setMinWidth(80);
+        idColumn.setMaxWidth(80);
+
+        TableColumn timestampColumn = model.getColumn(1);
+        timestampColumn.setMinWidth(120);
+        timestampColumn.setMaxWidth(120);
+
+        TableColumn typeColumn = model.getColumn(2);
+        typeColumn.setMinWidth(30);
+        typeColumn.setMaxWidth(30);
+
+        TableColumn deliveryModeColumn = model.getColumn(3);
+        deliveryModeColumn.setMinWidth(30);
+        deliveryModeColumn.setMaxWidth(30);
+
+        TableColumn priorityColumn = model.getColumn(4);
+        priorityColumn.setMinWidth(30);
+        priorityColumn.setMaxWidth(30);
+
+        TableColumn expirationColumn = model.getColumn(5);
+        expirationColumn.setMinWidth(30);
+        expirationColumn.setMaxWidth(30);
+
+        TableColumn payloadColumn = model.getColumn(6);
+        payloadColumn.setMinWidth(100);
+        payloadColumn.setMaxWidth(1500);
     }
 
     @Override
@@ -43,9 +80,9 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
                 .addExtraAction(new MessagesReloadButton(this))
                 .setToolbarPosition(TOP);
 
-        final JPanel panel = decorator.createPanel();
+        JPanel panel = decorator.createPanel();
         add(panel, CENTER);
-        final String label = getLabelText();
+        String label = getLabelText();
         if (label != null) {
             addBorder(panel, createTitledBorder(label, false));
         }
@@ -76,13 +113,12 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     }
 
     public static class MyTableModel extends TableModel<MessageDto> {
-
-        private static final String[] COLUMNS = {"Payload"};
-        private static final Class<?>[] COLUMN_TYPES = {String.class};
+        private static final String[] COLUMNS = {"ID", "Timestamp", "Type", "Delivery mode", "Priority", "Expiration", "Payload"};
+        private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         @Override
         public int getColumnCount() {
-            return 1;
+            return COLUMNS.length;
         }
 
         @Nullable
@@ -92,13 +128,25 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
         }
 
         @Override
-        public Object getField(MessageDto messageDto, int columnIndex) {
-            return messageDto.getPayload();
-        }
-
-        @Override
-        public Class getColumnClass(int columnIndex) {
-            return COLUMN_TYPES[columnIndex];
+        public Object getField(MessageDto dto, int columnIndex) {
+            switch (columnIndex) {
+                case 0:
+                    return dto.getMessageID();
+                case 1:
+                    Date timestamp = new Date(dto.getTimestamp());
+                    return FORMAT.format(timestamp);
+                case 2:
+                    return dto.getJmsType();
+                case 3:
+                    return dto.getDeliveryMode();
+                case 4:
+                    return dto.getPriority();
+                case 5:
+                    return dto.getExpiration();
+                case 6:
+                    return dto.getPayload();
+            }
+            return null;
         }
     }
 }
