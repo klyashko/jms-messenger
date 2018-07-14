@@ -7,10 +7,9 @@ import com.idea.tools.utils.Assert;
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.core.client.impl.ServerLocatorImpl;
 import org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory;
+import org.apache.activemq.artemis.jms.client.ActiveMQTextMessage;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Message;
+import javax.jms.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,11 @@ public class ArtemisConnectionStrategy extends AbstractConnectionStrategy {
     }
 
     @Override
-    public Optional<MessageDto> map(Message message) {
-        throw new UnsupportedOperationException();
+    public Optional<MessageDto> map(Message msg) throws JMSException {
+        if (msg instanceof ActiveMQTextMessage) {
+            return Optional.ofNullable(mapTextMessage((TextMessage) msg));
+        }
+        return Optional.empty();
     }
 
     @Override

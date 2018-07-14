@@ -12,13 +12,12 @@ import org.apache.activemq.command.ActiveMQTextMessage;
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import java.io.IOException;
+import javax.jms.TextMessage;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.idea.tools.dto.ContentType.TEXT;
 import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
 import static com.idea.tools.utils.Checked.function;
 import static com.idea.tools.utils.Utils.uri;
@@ -36,9 +35,9 @@ public class ActiveMQConnectionStrategy extends AbstractConnectionStrategy {
     }
 
     @Override
-    public Optional<MessageDto> map(Message message) {
+    public Optional<MessageDto> map(Message message) throws JMSException {
         if (message instanceof ActiveMQTextMessage) {
-            return Optional.ofNullable(mapTextMessage((ActiveMQTextMessage) message));
+            return Optional.ofNullable(super.mapTextMessage((TextMessage) message));
         }
         return Optional.empty();
     }
@@ -65,23 +64,6 @@ public class ActiveMQConnectionStrategy extends AbstractConnectionStrategy {
         }
 
         return Collections.emptyList();
-    }
-
-    private MessageDto mapTextMessage(ActiveMQTextMessage msg) {
-        try {
-            MessageDto dto = new MessageDto();
-            dto.setMessageID(msg.getJMSMessageID());
-            dto.setCorrelationId(msg.getCorrelationId());
-            dto.setJmsType(msg.getJMSType());
-            dto.setTimestamp(msg.getTimestamp());
-            dto.setType(TEXT);
-            dto.setPayload(msg.getText());
-            dto.setHeaders(msg.getProperties());
-            return dto;
-        } catch (JMSException | IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 }

@@ -1,12 +1,16 @@
 package com.idea.tools.jms;
 
+import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.Server;
 import com.idea.tools.utils.Assert;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
+import javax.jms.*;
+import java.lang.IllegalStateException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.idea.tools.dto.ContentType.TEXT;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
@@ -30,6 +34,34 @@ public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
 
     protected String getUrlString(Server server) {
         return String.format("%s://%s:%s", server.getConnectionType().getExtension(), server.getHost(), server.getPort());
+    }
+
+    protected MessageDto mapTextMessage(TextMessage msg) throws JMSException {
+        MessageDto dto = new MessageDto();
+        dto.setMessageID(msg.getJMSMessageID());
+        dto.setCorrelationId(msg.getJMSCorrelationID());
+        dto.setJmsType(msg.getJMSType());
+        dto.setTimestamp(msg.getJMSTimestamp());
+        dto.setType(TEXT);
+        dto.setPayload(msg.getText());
+        dto.setHeaders(mapProperties(msg));
+        return dto;
+    }
+
+    protected Map<String, Object> mapProperties(Message msg) throws JMSException {
+        Map<String, Object> properties = new HashMap<>();
+        Enumeration srcProperties = msg.getPropertyNames();
+        while (srcProperties.hasMoreElements()) {
+            String propertyName = (String) srcProperties.nextElement();
+            properties.put(propertyName, msg.getObjectProperty(propertyName));
+        }
+        return properties;
+    }
+
+    protected void setMessageProperties(Message msg, Map<String, Object> properties) throws JMSException {
+        for (String name : properties.keySet()) {
+            msg.setObjectProperty(name, properties.get(name));
+        }
     }
 
 }
