@@ -18,9 +18,7 @@ import java.util.Queue;
 
 import static com.idea.tools.App.serverService;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
-import static com.intellij.ui.IdeBorderFactory.createTitledBorder;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
-import static com.intellij.util.ui.UIUtil.addBorder;
 import static java.awt.BorderLayout.CENTER;
 
 public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Listener<Server> {
@@ -68,12 +66,8 @@ public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Li
                 .setRemoveAction(button -> doRemove())
                 .setToolbarPosition(TOP);
 
-        final JPanel panel = decorator.createPanel();
+        JPanel panel = decorator.createPanel();
         add(panel, CENTER);
-        final String label = getLabelText();
-        if (label != null) {
-            addBorder(panel, createTitledBorder(label, false));
-        }
     }
 
     @Nullable

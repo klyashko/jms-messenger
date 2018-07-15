@@ -11,14 +11,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Objects;
 import java.util.Queue;
 
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.LEFT;
-import static com.intellij.ui.IdeBorderFactory.createTitledBorder;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
-import static com.intellij.util.ui.UIUtil.addBorder;
 import static java.awt.BorderLayout.CENTER;
 
 public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>> {
@@ -33,6 +30,7 @@ public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>>
     }
 
     private void render() {
+        getTable().setShowColumns(true);
     }
 
     @Override
@@ -61,10 +59,6 @@ public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>>
 
         final JPanel panel = decorator.createPanel();
         add(panel, CENTER);
-        final String label = getLabelText();
-        if (label != null) {
-            addBorder(panel, createTitledBorder(label, false));
-        }
     }
 
     @Nullable
@@ -113,7 +107,7 @@ public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>>
                 case 0:
                     return header.getKey();
                 case 1:
-                    return Objects.toString(header.getValue());
+                    return header.getValue() != null ? header.getValue() : "";
             }
             return null;
         }

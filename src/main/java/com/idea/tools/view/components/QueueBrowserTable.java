@@ -6,6 +6,7 @@ import com.idea.tools.view.button.MessagesReloadButton;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.table.JBTable;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,9 +20,7 @@ import java.util.Date;
 import static com.idea.tools.App.jmsService;
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
-import static com.intellij.ui.IdeBorderFactory.createTitledBorder;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
-import static com.intellij.util.ui.UIUtil.addBorder;
 import static java.awt.BorderLayout.CENTER;
 import static java.util.Collections.emptyList;
 
@@ -39,35 +38,40 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     }
 
     private void render() {
-        TableColumnModel model = getTable().getColumnModel();
+        JBTable table = getTable();
+        TableColumnModel model = table.getColumnModel();
 
         TableColumn idColumn = model.getColumn(0);
         idColumn.setMinWidth(80);
-        idColumn.setMaxWidth(80);
+        idColumn.setMaxWidth(200);
 
         TableColumn timestampColumn = model.getColumn(1);
-        timestampColumn.setMinWidth(120);
-        timestampColumn.setMaxWidth(120);
+        timestampColumn.setMinWidth(80);
+        timestampColumn.setMaxWidth(150);
 
         TableColumn typeColumn = model.getColumn(2);
         typeColumn.setMinWidth(30);
-        typeColumn.setMaxWidth(30);
+        typeColumn.setMaxWidth(60);
 
         TableColumn deliveryModeColumn = model.getColumn(3);
         deliveryModeColumn.setMinWidth(30);
-        deliveryModeColumn.setMaxWidth(30);
+        deliveryModeColumn.setMaxWidth(90);
 
         TableColumn priorityColumn = model.getColumn(4);
         priorityColumn.setMinWidth(30);
-        priorityColumn.setMaxWidth(30);
+        priorityColumn.setMaxWidth(60);
 
         TableColumn expirationColumn = model.getColumn(5);
         expirationColumn.setMinWidth(30);
-        expirationColumn.setMaxWidth(30);
+        expirationColumn.setMaxWidth(60);
 
         TableColumn payloadColumn = model.getColumn(6);
         payloadColumn.setMinWidth(100);
         payloadColumn.setMaxWidth(1500);
+
+        table.setShowColumns(true);
+        table.getTableHeader().setResizingAllowed(true);
+        table.getTableHeader().setReorderingAllowed(true);
     }
 
     @Override
@@ -82,10 +86,6 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
 
         JPanel panel = decorator.createPanel();
         add(panel, CENTER);
-        String label = getLabelText();
-        if (label != null) {
-            addBorder(panel, createTitledBorder(label, false));
-        }
     }
 
     @Nullable
