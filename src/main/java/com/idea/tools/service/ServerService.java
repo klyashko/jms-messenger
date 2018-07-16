@@ -37,8 +37,23 @@ public class ServerService {
         artemis.setHost("localhost");
         artemis.setPort(8080);
         artemis.setConnectionType(ConnectionType.HTTP);
-        artemis.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(randomUUID(), "Q1", artemis), new QueueDto(randomUUID(), "Q2", artemis))));
+        artemis.setQueues(new ArrayList<>(Arrays.asList(
+                new QueueDto(randomUUID(), "Q1", artemis),
+                new QueueDto(randomUUID(), "Q2", artemis))
+        ));
         artemis.setType(ServerType.ARTEMIS);
+
+        ServerDto hornet = new ServerDto();
+        hornet.setId(randomUUID());
+        hornet.setName("Hornet 1");
+        hornet.setHost("localhost");
+        hornet.setPort(8080);
+        hornet.setConnectionType(ConnectionType.HTTP);
+        hornet.setQueues(new ArrayList<>(Arrays.asList(
+                new QueueDto(randomUUID(), "tre.priv.module.mifirt1.requestQueue", hornet),
+                new QueueDto(randomUUID(), "regrep.DTCCResponseQueue", hornet))
+        ));
+        hornet.setType(ServerType.HORNETQ);
 
         ServerDto activeMq = new ServerDto();
         activeMq.setId(randomUUID());
@@ -46,10 +61,13 @@ public class ServerService {
         activeMq.setHost("localhost");
         activeMq.setPort(61616);
         activeMq.setConnectionType(ConnectionType.TCP);
-        activeMq.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(randomUUID(), "Q1", activeMq, true), new QueueDto(randomUUID(), "Q2", activeMq))));
+        activeMq.setQueues(new ArrayList<>(Arrays.asList(
+                new QueueDto(randomUUID(), "Q1", activeMq, true),
+                new QueueDto(randomUUID(), "Q2", activeMq))
+        ));
         activeMq.setType(ServerType.ACTIVE_MQ);
 
-        return Arrays.asList(artemis, activeMq);
+        return Arrays.asList(artemis, hornet, activeMq);
     }
 
     public void saveOrUpdate(ServerDto server) {

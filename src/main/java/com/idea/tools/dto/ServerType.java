@@ -4,16 +4,15 @@ import lombok.Getter;
 
 import javax.swing.*;
 
-import static com.idea.tools.dto.ConnectionType.ACTIVE_MQ_CONNECTION_TYPES;
-import static com.idea.tools.dto.ConnectionType.ARTEMIS_CONNECTION_TYPES;
-import static com.idea.tools.utils.IconUtils.getActiveMqIcon;
-import static com.idea.tools.utils.IconUtils.getArtemisIcon;
+import static com.idea.tools.dto.ConnectionType.*;
+import static com.idea.tools.utils.IconUtils.*;
 
 @Getter
 public enum ServerType {
 
     ACTIVE_MQ(getActiveMqIcon(), ACTIVE_MQ_CONNECTION_TYPES),
-    ARTEMIS(getArtemisIcon(), ARTEMIS_CONNECTION_TYPES);
+    ARTEMIS(getArtemisIcon(), ARTEMIS_CONNECTION_TYPES),
+    HORNETQ(getHornet(), HORNETQ_CONNECTION_TYPES);
 
     private final Icon icon;
     private final ConnectionType[] connectionTypes;

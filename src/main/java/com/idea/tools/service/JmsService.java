@@ -4,6 +4,7 @@ import com.idea.tools.dto.*;
 import com.idea.tools.jms.ActiveMQConnectionStrategy;
 import com.idea.tools.jms.ArtemisConnectionStrategy;
 import com.idea.tools.jms.ConnectionStrategy;
+import com.idea.tools.jms.HornetConnectionStrategy;
 import com.idea.tools.utils.Assert;
 import com.intellij.openapi.diagnostic.Logger;
 
@@ -13,8 +14,7 @@ import java.util.*;
 
 import static com.idea.tools.App.queueService;
 import static com.idea.tools.App.serverService;
-import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
-import static com.idea.tools.dto.ServerType.ARTEMIS;
+import static com.idea.tools.dto.ServerType.*;
 import static com.idea.tools.utils.Checked.consumer;
 import static com.idea.tools.utils.Utils.partitioningBy;
 import static com.idea.tools.utils.Utils.toMap;
@@ -30,6 +30,7 @@ public class JmsService {
     static {
         STRATEGIES.put(ACTIVE_MQ, new ActiveMQConnectionStrategy());
         STRATEGIES.put(ARTEMIS, new ArtemisConnectionStrategy());
+        STRATEGIES.put(HORNETQ, new HornetConnectionStrategy());
     }
 
     public void testConnection(ServerDto server) throws Exception {
