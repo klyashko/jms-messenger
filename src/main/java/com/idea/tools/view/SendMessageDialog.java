@@ -32,6 +32,7 @@ public class SendMessageDialog extends JFrame {
     private JButton sendButton;
     private JButton closeButton;
     private JPanel tabPanel;
+    private JCheckBox closeAfterSendCheckBox;
 
     private MessageMainPanel mainPanel;
     private MessagePayloadPanel payloadPanel;
@@ -85,6 +86,9 @@ public class SendMessageDialog extends JFrame {
                 jmsService().send(msg);
                 String content = String.format(SEND_SUCCESS_TEMPLATE, msg.getQueue().getName());
                 Notifications.Bus.notify(new Notification("jms", "Success", content, NotificationType.INFORMATION));
+                if (closeAfterSendCheckBox.isSelected()) {
+                    dispose();
+                }
             } catch (Exception ex) {
                 String content = String.format(SEND_FAIL_TEMPLATE, ex.getMessage());
                 Notifications.Bus.notify(new Notification("jms", "Failure", content, NotificationType.ERROR));
