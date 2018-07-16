@@ -37,6 +37,7 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
         render();
     }
 
+    //TODO row select mode
     private void render() {
         JBTable table = getTable();
         TableColumnModel model = table.getColumnModel();

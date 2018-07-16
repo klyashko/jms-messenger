@@ -32,6 +32,7 @@ public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Li
         render();
     }
 
+    //TODO row select mode
     private void render() {
         TableColumnModel model = getTable().getColumnModel();
 

@@ -46,4 +46,12 @@ public class IconUtils extends IconUtil {
     public static Icon getRefreshIcon() {
         return isUnderDarcula() ? icon("refresh_dark.png") : icon("refresh.png");
     }
+
+    public static Icon getRightShiftIcon() {
+        return icon("shift_right.png");
+    }
+
+    public static Icon getLeftShiftIcon() {
+        return icon("shift_left.png");
+    }
 }

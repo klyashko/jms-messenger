@@ -53,7 +53,7 @@ public class ActiveMQConnectionStrategy extends AbstractConnectionStrategy {
             DestinationSource destinationSource = activeMQConnection.getDestinationSource();
             return destinationSource.getQueues()
                                     .stream()
-                                    .map(function(q -> {
+                                    .map(function(q -> { //TODO refactor Utils toList
                                         QueueDto dto = new QueueDto();
                                         dto.setName(q.getQueueName());
                                         return dto;

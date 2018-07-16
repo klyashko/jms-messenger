@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @CommonsLog
 public class Utils {
 
-    public static <T, R> List<R> map(List<T> source, Function<T, R> function) {
+    public static <T, R> List<R> toList(Collection<T> source, Function<T, R> function) {
         return source.stream().map(function).collect(Collectors.toList());
     }
 

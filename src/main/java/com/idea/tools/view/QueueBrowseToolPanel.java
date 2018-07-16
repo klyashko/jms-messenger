@@ -1,6 +1,7 @@
 package com.idea.tools.view;
 
 import com.idea.tools.dto.QueueDto;
+import com.idea.tools.view.components.QueueBrowserPanel;
 import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -50,13 +51,13 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
             queuesTabPanel.addTab(tab);
             return tab;
         });
-        QueueBrowserTable table = (QueueBrowserTable) info.getComponent();
+        QueueBrowserTable table = ((QueueBrowserPanel) info.getComponent()).getQueueBrowserTable();
         queuesTabPanel.select(info, false);
         return table;
     }
 
     private TabInfo renderNewTab(QueueDto queue) {
-        TabInfo info = new TabInfo(new QueueBrowserTable(queue));
+        TabInfo info = new TabInfo(new QueueBrowserPanel(queue));
         info.setText(String.format("Server: %s queue: %s", queue.getServer().getName(), queue.getName()));
         return info;
     }

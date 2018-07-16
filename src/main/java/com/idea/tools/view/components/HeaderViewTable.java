@@ -1,35 +1,29 @@
 package com.idea.tools.view.components;
 
+import com.idea.tools.utils.GuiUtils;
+import com.idea.tools.view.button.ShowHideButton;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
-import com.intellij.util.Consumer;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Queue;
 
-import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
-import static com.intellij.openapi.actionSystem.ActionToolbarPosition.LEFT;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.WEST;
 
-public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>> {
+public class HeaderViewTable extends AddEditRemovePanel<MutablePair<String, Object>> {
 
-    private Queue<MutablePair<String, Object>> newHeaders = new ArrayDeque<>();
-    private Consumer<MutablePair<String, Object>> edit;
-
-    public HeaderTable(List<MutablePair<String, Object>> data, Consumer<MutablePair<String, Object>> edit) {
+    public HeaderViewTable(List<MutablePair<String, Object>> data) {
         super(new MyTableModel(), data);
-        this.edit = edit;
         render();
     }
 
-    //TODO row select mode
     private void render() {
         getTable().setShowColumns(true);
     }
@@ -37,13 +31,8 @@ public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>>
     @Override
     protected JBTable createTable() {
         JBTable table = super.createTable();
-        table.getSelectionModel().addListSelectionListener(event -> {
-            if (getTable().getSelectedRow() >= 0) {
-                edit.consume(getData().get(getTable().getSelectedRow()));
-            } else {
-                edit.consume(MutablePair.of("", null));
-            }
-        });
+        table.setRowSelectionAllowed(false);
+        table.setColumnSelectionAllowed(false);
         return table;
     }
 
@@ -51,26 +40,26 @@ public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>>
     protected void initPanel() {
         setLayout(new BorderLayout());
         ToolbarDecorator decorator = createDecorator(getTable())
-                .setMoveDownAction(button -> doDown())
-                .setMoveUpAction(button -> doUp())
-                .setRemoveAction(button -> doRemove())
-                .setPreferredSize(new Dimension(450, 200))
-                .setAddAction(button -> edit.consume(MutablePair.of("", null)))
-                .setToolbarPosition(LEFT);
+                .setPreferredSize(new Dimension(450, 200));
+
+        DefaultActionGroup actions = new DefaultActionGroup("showHideHeadersActionGroup", false);
 
         final JPanel panel = decorator.createPanel();
+        actions.add(ShowHideButton.of(panel));
+
+        add(GuiUtils.toolbar(actions, "showHideHeadersToolbar", false), WEST);
         add(panel, CENTER);
     }
 
     @Nullable
     @Override
     protected MutablePair<String, Object> addItem() {
-        return newHeaders.poll();
+        return null;
     }
 
     @Override
     protected boolean removeItem(MutablePair<String, Object> header) {
-        return showYesNoDialog(String.format("Delete header %s?", header.getKey()));
+        return false;
     }
 
     @Nullable
@@ -78,14 +67,6 @@ public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>>
     protected MutablePair<String, Object> editItem(MutablePair<String, Object> o) {
         return null;
     }
-
-    public void add(MutablePair<String, Object> header) {
-        if (header != null) {
-            newHeaders.add(header);
-            doAdd();
-        }
-    }
-
 
     public static class MyTableModel extends TableModel<MutablePair<String, Object>> {
 
