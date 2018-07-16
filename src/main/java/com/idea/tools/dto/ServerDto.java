@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-public class Server {
+public class ServerDto {
 
     private UUID id;
     private String name;

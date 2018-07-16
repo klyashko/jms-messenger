@@ -1,7 +1,7 @@
 package com.idea.tools.view;
 
 import com.idea.tools.dto.QueueDto;
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.markers.Listener;
 import com.idea.tools.settings.Settings;
 import com.idea.tools.view.action.*;
@@ -44,7 +44,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     private final Settings settings;
     private JPanel rootPanel;
     private JPanel serverPanel;
-    private Listener<Server> serverListener;
+    private Listener<ServerDto> serverListener;
     private Listener<QueueDto> queueListener;
 
     public ServersBrowseToolPanel(final Project project) {
@@ -53,7 +53,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         setProvideQuickActions(false);
         serversTree = createTree();
 
-        this.serverListener = Listener.<Server>builder()
+        this.serverListener = Listener.<ServerDto>builder()
                 .add(this::addServer)
                 .edit(this::editServer)
                 .remove(this::removeServer)
@@ -138,7 +138,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         });
     }
 
-    private void addServer(Server server) {
+    private void addServer(ServerDto server) {
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(server);
@@ -148,7 +148,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         model.reload(root);
     }
 
-    private void editServer(Server server) {
+    private void editServer(ServerDto server) {
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         @SuppressWarnings("unchecked")
@@ -167,7 +167,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         editServer(queue.getServer());
     }
 
-    private void removeServer(Server server) {
+    private void removeServer(ServerDto server) {
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         @SuppressWarnings("unchecked")
@@ -195,8 +195,8 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         });
     }
 
-    private Optional<DefaultMutableTreeNode> findServerNode(Enumeration<DefaultMutableTreeNode> data, Server server) {
-        return findNode(data, Server.class, s -> s.getId().equals(server.getId()));
+    private Optional<DefaultMutableTreeNode> findServerNode(Enumeration<DefaultMutableTreeNode> data, ServerDto server) {
+        return findNode(data, ServerDto.class, s -> s.getId().equals(server.getId()));
     }
 
     private <T> Optional<DefaultMutableTreeNode> findNode(Enumeration<DefaultMutableTreeNode> data, Class<T> clazz, Predicate<T> predicate) {
@@ -211,7 +211,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     }
 
     private void fillServerTree() {
-        List<Server> servers = settings.getServersList();
+        List<ServerDto> servers = settings.getServersList();
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(servers);
         DefaultTreeModel model = new DefaultTreeModel(rootNode);
@@ -227,7 +227,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         serversTree.setRootVisible(true);
     }
 
-    private void fillQueueTree(Server server, DefaultMutableTreeNode serverNode) {
+    private void fillQueueTree(ServerDto server, DefaultMutableTreeNode serverNode) {
         server.getQueues().forEach(queue -> serverNode.add(new DefaultMutableTreeNode(queue)));
     }
 
@@ -241,8 +241,8 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         new TreeSpeedSearch(tree, treePath -> {
             final DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
             final Object userObject = node.getUserObject();
-            if (userObject instanceof Server) {
-                return ((Server) userObject).getName();
+            if (userObject instanceof ServerDto) {
+                return ((ServerDto) userObject).getName();
             }
             return "<empty>";
         });

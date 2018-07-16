@@ -1,6 +1,6 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
@@ -19,11 +19,11 @@ public class PopupRemoveServerAction extends AbstractBrowserPanelAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversPanel.getSelectedValue(Server.class).ifPresent(serverService()::remove);
+        serversPanel.getSelectedValue(ServerDto.class).ifPresent(serverService()::remove);
     }
 
     @Override
     public void update(AnActionEvent event) {
-        event.getPresentation().setVisible(isSelected(Server.class));
+        event.getPresentation().setVisible(isSelected(ServerDto.class));
     }
 }

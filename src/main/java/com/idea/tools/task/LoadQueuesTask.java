@@ -1,7 +1,7 @@
 package com.idea.tools.task;
 
 import com.idea.tools.App;
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import org.jetbrains.annotations.NotNull;
@@ -12,9 +12,9 @@ import static com.idea.tools.App.jmsService;
 
 public class LoadQueuesTask extends Task.Backgroundable {
 
-    private final List<Server> servers;
+    private final List<ServerDto> servers;
 
-    public LoadQueuesTask(@NotNull List<Server> servers) {
+    public LoadQueuesTask(@NotNull List<ServerDto> servers) {
         super(App.getProject(), "Loading Queues");
         this.servers = servers;
     }

@@ -1,6 +1,6 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.task.LoadQueuesTask;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -22,14 +22,14 @@ public abstract class AbstractReconnectAction extends AbstractBrowserPanelAction
 
     @Override
     public void actionPerformed(AnActionEvent event) {
-        List<Server> servers = serversPanel.getSelectedValue(Server.class)
-                                           .map(Collections::singletonList)
-                                           .orElseGet(settings()::getServersList);
+        List<ServerDto> servers = serversPanel.getSelectedValue(ServerDto.class)
+                                              .map(Collections::singletonList)
+                                              .orElseGet(settings()::getServersList);
         new LoadQueuesTask(servers).queue();
     }
 
     boolean isServerSelected() {
-        return isSelected(Server.class);
+        return isSelected(ServerDto.class);
     }
 
 }

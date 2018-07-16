@@ -1,9 +1,6 @@
 package com.idea.tools.service;
 
-import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
-import com.idea.tools.dto.Server;
-import com.idea.tools.dto.ServerType;
+import com.idea.tools.dto.*;
 import com.idea.tools.jms.ActiveMQConnectionStrategy;
 import com.idea.tools.jms.ArtemisConnectionStrategy;
 import com.idea.tools.jms.ConnectionStrategy;
@@ -18,6 +15,7 @@ import static com.idea.tools.App.queueService;
 import static com.idea.tools.App.serverService;
 import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
 import static com.idea.tools.dto.ServerType.ARTEMIS;
+import static com.idea.tools.utils.Checked.consumer;
 import static com.idea.tools.utils.Utils.partitioningBy;
 import static com.idea.tools.utils.Utils.toMap;
 import static java.util.function.Function.identity;
@@ -34,7 +32,7 @@ public class JmsService {
         STRATEGIES.put(ARTEMIS, new ArtemisConnectionStrategy());
     }
 
-    public void testConnection(Server server) throws Exception {
+    public void testConnection(ServerDto server) throws Exception {
         try (Connection connection = connectionStrategy(server).connect(server)) {
             connection.start();
         }
@@ -46,7 +44,7 @@ public class JmsService {
         Assert.notNull(msg.getType(), "Message type must not be null");
 
         QueueDto queue = msg.getQueue();
-        Server server = queue.getServer();
+        ServerDto server = queue.getServer();
 
         ConnectionStrategy strategy = connectionStrategy(server);
 
@@ -65,7 +63,7 @@ public class JmsService {
     public List<MessageDto> receive(QueueDto queue) throws Exception {
         Assert.notNull(queue.getServer(), "Server must not be null");
 
-        Server server = queue.getServer();
+        ServerDto server = queue.getServer();
         ConnectionStrategy strategy = connectionStrategy(server);
         List<MessageDto> msgs = new ArrayList<>();
         try (Connection connection = strategy.connect(server);
@@ -82,7 +80,7 @@ public class JmsService {
         return msgs;
     }
 
-    public void refresh(List<Server> servers) {
+    public void refresh(List<ServerDto> servers) {
         servers.forEach(server -> {
             Map<Boolean, List<QueueDto>> tmp = partitioningBy(server.getQueues(), QueueDto::isAddedManually);
             Map<String, QueueDto> toKeep = toMap(tmp.get(true), QueueDto::getName, identity());
@@ -109,7 +107,7 @@ public class JmsService {
     public boolean removeFromQueue(MessageDto messageDto, QueueDto queue) throws Exception {
         Assert.notNull(queue.getServer(), "Server must not be null");
 
-        Server server = queue.getServer();
+        ServerDto server = queue.getServer();
         ConnectionStrategy strategy = connectionStrategy(server);
         String selector = String.format("JMSMessageID='%s'", messageDto.getMessageID());
         try (Connection connection = strategy.connect(server);
@@ -121,16 +119,14 @@ public class JmsService {
         }
     }
 
-    private ConnectionStrategy connectionStrategy(Server server) {
+    private ConnectionStrategy connectionStrategy(ServerDto server) {
         ConnectionStrategy strategy = STRATEGIES.get(server.getType());
         Assert.notNull(strategy, String.format("Unsupported server type %s", server.getType()), IllegalStateException::new);
         return strategy;
     }
 
-    private void setMessageProperties(Message msg, Map<String, Object> properties) throws JMSException {
-        for (String name : properties.keySet()) {
-            msg.setObjectProperty(name, properties.get(name));
-        }
+    private void setMessageProperties(Message msg, List<HeaderDto> properties) {
+        properties.forEach(consumer(h -> msg.setObjectProperty(h.getName(), h.getValue())));
     }
 
 }

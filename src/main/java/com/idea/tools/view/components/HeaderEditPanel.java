@@ -1,6 +1,6 @@
 package com.idea.tools.view.components;
 
-import org.apache.commons.lang3.tuple.MutablePair;
+import com.idea.tools.dto.HeaderDto;
 
 import javax.swing.*;
 import java.util.function.Consumer;
@@ -11,8 +11,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class HeaderEditPanel extends JPanel {
 
-    private MutablePair<String, Object> header;
-    private Consumer<MutablePair<String, Object>> handler = p -> {};
+    private HeaderDto header;
+    private Consumer<HeaderDto> handler = p -> {};
 
     private JPanel rootPanel;
     private JTextField valueField;
@@ -20,17 +20,17 @@ public class HeaderEditPanel extends JPanel {
     private JButton saveButton;
     private JButton cancelButton;
 
-    public HeaderEditPanel(Consumer<MutablePair<String, Object>> handler) {
-        this(MutablePair.of("", null), handler);
+    public HeaderEditPanel(Consumer<HeaderDto> handler) {
+        this(new HeaderDto("", null), handler);
     }
 
-    public HeaderEditPanel(MutablePair<String, Object> header, Consumer<MutablePair<String, Object>> handler) {
+    public HeaderEditPanel(HeaderDto header, Consumer<HeaderDto> handler) {
         this.header = header;
         this.handler = handler;
         render();
     }
 
-    public void setHeader(MutablePair<String, Object> header) {
+    public void setHeader(HeaderDto header) {
         this.header = header;
         setValues();
         enableButton();
@@ -45,16 +45,16 @@ public class HeaderEditPanel extends JPanel {
         valueField.getDocument().addDocumentListener(simpleListener(event -> enableButton()));
 
         saveButton.addActionListener(event -> {
-            this.header.setLeft(nameField.getText());
-            this.header.setRight(valueField.getText());
+            this.header.setName(nameField.getText());
+            this.header.setValue(valueField.getText());
             handler.accept(header);
         });
 
-        cancelButton.addActionListener(event -> setHeader(MutablePair.of("", null)));
+        cancelButton.addActionListener(event -> setHeader(new HeaderDto("", null)));
     }
 
     private void setValues() {
-        nameField.setText(header.getKey());
+        nameField.setText(header.getName());
         valueField.setText(getOrDefault(header.getValue(), "").toString());
     }
 

@@ -1,7 +1,7 @@
 package com.idea.tools.view;
 
 import com.idea.tools.dto.QueueDto;
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 
 import javax.swing.*;
 
@@ -9,7 +9,7 @@ import static com.idea.tools.App.queueService;
 
 public class QueueEditDialog extends JDialog {
 
-    private Server server;
+    private ServerDto server;
     private QueueDto queue;
 
     private JPanel rootPanel;
@@ -18,7 +18,7 @@ public class QueueEditDialog extends JDialog {
     private JButton cancelButton;
     private JTextField serverField;
 
-    private QueueEditDialog(Server server) {
+    private QueueEditDialog(ServerDto server) {
         this.queue = new QueueDto();
         this.server = server;
         queue.setServer(server);
@@ -33,7 +33,7 @@ public class QueueEditDialog extends JDialog {
         render();
     }
 
-    public static void showDialog(Server server) {
+    public static void showDialog(ServerDto server) {
         showDialog(new QueueEditDialog(server));
     }
 

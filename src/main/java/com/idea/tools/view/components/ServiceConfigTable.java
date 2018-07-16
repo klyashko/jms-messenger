@@ -1,7 +1,8 @@
 package com.idea.tools.view.components;
 
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.markers.Listener;
+import com.idea.tools.utils.TableModelBuilder;
 import com.idea.tools.view.ConfigurationPanel;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
@@ -20,29 +21,24 @@ import static com.idea.tools.App.serverService;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
-public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Listener<Server> {
+public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements Listener<ServerDto> {
 
     private final ConfigurationPanel panel;
-    private Queue<Server> newServers = new ArrayDeque<>();
+    private Queue<ServerDto> newServers = new ArrayDeque<>();
 
-    public ServiceConfigTable(List<Server> data, ConfigurationPanel panel) {
-        super(new MyTableModel(), data);
+    public ServiceConfigTable(List<ServerDto> data, ConfigurationPanel panel) {
+        super(tableModel(), data);
         this.panel = panel;
         render();
     }
 
-    //TODO row select mode
-    private void render() {
-        TableColumnModel model = getTable().getColumnModel();
-
-        TableColumn iconColumn = model.getColumn(0);
-        iconColumn.setMinWidth(40);
-        iconColumn.setMaxWidth(40);
-
-        TableColumn nameColumn = model.getColumn(1);
-        nameColumn.setMinWidth(100);
-        nameColumn.setMaxWidth(100);
+    private static TableModel<ServerDto> tableModel() {
+        return new TableModelBuilder<ServerDto>()
+                .withColumn(null, Icon.class, s -> s.getType().getIcon())
+                .withColumn("Server", String.class, ServerDto::getName)
+                .build();
     }
 
     @Override
@@ -71,61 +67,43 @@ public class ServiceConfigTable extends AddEditRemovePanel<Server> implements Li
         add(panel, CENTER);
     }
 
+    private void render() {
+        TableColumnModel model = getTable().getColumnModel();
+
+        TableColumn iconColumn = model.getColumn(0);
+        iconColumn.setMinWidth(40);
+        iconColumn.setMaxWidth(40);
+
+        TableColumn nameColumn = model.getColumn(1);
+        nameColumn.setMinWidth(100);
+        nameColumn.setMaxWidth(100);
+
+        getTable().setSelectionMode(SINGLE_SELECTION);
+    }
+
     @Nullable
     @Override
-    protected Server addItem() {
+    protected ServerDto addItem() {
         return newServers.poll();
     }
 
     @Override
-    protected boolean removeItem(Server server) {
+    protected boolean removeItem(ServerDto server) {
         return serverService().remove(server);
     }
 
     @Nullable
     @Override
-    protected Server editItem(Server o) {
+    protected ServerDto editItem(ServerDto o) {
         return null;
     }
 
     @Override
-    public void add(Server server) {
+    public void add(ServerDto server) {
         if (server != null) {
             newServers.add(server);
             doAdd();
         }
     }
 
-    public static class MyTableModel extends TableModel<Server> {
-
-        private static final String[] COLUMNS = {null, "Server"};
-        private static final Class<?>[] COLUMN_TYPES = {Icon.class, String.class};
-
-        @Override
-        public int getColumnCount() {
-            return 2;
-        }
-
-        @Nullable
-        @Override
-        public String getColumnName(int columnIndex) {
-            return COLUMNS[columnIndex];
-        }
-
-        @Override
-        public Object getField(Server server, int columnIndex) {
-            switch (columnIndex) {
-                case 0:
-                    return server.getType().getIcon();
-                case 1:
-                    return server.getName();
-            }
-            return null;
-        }
-
-        @Override
-        public Class getColumnClass(int columnIndex) {
-            return COLUMN_TYPES[columnIndex];
-        }
-    }
 }

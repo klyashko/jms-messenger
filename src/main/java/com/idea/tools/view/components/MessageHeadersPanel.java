@@ -1,18 +1,14 @@
 package com.idea.tools.view.components;
 
+import com.idea.tools.dto.HeaderDto;
 import com.idea.tools.dto.MessageDto;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.Map;
-
-import static com.idea.tools.utils.Utils.toMap;
 
 public class MessageHeadersPanel extends JPanel {
 
-    private List<MutablePair<String, Object>> headers;
+    private List<HeaderDto> headers;
 
     private JPanel rootPanel;
     private JPanel tablePanel;
@@ -21,21 +17,21 @@ public class MessageHeadersPanel extends JPanel {
     private HeaderTable table;
     private HeaderEditPanel headerEditPanel;
 
-    public MessageHeadersPanel(List<MutablePair<String, Object>> headers) {
+    public MessageHeadersPanel(List<HeaderDto> headers) {
         this.headers = headers;
         render();
     }
 
     private void render() {
-        table = new HeaderTable(headers, pair -> headerEditPanel.setHeader(pair));
+        table = new HeaderTable(headers, h -> headerEditPanel.setHeader(h));
 
         headerEditPanel = new HeaderEditPanel(pair -> {
-            boolean isNew = table.getData().stream().noneMatch(h -> h.getKey().equals(pair.getKey()));
+            boolean isNew = table.getData().stream().noneMatch(h -> h.getName().equals(pair.getName()));
             if (isNew) {
                 table.add(pair);
             } else {
                 table.getData().replaceAll(h -> {
-                    if (h.getKey().equals(pair.getKey())) {
+                    if (h.getName().equals(pair.getName())) {
                         return pair;
                     }
                     return h;
@@ -51,8 +47,7 @@ public class MessageHeadersPanel extends JPanel {
     }
 
     public void fillMessage(MessageDto dto) {
-        Map<String, Object> headersMap = toMap(table.getData(), Pair::getKey, Pair::getValue);
-        dto.setHeaders(headersMap);
+        dto.setHeaders(table.getData());
     }
 
 }

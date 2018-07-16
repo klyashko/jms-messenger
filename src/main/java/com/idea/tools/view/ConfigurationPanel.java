@@ -1,23 +1,7 @@
-/*
- * Copyright (c) 2013 David Boissier
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.idea.tools.view;
 
 import com.idea.tools.App;
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.view.components.ServerEditPanel;
 import com.idea.tools.view.components.ServiceConfigTable;
 import com.intellij.openapi.project.Project;
@@ -50,17 +34,17 @@ public class ConfigurationPanel {
 
     @NotNull
     private ServiceConfigTable renderTable() {
-        List<Server> data = settings().getServersList();
+        List<ServerDto> data = settings().getServersList();
         table = new ServiceConfigTable(data, this);
         serverService().addListener(table);
         return table;
     }
 
-    public void editServer(Server server) {
+    public void editServer(ServerDto server) {
         if (server != null) {
             panel.setNewValue(server);
         } else {
-            panel.setNewValue(new Server());
+            panel.setNewValue(new ServerDto());
         }
     }
 
@@ -69,7 +53,6 @@ public class ConfigurationPanel {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
     }
 
     public void dispose() {

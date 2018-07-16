@@ -2,12 +2,13 @@ package com.idea.tools.jms;
 
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.Assert;
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.core.client.impl.ServerLocatorImpl;
 import org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory;
 import org.apache.activemq.artemis.jms.client.ActiveMQTextMessage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.jms.*;
 import java.util.*;
@@ -17,7 +18,7 @@ import static com.idea.tools.dto.ServerType.ARTEMIS;
 public class ArtemisConnectionStrategy extends AbstractConnectionStrategy {
 
     @Override
-    public Connection connect(Server server) throws Exception {
+    public Connection connect(ServerDto server) throws Exception {
         validate(server);
         Assert.equals(server.getType(), ARTEMIS, String.format("Unsupported server type %s", server.getType()));
 
@@ -38,7 +39,7 @@ public class ArtemisConnectionStrategy extends AbstractConnectionStrategy {
         return Collections.emptyList();
     }
 
-    private ActiveMQJMSConnectionFactory connectionFactory(Server server) {
+    private ActiveMQJMSConnectionFactory connectionFactory(@NotNull ServerDto server) {
         switch (server.getConnectionType()) {
             case HTTP:
                 Map<String, Object> params = new HashMap<>();

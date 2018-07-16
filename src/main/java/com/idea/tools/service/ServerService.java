@@ -2,7 +2,7 @@ package com.idea.tools.service;
 
 import com.idea.tools.dto.ConnectionType;
 import com.idea.tools.dto.QueueDto;
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.ServerType;
 import com.idea.tools.markers.Listener;
 
@@ -17,10 +17,10 @@ import static java.util.UUID.randomUUID;
 
 public class ServerService {
 
-    private List<Listener<Server>> listeners = new LinkedList<>();
+    private List<Listener<ServerDto>> listeners = new LinkedList<>();
 
     public ServerService() {
-        Listener<Server> listener = Listener.<Server>builder()
+        Listener<ServerDto> listener = Listener.<ServerDto>builder()
                 .add(settings().getState()::put)
                 .edit(settings().getState()::put)
                 .remove(settings().getState()::remove)
@@ -29,9 +29,9 @@ public class ServerService {
         listeners.add(listener);
     }
 
-    public static List<Server> getDummies() {
+    public static List<ServerDto> getDummies() {
 
-        Server artemis = new Server();
+        ServerDto artemis = new ServerDto();
         artemis.setId(randomUUID());
         artemis.setName("Artemis 1");
         artemis.setHost("localhost");
@@ -40,7 +40,7 @@ public class ServerService {
         artemis.setQueues(new ArrayList<>(Arrays.asList(new QueueDto(randomUUID(), "Q1", artemis), new QueueDto(randomUUID(), "Q2", artemis))));
         artemis.setType(ServerType.ARTEMIS);
 
-        Server activeMq = new Server();
+        ServerDto activeMq = new ServerDto();
         activeMq.setId(randomUUID());
         activeMq.setName("Active MQ 1");
         activeMq.setHost("localhost");
@@ -52,7 +52,7 @@ public class ServerService {
         return Arrays.asList(artemis, activeMq);
     }
 
-    public void saveOrUpdate(Server server) {
+    public void saveOrUpdate(ServerDto server) {
         if (server.getId() == null) {
             server.setId(randomUUID());
             listeners.forEach(listener -> listener.add(server));
@@ -61,7 +61,7 @@ public class ServerService {
         }
     }
 
-    public boolean remove(Server server) {
+    public boolean remove(ServerDto server) {
         if (server == null) {
             return false;
         }
@@ -73,11 +73,11 @@ public class ServerService {
         return delete;
     }
 
-    public void addListener(Listener<Server> listener) {
+    public void addListener(Listener<ServerDto> listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(Listener<Server> listener) {
+    public void removeListener(Listener<ServerDto> listener) {
         listeners.remove(listener);
     }
 

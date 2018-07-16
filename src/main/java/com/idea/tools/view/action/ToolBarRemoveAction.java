@@ -1,7 +1,7 @@
 package com.idea.tools.view.action;
 
 import com.idea.tools.dto.QueueDto;
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
@@ -21,8 +21,8 @@ public class ToolBarRemoveAction extends AbstractBrowserPanelAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        if (isSelected(Server.class)) {
-            serversPanel.getSelectedValue(Server.class).ifPresent(serverService()::remove);
+        if (isSelected(ServerDto.class)) {
+            serversPanel.getSelectedValue(ServerDto.class).ifPresent(serverService()::remove);
         } else if (isSelected(QueueDto.class)) {
             serversPanel.getSelectedValue(QueueDto.class).ifPresent(queueService()::remove);
         }
@@ -30,7 +30,7 @@ public class ToolBarRemoveAction extends AbstractBrowserPanelAction {
 
     @Override
     public void update(AnActionEvent event) {
-        boolean enable = isSelected(Server.class) || isSelected(QueueDto.class);
+        boolean enable = isSelected(ServerDto.class) || isSelected(QueueDto.class);
         event.getPresentation().setEnabled(enable);
     }
 }

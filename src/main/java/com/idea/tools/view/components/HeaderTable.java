@@ -1,10 +1,11 @@
 package com.idea.tools.view.components;
 
+import com.idea.tools.dto.HeaderDto;
+import com.idea.tools.utils.TableModelBuilder;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.Consumer;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -17,21 +18,29 @@ import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.LEFT;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
-public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>> {
+public class HeaderTable extends AddEditRemovePanel<HeaderDto> {
 
-    private Queue<MutablePair<String, Object>> newHeaders = new ArrayDeque<>();
-    private Consumer<MutablePair<String, Object>> edit;
+    private Queue<HeaderDto> newHeaders = new ArrayDeque<>();
+    private Consumer<HeaderDto> edit;
 
-    public HeaderTable(List<MutablePair<String, Object>> data, Consumer<MutablePair<String, Object>> edit) {
-        super(new MyTableModel(), data);
+    public HeaderTable(List<HeaderDto> data, Consumer<HeaderDto> edit) {
+        super(tableModel(), data);
         this.edit = edit;
         render();
     }
 
-    //TODO row select mode
+    private static TableModel<HeaderDto> tableModel() {
+        return new TableModelBuilder<HeaderDto>()
+                .withColumn("Name", HeaderDto::getName)
+                .withColumn("Value", HeaderDto::getValue)
+                .build();
+    }
+
     private void render() {
         getTable().setShowColumns(true);
+        getTable().setSelectionMode(SINGLE_SELECTION);
     }
 
     @Override
@@ -41,7 +50,7 @@ public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>>
             if (getTable().getSelectedRow() >= 0) {
                 edit.consume(getData().get(getTable().getSelectedRow()));
             } else {
-                edit.consume(MutablePair.of("", null));
+                edit.consume(new HeaderDto("", null));
             }
         });
         return table;
@@ -55,7 +64,7 @@ public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>>
                 .setMoveUpAction(button -> doUp())
                 .setRemoveAction(button -> doRemove())
                 .setPreferredSize(new Dimension(450, 200))
-                .setAddAction(button -> edit.consume(MutablePair.of("", null)))
+                .setAddAction(button -> edit.consume(new HeaderDto("", null)))
                 .setToolbarPosition(LEFT);
 
         final JPanel panel = decorator.createPanel();
@@ -64,53 +73,26 @@ public class HeaderTable extends AddEditRemovePanel<MutablePair<String, Object>>
 
     @Nullable
     @Override
-    protected MutablePair<String, Object> addItem() {
+    protected HeaderDto addItem() {
         return newHeaders.poll();
     }
 
     @Override
-    protected boolean removeItem(MutablePair<String, Object> header) {
-        return showYesNoDialog(String.format("Delete header %s?", header.getKey()));
+    protected boolean removeItem(HeaderDto header) {
+        return showYesNoDialog(String.format("Delete header %s?", header.getName()));
     }
 
     @Nullable
     @Override
-    protected MutablePair<String, Object> editItem(MutablePair<String, Object> o) {
+    protected HeaderDto editItem(HeaderDto o) {
         return null;
     }
 
-    public void add(MutablePair<String, Object> header) {
+    public void add(HeaderDto header) {
         if (header != null) {
             newHeaders.add(header);
             doAdd();
         }
     }
 
-
-    public static class MyTableModel extends TableModel<MutablePair<String, Object>> {
-
-        private static final String[] COLUMNS = {"Name", "Value"};
-
-        @Override
-        public int getColumnCount() {
-            return COLUMNS.length;
-        }
-
-        @Nullable
-        @Override
-        public String getColumnName(int columnIndex) {
-            return COLUMNS[columnIndex];
-        }
-
-        @Override
-        public Object getField(MutablePair<String, Object> header, int columnIndex) {
-            switch (columnIndex) {
-                case 0:
-                    return header.getKey();
-                case 1:
-                    return header.getValue() != null ? header.getValue() : "";
-            }
-            return null;
-        }
-    }
 }

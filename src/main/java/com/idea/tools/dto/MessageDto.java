@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @ToString(exclude = "queue")
@@ -22,6 +22,6 @@ public class MessageDto {
     private Integer priority;
     private Long expiration;
     private QueueDto queue;
-    private Map<String, Object> headers = new HashMap<>();
+    private List<HeaderDto> headers = new ArrayList<>();
 
 }

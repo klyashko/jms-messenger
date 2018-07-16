@@ -1,6 +1,6 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.view.ServerEditDialog;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -20,11 +20,11 @@ public abstract class AbstractEditServerAction extends AbstractBrowserPanelActio
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversPanel.getSelectedValue(Server.class).ifPresent(server -> ServerEditDialog.showDialog(Optional.of(server)));
+        serversPanel.getSelectedValue(ServerDto.class).ifPresent(server -> ServerEditDialog.showDialog(Optional.of(server)));
     }
 
     boolean isServerSelected() {
-        return isSelected(Server.class);
+        return isSelected(ServerDto.class);
     }
 
 }

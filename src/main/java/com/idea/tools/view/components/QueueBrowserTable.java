@@ -2,6 +2,7 @@ package com.idea.tools.view.components;
 
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
+import com.idea.tools.utils.TableModelBuilder;
 import com.idea.tools.view.button.MessagesReloadButton;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.AddEditRemovePanel;
@@ -23,6 +24,7 @@ import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
 import static java.util.Collections.emptyList;
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
 public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
 
@@ -32,47 +34,22 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     private QueueDto queue;
 
     public QueueBrowserTable(QueueDto queue) {
-        super(new MyTableModel(), emptyList());
+        super(tableModel(), emptyList());
         this.queue = queue;
         render();
     }
 
-    //TODO row select mode
-    private void render() {
-        JBTable table = getTable();
-        TableColumnModel model = table.getColumnModel();
-
-        TableColumn idColumn = model.getColumn(0);
-        idColumn.setMinWidth(80);
-        idColumn.setMaxWidth(200);
-
-        TableColumn timestampColumn = model.getColumn(1);
-        timestampColumn.setMinWidth(80);
-        timestampColumn.setMaxWidth(150);
-
-        TableColumn typeColumn = model.getColumn(2);
-        typeColumn.setMinWidth(30);
-        typeColumn.setMaxWidth(60);
-
-        TableColumn deliveryModeColumn = model.getColumn(3);
-        deliveryModeColumn.setMinWidth(30);
-        deliveryModeColumn.setMaxWidth(90);
-
-        TableColumn priorityColumn = model.getColumn(4);
-        priorityColumn.setMinWidth(30);
-        priorityColumn.setMaxWidth(60);
-
-        TableColumn expirationColumn = model.getColumn(5);
-        expirationColumn.setMinWidth(30);
-        expirationColumn.setMaxWidth(60);
-
-        TableColumn payloadColumn = model.getColumn(6);
-        payloadColumn.setMinWidth(100);
-        payloadColumn.setMaxWidth(1500);
-
-        table.setShowColumns(true);
-        table.getTableHeader().setResizingAllowed(true);
-        table.getTableHeader().setReorderingAllowed(true);
+    private static TableModel<MessageDto> tableModel() {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        return new TableModelBuilder<MessageDto>()
+                .withColumn("ID", MessageDto::getMessageID)
+                .withColumn("Timestamp", m -> format.format(new Date(m.getTimestamp())))
+                .withColumn("Type", MessageDto::getJmsType)
+                .withColumn("Delivery mode", MessageDto::getDeliveryMode)
+                .withColumn("Priority", MessageDto::getPriority)
+                .withColumn("Expiration", MessageDto::getExpiration)
+                .withColumn("Payload", MessageDto::getPayload)
+                .build();
     }
 
     @Override
@@ -113,41 +90,42 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
         return null;
     }
 
-    public static class MyTableModel extends TableModel<MessageDto> {
-        private static final String[] COLUMNS = {"ID", "Timestamp", "Type", "Delivery mode", "Priority", "Expiration", "Payload"};
-        private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    private void render() {
+        JBTable table = getTable();
+        TableColumnModel model = table.getColumnModel();
 
-        @Override
-        public int getColumnCount() {
-            return COLUMNS.length;
-        }
+        TableColumn idColumn = model.getColumn(0);
+        idColumn.setMinWidth(80);
+        idColumn.setMaxWidth(200);
 
-        @Nullable
-        @Override
-        public String getColumnName(int columnIndex) {
-            return COLUMNS[columnIndex];
-        }
+        TableColumn timestampColumn = model.getColumn(1);
+        timestampColumn.setMinWidth(80);
+        timestampColumn.setMaxWidth(150);
 
-        @Override
-        public Object getField(MessageDto dto, int columnIndex) {
-            switch (columnIndex) {
-                case 0:
-                    return dto.getMessageID();
-                case 1:
-                    Date timestamp = new Date(dto.getTimestamp());
-                    return FORMAT.format(timestamp);
-                case 2:
-                    return dto.getJmsType();
-                case 3:
-                    return dto.getDeliveryMode();
-                case 4:
-                    return dto.getPriority();
-                case 5:
-                    return dto.getExpiration();
-                case 6:
-                    return dto.getPayload();
-            }
-            return null;
-        }
+        TableColumn typeColumn = model.getColumn(2);
+        typeColumn.setMinWidth(30);
+        typeColumn.setMaxWidth(60);
+
+        TableColumn deliveryModeColumn = model.getColumn(3);
+        deliveryModeColumn.setMinWidth(30);
+        deliveryModeColumn.setMaxWidth(90);
+
+        TableColumn priorityColumn = model.getColumn(4);
+        priorityColumn.setMinWidth(30);
+        priorityColumn.setMaxWidth(60);
+
+        TableColumn expirationColumn = model.getColumn(5);
+        expirationColumn.setMinWidth(30);
+        expirationColumn.setMaxWidth(60);
+
+        TableColumn payloadColumn = model.getColumn(6);
+        payloadColumn.setMinWidth(100);
+        payloadColumn.setMaxWidth(1500);
+
+        table.setShowColumns(true);
+        table.getTableHeader().setResizingAllowed(true);
+        table.getTableHeader().setReorderingAllowed(true);
+        table.setSelectionMode(SINGLE_SELECTION);
     }
+
 }

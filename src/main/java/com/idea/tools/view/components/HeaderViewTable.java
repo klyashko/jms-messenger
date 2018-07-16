@@ -1,12 +1,13 @@
 package com.idea.tools.view.components;
 
+import com.idea.tools.dto.HeaderDto;
 import com.idea.tools.utils.GuiUtils;
+import com.idea.tools.utils.TableModelBuilder;
 import com.idea.tools.view.button.ShowHideButton;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -17,10 +18,10 @@ import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.WEST;
 
-public class HeaderViewTable extends AddEditRemovePanel<MutablePair<String, Object>> {
+public class HeaderViewTable extends AddEditRemovePanel<HeaderDto> {
 
-    public HeaderViewTable(List<MutablePair<String, Object>> data) {
-        super(new MyTableModel(), data);
+    public HeaderViewTable(List<HeaderDto> data) {
+        super(tableModel(), data);
         render();
     }
 
@@ -51,47 +52,28 @@ public class HeaderViewTable extends AddEditRemovePanel<MutablePair<String, Obje
         add(panel, CENTER);
     }
 
+    private static TableModel<HeaderDto> tableModel() {
+        return new TableModelBuilder<HeaderDto>()
+                .withColumn("Name", HeaderDto::getName)
+                .withColumn("Value", HeaderDto::getValue)
+                .build();
+    }
+
     @Nullable
     @Override
-    protected MutablePair<String, Object> addItem() {
+    protected HeaderDto addItem() {
         return null;
     }
 
     @Override
-    protected boolean removeItem(MutablePair<String, Object> header) {
+    protected boolean removeItem(HeaderDto header) {
         return false;
     }
 
     @Nullable
     @Override
-    protected MutablePair<String, Object> editItem(MutablePair<String, Object> o) {
+    protected HeaderDto editItem(HeaderDto o) {
         return null;
     }
 
-    public static class MyTableModel extends TableModel<MutablePair<String, Object>> {
-
-        private static final String[] COLUMNS = {"Name", "Value"};
-
-        @Override
-        public int getColumnCount() {
-            return COLUMNS.length;
-        }
-
-        @Nullable
-        @Override
-        public String getColumnName(int columnIndex) {
-            return COLUMNS[columnIndex];
-        }
-
-        @Override
-        public Object getField(MutablePair<String, Object> header, int columnIndex) {
-            switch (columnIndex) {
-                case 0:
-                    return header.getKey();
-                case 1:
-                    return header.getValue() != null ? header.getValue() : "";
-            }
-            return null;
-        }
-    }
 }

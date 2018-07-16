@@ -1,7 +1,7 @@
 package com.idea.tools.settings;
 
 import com.idea.tools.dto.QueueDto;
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.service.ServerService;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
@@ -45,7 +45,7 @@ public class Settings implements PersistentStateComponent<Settings.State> {
         return state;
     }
 
-    public List<Server> getServersList() {
+    public List<ServerDto> getServersList() {
         return getState().getServersList();
     }
 
@@ -55,16 +55,16 @@ public class Settings implements PersistentStateComponent<Settings.State> {
     }
 
     public static class State {
-        private Map<UUID, Server> servers = new HashMap<>();
+        private Map<UUID, ServerDto> servers = new HashMap<>();
 
-        public void put(Server server) {
+        public void put(ServerDto server) {
             if (server != null) {
                 servers.put(server.getId(), server);
             }
         }
 
         public void put(QueueDto queue) {
-            Server server = queue.getServer();
+            ServerDto server = queue.getServer();
             List<QueueDto> queues = server.getQueues();
             for (int i = 0; i < queues.size(); i++) {
                 QueueDto q = queues.get(i);
@@ -76,18 +76,18 @@ public class Settings implements PersistentStateComponent<Settings.State> {
             queues.add(queue);
         }
 
-        public void putAll(Collection<Server> servers) {
+        public void putAll(Collection<ServerDto> servers) {
             servers.forEach(this::put);
         }
 
-        public void remove(Server server) {
+        public void remove(ServerDto server) {
             if (server != null) {
                 servers.remove(server.getId());
             }
         }
 
         public void remove(QueueDto queue) {
-            Server server = queue.getServer();
+            ServerDto server = queue.getServer();
             List<QueueDto> queues = server.getQueues();
             for (int i = 0; i < queues.size(); i++) {
                 QueueDto q = queues.get(i);
@@ -98,11 +98,11 @@ public class Settings implements PersistentStateComponent<Settings.State> {
             }
         }
 
-        public List<Server> getServersList() {
+        public List<ServerDto> getServersList() {
             return new ArrayList<>(servers.values());
         }
 
-        public Stream<Server> getServersStream() {
+        public Stream<ServerDto> getServersStream() {
             return getServersList().stream();
         }
     }

@@ -1,21 +1,22 @@
 package com.idea.tools.jms;
 
+import com.idea.tools.dto.HeaderDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.Server;
+import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.Assert;
 
 import javax.jms.*;
 import java.lang.IllegalStateException;
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import static com.idea.tools.dto.ContentType.TEXT;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
 
-    protected Connection connect(Server server, ConnectionFactory factory) throws JMSException {
+    protected Connection connect(ServerDto server, ConnectionFactory factory) throws JMSException {
         Connection connection;
         if (isNotEmpty(server.getLogin())) {
             connection = factory.createConnection(server.getLogin(), server.getPassword());
@@ -26,13 +27,13 @@ public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
         return connection;
     }
 
-    protected void validate(Server server) {
+    protected void validate(ServerDto server) {
         Assert.notNull(server.getConnectionType(), "Connection type must not be null");
         Assert.notNull(server.getHost(), "Host must not be null");
         Assert.notNull(server.getPort(), "Port must not be null");
     }
 
-    protected String getUrlString(Server server) {
+    protected String getUrlString(ServerDto server) {
         return String.format("%s://%s:%s", server.getConnectionType().getExtension(), server.getHost(), server.getPort());
     }
 
@@ -51,20 +52,14 @@ public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
         return dto;
     }
 
-    protected Map<String, Object> mapProperties(Message msg) throws JMSException {
-        Map<String, Object> properties = new HashMap<>();
+    protected List<HeaderDto> mapProperties(Message msg) throws JMSException {
+        List<HeaderDto> properties = new ArrayList<>();
         Enumeration srcProperties = msg.getPropertyNames();
         while (srcProperties.hasMoreElements()) {
             String propertyName = (String) srcProperties.nextElement();
-            properties.put(propertyName, msg.getObjectProperty(propertyName));
+            properties.add(new HeaderDto(propertyName, msg.getObjectProperty(propertyName)));
         }
         return properties;
-    }
-
-    protected void setMessageProperties(Message msg, Map<String, Object> properties) throws JMSException {
-        for (String name : properties.keySet()) {
-            msg.setObjectProperty(name, properties.get(name));
-        }
     }
 
 }
