@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import static com.idea.tools.App.queueService;
 
-public class QueueEditDialog extends JDialog {
+public class QueueEditDialog extends JFrame {
 
     private ServerDto server;
     private QueueDto queue;
@@ -44,6 +44,7 @@ public class QueueEditDialog extends JDialog {
     private static void showDialog(QueueEditDialog dialog) {
         SwingUtilities.invokeLater(() -> {
             dialog.setLocationRelativeTo(null);
+            dialog.setTitle("Queue settings");
             dialog.pack();
             dialog.setVisible(true);
         });

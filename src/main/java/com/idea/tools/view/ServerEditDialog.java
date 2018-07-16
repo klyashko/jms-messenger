@@ -2,15 +2,16 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.view.components.ServerEditPanel;
+import com.intellij.ui.components.JBScrollPane;
 
 import javax.swing.*;
 import java.util.Optional;
 
-public class ServerEditDialog extends JDialog {
+public class ServerEditDialog extends JFrame {
 
     private ServerEditDialog(ServerDto server) {
         ServerEditPanel panel = new ServerEditPanel(server);
-        add(panel);
+        add(new JBScrollPane(panel));
         panel.getCancelButton().addActionListener(event -> dispose());
         panel.getSaveButton().addActionListener(event -> dispose());
     }

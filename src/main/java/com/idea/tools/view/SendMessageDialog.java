@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import static com.idea.tools.App.getProject;
 import static com.idea.tools.App.jmsService;
 
-public class SendMessageDialog extends JDialog {
+public class SendMessageDialog extends JFrame {
 
     private static final Logger LOGGER = Logger.getInstance(SendMessageDialog.class);
 
@@ -42,13 +42,28 @@ public class SendMessageDialog extends JDialog {
         render();
     }
 
+    public static void showDialog(QueueDto queue) {
+        SwingUtilities.invokeLater(() -> {
+            SendMessageDialog dialog = new SendMessageDialog(queue);
+            dialog.setLocationRelativeTo(null);
+            dialog.setTitle("Send message");
+            dialog.pack();
+            dialog.setVisible(true);
+        });
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+    }
+
     private void render() {
         mainPanel = new MessageMainPanel(queue);
         payloadPanel = new MessagePayloadPanel();
         headersPanel = new MessageHeadersPanel(new ArrayList<>());
 
         JBTabsImpl tabs = new JBTabsImpl(getProject());
-        tabs.addTab(new TabInfo(mainPanel).setText("Mail"));
+        tabs.addTab(new TabInfo(mainPanel).setText("Main"));
         tabs.addTab(new TabInfo(headersPanel).setText("Headers"));
         tabs.addTab(new TabInfo(payloadPanel).setText("Payload"));
 
@@ -78,20 +93,6 @@ public class SendMessageDialog extends JDialog {
             }
         });
         closeButton.addActionListener(event -> dispose());
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
-
-    public static void showDialog(QueueDto queue) {
-        SwingUtilities.invokeLater(() -> {
-            SendMessageDialog dialog = new SendMessageDialog(queue);
-            dialog.setLocationRelativeTo(null);
-            dialog.pack();
-            dialog.setVisible(true);
-        });
     }
 
     private void createUIComponents() {

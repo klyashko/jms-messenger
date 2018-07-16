@@ -18,7 +18,7 @@ public class HeaderEditPanel extends JPanel {
     private JTextField valueField;
     private JTextField nameField;
     private JButton saveButton;
-    private JButton cancelButton;
+    private JButton clearButton;
 
     public HeaderEditPanel(Consumer<HeaderDto> handler) {
         this(new HeaderDto("", null), handler);
@@ -50,7 +50,7 @@ public class HeaderEditPanel extends JPanel {
             handler.accept(header);
         });
 
-        cancelButton.addActionListener(event -> setHeader(new HeaderDto("", null)));
+        clearButton.addActionListener(event -> setHeader(new HeaderDto("", null)));
     }
 
     private void setValues() {
