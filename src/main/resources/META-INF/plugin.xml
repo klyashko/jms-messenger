@@ -46,11 +46,4 @@
                         serviceImplementation="com.idea.tools.service.JmsService"/>
     </extensions>
 
-    <actions>
-        <group id="MyPlugin.SampleMenu" text="Greeting" description="Greeting menu">
-            <add-to-group group-id="MainMenu" anchor="last"/>
-            <action id="Myplugin.Textboxes" class="com.idea.tools.HelloAction" text="Hello" description="Says hello"/>
-        </group>
-    </actions>
-
 </idea-plugin>
