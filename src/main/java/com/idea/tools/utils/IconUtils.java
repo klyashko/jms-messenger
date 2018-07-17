@@ -55,7 +55,13 @@ public class IconUtils extends IconUtil {
         return icon("shift_left.png");
     }
 
-    public static Icon getHornet() {
+    public static Icon getHornetIcon() {
         return icon("hornet.png");
     }
+
+    public static Icon getReadMessageIcon() {
+        return icon("read_message.png");
+    }
+
+
 }

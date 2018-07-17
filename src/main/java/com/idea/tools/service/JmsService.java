@@ -75,7 +75,11 @@ public class JmsService {
             @SuppressWarnings("unchecked")
             Enumeration<Message> enumeration = browser.getEnumeration();
             while (enumeration.hasMoreElements()) {
-                strategy.map(enumeration.nextElement()).ifPresent(msgs::add);
+                strategy.map(enumeration.nextElement())
+                        .ifPresent(m -> {
+                            m.setQueue(queue);
+                            msgs.add(m);
+                        });
             }
         }
         return msgs;

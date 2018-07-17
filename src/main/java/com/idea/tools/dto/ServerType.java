@@ -12,7 +12,7 @@ public enum ServerType {
 
     ACTIVE_MQ(getActiveMqIcon(), ACTIVE_MQ_CONNECTION_TYPES),
     ARTEMIS(getArtemisIcon(), ARTEMIS_CONNECTION_TYPES),
-    HORNETQ(getHornet(), HORNETQ_CONNECTION_TYPES);
+    HORNETQ(getHornetIcon(), HORNETQ_CONNECTION_TYPES);
 
     private final Icon icon;
     private final ConnectionType[] connectionTypes;

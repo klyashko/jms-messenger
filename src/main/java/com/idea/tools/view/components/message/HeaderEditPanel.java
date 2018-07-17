@@ -1,4 +1,4 @@
-package com.idea.tools.view.components;
+package com.idea.tools.view.components.message;
 
 import com.idea.tools.dto.HeaderDto;
 

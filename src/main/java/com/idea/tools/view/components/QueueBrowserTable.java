@@ -4,6 +4,7 @@ import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
 import com.idea.tools.utils.TableModelBuilder;
 import com.idea.tools.view.button.MessagesReloadButton;
+import com.idea.tools.view.button.OpenMessageButton;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
@@ -60,6 +61,7 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
                 .setMoveUpAction(button -> doUp())
                 .setRemoveAction(button -> doRemove())
                 .addExtraAction(new MessagesReloadButton(this))
+                .addExtraAction(new OpenMessageButton(this))
                 .setToolbarPosition(TOP);
 
         JPanel panel = decorator.createPanel();

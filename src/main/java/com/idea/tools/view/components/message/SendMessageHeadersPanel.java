@@ -1,30 +1,27 @@
-package com.idea.tools.view.components;
+package com.idea.tools.view.components.message;
 
 import com.idea.tools.dto.HeaderDto;
 import com.idea.tools.dto.MessageDto;
+import com.idea.tools.view.components.HeaderTable;
 
 import javax.swing.*;
 import java.util.List;
 
-public class MessageHeadersPanel extends JPanel {
-
-    private List<HeaderDto> headers;
-
-    private JPanel rootPanel;
-    private JPanel tablePanel;
-    private JPanel editPanel;
+public class SendMessageHeadersPanel extends ViewMessageHeadersPanel {
 
     private HeaderTable table;
     private HeaderEditPanel headerEditPanel;
 
-    public MessageHeadersPanel(List<HeaderDto> headers) {
-        this.headers = headers;
-        render();
+    public SendMessageHeadersPanel(List<HeaderDto> headers) {
+        super(headers);
     }
 
-    private void render() {
+    protected JComponent tablePanelContent() {
         table = new HeaderTable(headers, h -> headerEditPanel.setHeader(h));
+        return table;
+    }
 
+    protected JComponent editPanelContent() {
         headerEditPanel = new HeaderEditPanel(pair -> {
             boolean isNew = table.getData().stream().noneMatch(h -> h.getName().equals(pair.getName()));
             if (isNew) {
@@ -40,10 +37,7 @@ public class MessageHeadersPanel extends JPanel {
             }
             table.getTable().clearSelection();
         });
-
-        tablePanel.add(table);
-        editPanel.add(headerEditPanel);
-        add(rootPanel);
+        return headerEditPanel;
     }
 
     public void fillMessage(MessageDto dto) {
