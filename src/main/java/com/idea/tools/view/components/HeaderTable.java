@@ -1,8 +1,6 @@
 package com.idea.tools.view.components;
 
 import com.idea.tools.dto.HeaderDto;
-import com.idea.tools.utils.TableModelBuilder;
-import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.Consumer;
@@ -20,22 +18,15 @@ import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
-public class HeaderTable extends AddEditRemovePanel<HeaderDto> {
+public class HeaderTable extends HeaderViewTable {
 
     private Queue<HeaderDto> newHeaders = new ArrayDeque<>();
     private Consumer<HeaderDto> edit;
 
     public HeaderTable(List<HeaderDto> data, Consumer<HeaderDto> edit) {
-        super(tableModel(), data);
+        super(data);
         this.edit = edit;
         render();
-    }
-
-    private static TableModel<HeaderDto> tableModel() {
-        return new TableModelBuilder<HeaderDto>()
-                .withColumn("Name", HeaderDto::getName)
-                .withColumn("Value", HeaderDto::getValue)
-                .build();
     }
 
     private void render() {
@@ -82,10 +73,9 @@ public class HeaderTable extends AddEditRemovePanel<HeaderDto> {
         return showYesNoDialog(String.format("Delete header %s?", header.getName()));
     }
 
-    @Nullable
     @Override
-    protected HeaderDto editItem(HeaderDto o) {
-        return null;
+    protected boolean allowSelection() {
+        return true;
     }
 
     public void add(HeaderDto header) {

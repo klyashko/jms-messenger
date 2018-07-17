@@ -2,12 +2,18 @@ package com.idea.tools.view.components;
 
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
+import com.idea.tools.utils.GuiUtils;
+import com.idea.tools.view.button.ShowHideButton;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.ui.table.JBTable;
 import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
+
+import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.WEST;
 
 public class QueueBrowserPanel extends JPanel {
 
@@ -37,7 +43,15 @@ public class QueueBrowserPanel extends JPanel {
             }
         });
 
+        DefaultActionGroup actions = new DefaultActionGroup("showHideHeadersActionGroup", false);
+        actions.add(ShowHideButton.of(headerTable));
+
+        JPanel headersPanel = new JPanel();
+        headersPanel.setLayout(new BorderLayout());
+        headersPanel.add(GuiUtils.toolbar(actions, "showHideHeadersToolbar", false), WEST);
+        headersPanel.add(headerTable, CENTER);
+
         add(queueBrowserTable, BorderLayout.CENTER);
-        add(headerTable, BorderLayout.EAST);
+        add(headersPanel, BorderLayout.EAST);
     }
 }
