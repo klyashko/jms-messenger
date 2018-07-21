@@ -1,5 +1,6 @@
 package com.idea.tools.view;
 
+import com.idea.tools.App;
 import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.markers.Listener;
@@ -20,6 +21,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +39,6 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 
     private static final Logger logger = Logger.getLogger(ServersBrowseToolPanel.class);
 
-    private static final String UNAVAILABLE = "No server available";
-
     private static final String LOADING = "Loading...";
     private final Tree serversTree;
     private final Settings settings;
@@ -49,13 +49,14 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 
     public ServersBrowseToolPanel(final Project project) {
         super(true);
+        App.setProject(project);
         settings = settings();
         setProvideQuickActions(false);
         serversTree = createTree();
 
         this.serverListener = Listener.<ServerDto>builder()
-                .add(this::addServer)
-                .edit(this::editServer)
+                .add(s -> addOrUpdateServer())
+                .edit(s -> addOrUpdateServer())
                 .remove(this::removeServer)
                 .build();
 
@@ -138,17 +139,26 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         });
     }
 
-    private void addServer(ServerDto server) {
+    private void addOrUpdateServer() {
+        List<ServerDto> servers = settings.getServersList();
+        Collections.sort(servers);
+
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(server);
-        fillQueueTree(server, node);
-        root.add(node);
+        root.removeAllChildren();
 
+        root.setUserObject(servers);
+
+        servers.forEach(s -> {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode(s);
+            fillQueueTree(s, node);
+            root.add(node);
+        });
         model.reload(root);
     }
 
-    private void editServer(ServerDto server) {
+    private void editQueue(QueueDto queue) {
+        ServerDto server = queue.getServer();
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         @SuppressWarnings("unchecked")
@@ -161,10 +171,6 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
             model.nodeChanged(node);
             model.reload(node);
         });
-    }
-
-    private void editQueue(QueueDto queue) {
-        editServer(queue.getServer());
     }
 
     private void removeServer(ServerDto server) {
@@ -188,7 +194,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         findServerNode(data, queue.getServer()).ifPresent(serverNode -> {
             @SuppressWarnings("unchecked")
             Enumeration<DefaultMutableTreeNode> queuesData = serverNode.children();
-            findNode(queuesData, QueueDto.class, q -> q.getId().equals(queue.getId())).ifPresent(queueNode -> {
+            findQueueNode(queuesData, queue).ifPresent(queueNode -> {
                 serverNode.remove(queueNode);
                 model.reload(serverNode);
             });
@@ -197,6 +203,10 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 
     private Optional<DefaultMutableTreeNode> findServerNode(Enumeration<DefaultMutableTreeNode> data, ServerDto server) {
         return findNode(data, ServerDto.class, s -> s.getId().equals(server.getId()));
+    }
+
+    private Optional<DefaultMutableTreeNode> findQueueNode(Enumeration<DefaultMutableTreeNode> data, QueueDto queue) {
+        return findNode(data, QueueDto.class, s -> s.getId().equals(queue.getId()));
     }
 
     private <T> Optional<DefaultMutableTreeNode> findNode(Enumeration<DefaultMutableTreeNode> data, Class<T> clazz, Predicate<T> predicate) {
@@ -212,6 +222,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 
     private void fillServerTree() {
         List<ServerDto> servers = settings.getServersList();
+        Collections.sort(servers);
 
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(servers);
         DefaultTreeModel model = new DefaultTreeModel(rootNode);
@@ -228,6 +239,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     }
 
     private void fillQueueTree(ServerDto server, DefaultMutableTreeNode serverNode) {
+        Collections.sort(server.getQueues());
         server.getQueues().forEach(queue -> serverNode.add(new DefaultMutableTreeNode(queue)));
     }
 
