@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 import java.util.List;
 
 import static com.idea.tools.App.serverService;
@@ -35,6 +36,7 @@ public class ConfigurationPanel {
     @NotNull
     private ServiceConfigTable renderTable() {
         List<ServerDto> data = settings().getServersList();
+        Collections.sort(data);
         table = new ServiceConfigTable(data, this);
         serverService().addListener(table);
         return table;

@@ -5,12 +5,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Comparator;
 
 @Data
 @NoArgsConstructor
 @ToString(exclude = "server")
 @EqualsAndHashCode(exclude = "server")
-public class QueueDto {
+public class QueueDto implements Comparable<QueueDto> {
+
+    private static final Comparator<String> COMPARATOR = Comparator.nullsLast(String::compareToIgnoreCase);
 
     private String id;
     private String name;
@@ -33,4 +38,8 @@ public class QueueDto {
         return server;
     }
 
+    @Override
+    public int compareTo(@NotNull QueueDto o) {
+        return COMPARATOR.compare(name, o.name);
+    }
 }

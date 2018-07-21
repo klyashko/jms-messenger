@@ -10,12 +10,12 @@ import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.util.ArrayDeque;
+import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
 
 import static com.idea.tools.App.serverService;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
@@ -26,7 +26,6 @@ import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements Listener<ServerDto> {
 
     private final ConfigurationPanel panel;
-    private Queue<ServerDto> newServers = new ArrayDeque<>();
 
     public ServiceConfigTable(List<ServerDto> data, ConfigurationPanel panel) {
         super(tableModel(), data);
@@ -84,7 +83,7 @@ public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements
     @Nullable
     @Override
     protected ServerDto addItem() {
-        return newServers.poll();
+        return null;
     }
 
     @Override
@@ -100,10 +99,19 @@ public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements
 
     @Override
     public void add(ServerDto server) {
-        if (server != null) {
-            newServers.add(server);
-            doAdd();
-        }
+        getData().add(server);
+        Collections.sort(getData());
+        int index = getData().indexOf(server);
+        AbstractTableModel model = (AbstractTableModel) getTable().getModel();
+        model.fireTableRowsInserted(index, index);
+        getTable().setRowSelectionInterval(index, index);
     }
 
+    @Override
+    public void edit(ServerDto item) {
+        int index = getData().indexOf(item);
+        AbstractTableModel model = (AbstractTableModel) getTable().getModel();
+        model.fireTableRowsUpdated(index, index);
+        getTable().setRowSelectionInterval(index, index);
+    }
 }
