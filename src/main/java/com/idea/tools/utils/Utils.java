@@ -7,7 +7,6 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -36,10 +35,6 @@ public class Utils {
             }
         }
         return null;
-    }
-
-    public static String toString(UUID value) {
-        return value != null ? value.toString() : null;
     }
 
     public static <T> T getOrDefault(T value, T defaultValue) {

@@ -16,9 +16,9 @@ public class QueueService {
 
     public QueueService() {
         Listener<QueueDto> listener = Listener.<QueueDto>builder()
-                .add(settings().getState()::put)
-                .edit(settings().getState()::put)
-                .remove(settings().getState()::remove)
+                .add(settings()::put)
+                .edit(settings()::put)
+                .remove(settings()::remove)
                 .build();
 
         listeners.add(listener);
@@ -26,7 +26,7 @@ public class QueueService {
 
     public void persist(QueueDto dto) {
         if (dto.getId() == null) {
-            dto.setId(randomUUID());
+            dto.setId(randomUUID().toString());
         }
     }
 

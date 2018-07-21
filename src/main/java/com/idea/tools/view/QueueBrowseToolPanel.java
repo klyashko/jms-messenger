@@ -12,7 +12,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.idea.tools.App.fetch;
@@ -27,7 +26,7 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
     private JPanel rootPanel;
     private JBTabsImpl queuesTabPanel;
 
-    private Map<Pair<UUID, UUID>, TabInfo> queueTabs = new ConcurrentHashMap<>();
+    private Map<Pair<String, String>, TabInfo> queueTabs = new ConcurrentHashMap<>();
 
     public QueueBrowseToolPanel() {
         super(true);

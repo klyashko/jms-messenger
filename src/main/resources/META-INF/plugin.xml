@@ -38,6 +38,8 @@
         <projectService serviceInterface="com.idea.tools.JmsMessengerWindowManager"
                         serviceImplementation="com.idea.tools.JmsMessengerWindowManager"/>
 
+        <projectService serviceInterface="com.idea.tools.settings.Settings"
+                        serviceImplementation="com.idea.tools.settings.Settings"/>
         <projectService serviceInterface="com.idea.tools.service.ServerService"
                         serviceImplementation="com.idea.tools.service.ServerService"/>
         <projectService serviceInterface="com.idea.tools.service.QueueService"

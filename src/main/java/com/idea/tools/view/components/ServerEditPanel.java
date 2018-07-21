@@ -3,7 +3,6 @@ package com.idea.tools.view.components;
 import com.idea.tools.dto.ConnectionType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.ServerType;
-import com.idea.tools.utils.Utils;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
 import com.intellij.ui.JBColor;
@@ -160,7 +159,7 @@ public class ServerEditPanel extends JPanel {
     }
 
     private void setValues() {
-        idField.setText(Utils.toString(server.getId()));
+        idField.setText(server.getId());
         typeComboBox.setSelectedItem(getOrDefault(server.getType(), ServerType.ARTEMIS));
         updateConnectionTypeModel();
         if (server.getConnectionType() != null) {
