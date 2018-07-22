@@ -166,8 +166,7 @@ public class ServerEditPanel extends JPanel {
             connectionType.setSelectedItem(server.getConnectionType());
         }
         hostField.setText(getOrDefault(server.getHost(), "localhost"));
-//        portField.setValue(getOrDefault(server.getPort(), 61616));
-        portField.setValue(getOrDefault(server.getPort(), 8080));
+        portField.setValue(server.getPort());
         nameField.setText(server.getName());
         loginField.setText(server.getLogin());
         passwordField.setText(server.getPassword());
