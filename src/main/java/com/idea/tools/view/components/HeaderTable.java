@@ -7,10 +7,10 @@ import com.intellij.util.Consumer;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
-import java.util.ArrayDeque;
+import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
 
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.LEFT;
@@ -20,7 +20,6 @@ import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
 public class HeaderTable extends HeaderViewTable {
 
-    private Queue<HeaderDto> newHeaders = new ArrayDeque<>();
     private Consumer<HeaderDto> edit;
 
     public HeaderTable(List<HeaderDto> data, Consumer<HeaderDto> edit) {
@@ -65,7 +64,7 @@ public class HeaderTable extends HeaderViewTable {
     @Nullable
     @Override
     protected HeaderDto addItem() {
-        return newHeaders.poll();
+        return null;
     }
 
     @Override
@@ -78,11 +77,14 @@ public class HeaderTable extends HeaderViewTable {
         return true;
     }
 
+    @SuppressWarnings("Duplicates")
     public void add(HeaderDto header) {
-        if (header != null) {
-            newHeaders.add(header);
-            doAdd();
-        }
+        getData().add(header);
+        Collections.sort(getData());
+        int index = getData().indexOf(header);
+        AbstractTableModel model = (AbstractTableModel) getTable().getModel();
+        model.fireTableRowsInserted(index, index);
+        getTable().setRowSelectionInterval(index, index);
     }
 
 }

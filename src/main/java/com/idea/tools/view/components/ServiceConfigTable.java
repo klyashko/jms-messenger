@@ -98,6 +98,7 @@ public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     public void add(ServerDto server) {
         getData().add(server);
         Collections.sort(getData());

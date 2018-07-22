@@ -10,13 +10,14 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.*;
 import java.util.List;
 
+import static com.idea.tools.utils.Utils.sort;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
 
 public class HeaderViewTable extends AddEditRemovePanel<HeaderDto> {
 
     public HeaderViewTable(List<HeaderDto> data) {
-        super(tableModel(), data);
+        super(tableModel(), sort(data));
         render();
     }
 

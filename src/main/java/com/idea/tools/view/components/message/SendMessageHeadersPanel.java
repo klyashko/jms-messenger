@@ -4,6 +4,7 @@ import com.idea.tools.dto.HeaderDto;
 import com.idea.tools.view.components.HeaderTable;
 
 import javax.swing.*;
+import java.util.Collections;
 import java.util.List;
 
 public class SendMessageHeadersPanel extends ViewMessageHeadersPanel {
@@ -34,6 +35,7 @@ public class SendMessageHeadersPanel extends ViewMessageHeadersPanel {
                     }
                     return h;
                 });
+                Collections.sort(table.getData());
                 table.repaint();
             }
             table.getTable().clearSelection();

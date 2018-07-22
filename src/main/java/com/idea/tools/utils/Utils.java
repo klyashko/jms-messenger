@@ -5,6 +5,7 @@ import lombok.extern.apachecommons.CommonsLog;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -43,6 +44,11 @@ public class Utils {
 
     public static <T, R> Function<T, R> cast(Class<R> clazz) {
         return value -> clazz.isInstance(value) ? clazz.cast(value) : null;
+    }
+
+    public static <T extends Comparable<? super T>> List<T> sort(List<T> source) {
+        Collections.sort(source);
+        return source;
     }
 
     public static URI uri(String url) {
