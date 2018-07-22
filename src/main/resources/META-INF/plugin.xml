@@ -1,26 +1,58 @@
 <idea-plugin>
-    <id>com.tool.plugins.idea-messenger</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>jms-messenger</id>
+    <name>Jms messenger</name>
+    <vendor email="kipill_90@mail.ru" url="https://github.com/klyashko/jms-messenger">
+        Lyashko Kirill
+    </vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+<h4>Description:</h4>
+This is a plugin for providing jms support.
+Plugin supports:
+<ul>
+ <li>browsing messages</li>
+ <li>deleting messages</li>
+ <li>sending messages</li>
+</ul>
+
+<h4>Requirements:</h4>
+<ul>
+ <li>Jdk 1.8 or higher</li>
+ <li>Version of ide 2018 or higher</li>
+</ul>
+
+<h4>Usages:</h4>
+ Designed to be used for development or testing purposes
+
+<h4>Supported jms providers:</h4>
+<ul>
+ <li>Wildfly 10.x.x or higher (Artemis)</li>
+ <li>Artemis (over HTTP or TCP)</li>
+ <li>Wildfly 9.x.x (HornetQ)</li>
+ <li>ActiveMq (over TCP)</li>
+ <li>HornetQ (over HTTP)</li>
+</ul>
+
+<h4>Limitation:</h4>
+<ul>
+ <li>Currently only queue destinations are supported.</li>
+ <li>Only text messages may be send or browse.</li>
+</ul>
+
+<h4>Suggestions and bug reports:</h4>
+ In case of finding bug or having a suggestion about new features or supported providers you can open a ticket on
+ <a href="https://github.com/klyashko/jms-messenger/issues">Github</a> or contact me directly.
     ]]></description>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
     <depends>com.intellij.modules.lang</depends>
-    -->
 
     <idea-version since-build="162"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
+         on how to target different products
+         To enable plugin in all products -->
     <depends>com.intellij.modules.lang</depends>
-    -->
+
     <project-components>
         <component>
             <implementation-class>com.idea.tools.JmsMessengerComponent</implementation-class>
@@ -47,5 +79,9 @@
         <projectService serviceInterface="com.idea.tools.service.JmsService"
                         serviceImplementation="com.idea.tools.service.JmsService"/>
     </extensions>
-
+    <change-notes><![CDATA[
+<a href="https://github.com/klyashko/jms-messenger/blob/master/CHANGELOG.md">Changelog</a><br/>
+<a href="https://github.com/klyashko/jms-messenger/blob/master/README.md">Readme</a><br/>
+<a href="https://github.com/klyashko/jms-messenger/blob/master/LICENSE.txt">License</a><br/>
+]]> </change-notes>
 </idea-plugin>
