@@ -49,6 +49,15 @@ public class GuiUtils {
         }
     }
 
+    public static void showDialog(JFrame dialog, String title) {
+        SwingUtilities.invokeLater(() -> {
+            dialog.setLocationRelativeTo(null);
+            dialog.setTitle(title);
+            dialog.pack();
+            dialog.setVisible(true);
+        });
+    }
+
     public static DocumentListener simpleListener(Consumer<DocumentEvent> consumer) {
         return new DocumentListener() {
             @Override

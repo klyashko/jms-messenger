@@ -2,6 +2,7 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.QueueDto;
+import com.idea.tools.utils.GuiUtils;
 import com.idea.tools.view.components.message.ViewMessageHeadersPanel;
 import com.idea.tools.view.components.message.ViewMessageMainPanel;
 import com.idea.tools.view.components.message.ViewMessagePayloadPanel;
@@ -19,29 +20,20 @@ public class ViewMessageDialog extends JFrame {
     protected JButton sendButton;
     protected JButton closeButton;
     protected JCheckBox closeAfterSendCheckBox;
-    private MessageDto message;
-    private QueueDto queue;
     private JPanel rootPanel;
     private JPanel tabPanel;
 
+    private Optional<MessageDto> message = Optional.empty();
+    private Optional<QueueDto> queue = Optional.empty();
+
     protected ViewMessageDialog(QueueDto queue) {
-        this.queue = queue;
+        this.queue = Optional.of(queue);
         render();
     }
 
-    private ViewMessageDialog(MessageDto message) {
-        this.message = message;
+    protected ViewMessageDialog(MessageDto message) {
+        this.message = Optional.of(message);
         render();
-    }
-
-    public static void showDialog(MessageDto message) {
-        SwingUtilities.invokeLater(() -> {
-            ViewMessageDialog dialog = new ViewMessageDialog(message);
-            dialog.setLocationRelativeTo(null);
-            dialog.setTitle("Message");
-            dialog.pack();
-            dialog.setVisible(true);
-        });
     }
 
     @Override
@@ -49,11 +41,15 @@ public class ViewMessageDialog extends JFrame {
         super.dispose();
     }
 
+    public static void showDialog(MessageDto message) {
+        GuiUtils.showDialog(new ViewMessageDialog(message), "Message");
+    }
+
     private void render() {
         JBTabsImpl tabs = new JBTabsImpl(getProject());
-        tabs.addTab(new TabInfo(mainPanel(queue)).setText("Main"));
-        tabs.addTab(new TabInfo(headersPanel()).setText("Headers"));
-        tabs.addTab(new TabInfo(payloadPanel()).setText("Payload"));
+        tabs.addTab(new TabInfo(mainPanel(queue, message)).setText("Main"));
+        tabs.addTab(new TabInfo(headersPanel(queue, message)).setText("Headers"));
+        tabs.addTab(new TabInfo(payloadPanel(queue, message)).setText("Payload"));
 
         tabPanel.add(tabs);
 
@@ -69,16 +65,19 @@ public class ViewMessageDialog extends JFrame {
         closeButton.addActionListener(event -> dispose());
     }
 
-    protected ViewMessageMainPanel mainPanel(QueueDto queue) {
-        return new ViewMessageMainPanel(message);
+    protected ViewMessageMainPanel mainPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
+        return message.map(ViewMessageMainPanel::new)
+                .orElseThrow(() -> new IllegalArgumentException("Message must not me empty"));
     }
 
-    protected ViewMessageHeadersPanel headersPanel() {
-        return new ViewMessageHeadersPanel(message.getHeaders());
+    protected ViewMessageHeadersPanel headersPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
+        return message.map(msg -> new ViewMessageHeadersPanel(msg.getHeaders()))
+                .orElseThrow(() -> new IllegalArgumentException("Message must not me empty"));
     }
 
-    protected ViewMessagePayloadPanel payloadPanel() {
-        return new ViewMessagePayloadPanel(Optional.of(message));
+    protected ViewMessagePayloadPanel payloadPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
+        return message.map(ViewMessagePayloadPanel::new)
+                .orElseThrow(() -> new IllegalArgumentException("Message must not me empty"));
     }
 
 }

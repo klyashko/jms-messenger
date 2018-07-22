@@ -11,14 +11,14 @@ public class ViewMessagePayloadPanel extends JPanel {
     protected JTextArea payloadField;
 
     private JPanel rootPanel;
-    private Optional<MessageDto> messageDto = Optional.empty();
+    private Optional<MessageDto> message = Optional.empty();
 
     public ViewMessagePayloadPanel() {
-        this(Optional.empty());
+        this(null);
     }
 
-    public ViewMessagePayloadPanel(Optional<MessageDto> messageDto) {
-        this.messageDto = messageDto;
+    public ViewMessagePayloadPanel(MessageDto message) {
+        this.message = Optional.ofNullable(message);
         render();
     }
 
@@ -30,7 +30,7 @@ public class ViewMessagePayloadPanel extends JPanel {
     }
 
     private void setValues() {
-        messageDto.ifPresent(m -> payloadField.setText(m.getPayload()));
+        message.ifPresent(m -> payloadField.setText(m.getPayload()));
     }
 
     protected boolean isEditable() {

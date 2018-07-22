@@ -2,6 +2,7 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.ServerDto;
+import com.idea.tools.utils.GuiUtils;
 
 import javax.swing.*;
 
@@ -34,20 +35,11 @@ public class QueueEditDialog extends JFrame {
     }
 
     public static void showDialog(ServerDto server) {
-        showDialog(new QueueEditDialog(server));
+        GuiUtils.showDialog(new QueueEditDialog(server), "Queue settings");
     }
 
     public static void showDialog(QueueDto queue) {
-        showDialog(new QueueEditDialog(queue));
-    }
-
-    private static void showDialog(QueueEditDialog dialog) {
-        SwingUtilities.invokeLater(() -> {
-            dialog.setLocationRelativeTo(null);
-            dialog.setTitle("Queue settings");
-            dialog.pack();
-            dialog.setVisible(true);
-        });
+        GuiUtils.showDialog(new QueueEditDialog(queue), "Queue settings");
     }
 
     private void render() {

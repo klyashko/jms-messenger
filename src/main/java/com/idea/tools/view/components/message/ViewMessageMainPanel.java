@@ -8,6 +8,7 @@ import com.intellij.ui.EnumComboBoxModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 import static com.idea.tools.utils.GuiUtils.createNumberInputField;
 import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
@@ -15,50 +16,51 @@ import static java.awt.BorderLayout.CENTER;
 
 public class ViewMessageMainPanel extends JPanel {
 
-    protected QueueDto queue;
     protected JPanel rootPanel;
     protected JTextField serverField;
     protected JTextField queueField;
     protected JTextField jmsTypeField;
     protected JFormattedTextField timestampField;
     protected JComboBox<ContentType> contentTypeField;
-    private MessageDto message;
+    protected QueueDto queue;
+    private Optional<MessageDto> message = Optional.empty();
 
     public ViewMessageMainPanel(MessageDto message) {
-        this(message.getQueue());
-        this.message = message;
-        this.queue = message.getQueue();
-        setMessageValues();
+        this(null, message);
     }
 
     public ViewMessageMainPanel(QueueDto queue) {
-        this.queue = queue;
+        this(queue, null);
+    }
+
+    private ViewMessageMainPanel(QueueDto queue, MessageDto message) {
+        this.message = Optional.ofNullable(message);
+        this.queue = this.message.map(MessageDto::getQueue).orElse(queue);
         render();
     }
 
     private void render() {
         setLayout(new BorderLayout());
 
-        jmsTypeField.setEditable(isEditable());
+        jmsTypeField.setEditable(!isReadOnly());
         add(createScrollPane(rootPanel), CENTER);
 
-        setQueueValues();
+        setValues();
     }
 
-    protected boolean isEditable() {
-        return false;
+    protected boolean isReadOnly() {
+        return true;
     }
 
-    private void setMessageValues() {
-        timestampField.setValue(message.getTimestamp());
-        jmsTypeField.setText(message.getJmsType());
-        contentTypeField.setSelectedItem(message.getType());
-    }
-
-    private void setQueueValues() {
+    private void setValues() {
         serverField.setText(queue.getServer().getName());
         queueField.setText(queue.getName());
         timestampField.setValue(System.currentTimeMillis());
+        message.ifPresent(msg -> {
+            timestampField.setValue(msg.getTimestamp());
+            jmsTypeField.setText(msg.getJmsType());
+            contentTypeField.setSelectedItem(msg.getType());
+        });
     }
 
     protected void createUIComponents() {

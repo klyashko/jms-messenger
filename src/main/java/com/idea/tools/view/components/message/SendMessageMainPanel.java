@@ -5,6 +5,10 @@ import com.idea.tools.dto.QueueDto;
 
 public class SendMessageMainPanel extends ViewMessageMainPanel {
 
+    public SendMessageMainPanel(MessageDto message) {
+        super(message);
+    }
+
     public SendMessageMainPanel(QueueDto queue) {
         super(queue);
     }
@@ -17,7 +21,7 @@ public class SendMessageMainPanel extends ViewMessageMainPanel {
     }
 
     @Override
-    protected boolean isEditable() {
-        return true;
+    protected boolean isReadOnly() {
+        return false;
     }
 }
