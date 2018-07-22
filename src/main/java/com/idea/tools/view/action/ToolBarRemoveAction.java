@@ -2,13 +2,13 @@ package com.idea.tools.view.action;
 
 import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.ServerDto;
+import com.idea.tools.dto.TemplateMessageDto;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import javax.swing.*;
 
-import static com.idea.tools.App.queueService;
-import static com.idea.tools.App.serverService;
+import static com.idea.tools.App.*;
 import static com.intellij.util.IconUtil.getRemoveIcon;
 
 public class ToolBarRemoveAction extends AbstractBrowserPanelAction {
@@ -25,12 +25,14 @@ public class ToolBarRemoveAction extends AbstractBrowserPanelAction {
             serversPanel.getSelectedValue(ServerDto.class).ifPresent(serverService()::remove);
         } else if (isSelected(QueueDto.class)) {
             serversPanel.getSelectedValue(QueueDto.class).ifPresent(queueService()::remove);
+        } else if (isSelected(TemplateMessageDto.class)) {
+            serversPanel.getSelectedValue(TemplateMessageDto.class).ifPresent(templateService()::remove);
         }
     }
 
     @Override
     public void update(AnActionEvent event) {
-        boolean enable = isSelected(ServerDto.class) || isSelected(QueueDto.class);
+        boolean enable = isSelected(ServerDto.class) || isSelected(QueueDto.class) || isSelected(TemplateMessageDto.class);
         event.getPresentation().setEnabled(enable);
     }
 }

@@ -55,7 +55,7 @@ public class HeaderEditPanel extends JPanel {
 
     private void setValues() {
         nameField.setText(header.getName());
-        valueField.setText(getOrDefault(header.getValue(), "").toString());
+        valueField.setText(getOrDefault(header.getValue(), ""));
     }
 
     private void enableButton() {

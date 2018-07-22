@@ -27,6 +27,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static com.idea.tools.App.*;
 import static com.idea.tools.JmsMessengerWindowManager.JMS_MESSENGER_WINDOW_ID;
@@ -121,6 +122,9 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     private void installActionsInPopupMenu() {
         DefaultActionGroup popup = new DefaultActionGroup("JmsMessengerPopupAction", true);
 
+        popup.add(new PopupRemoveTemplateAction(this));
+        popup.add(new PopupEditTemplateAction(this));
+        popup.addSeparator();
         popup.add(new PopupRemoveQueueAction(this));
         popup.add(new PopupEditQueueAction(this));
         popup.add(new PopupAddQueueAction(this));
@@ -129,8 +133,8 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         popup.add(new PopupSendMessageAction(this));
         popup.add(new PopupBrowseQueueAction(this));
         popup.addSeparator();
-        popup.add(new PopupEditServerAction(this));
         popup.add(new PopupRemoveServerAction(this));
+        popup.add(new PopupEditServerAction(this));
 
         installPopupHandler(serversTree, popup, "POPUP", ActionManager.getInstance());
     }
@@ -199,11 +203,10 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     private void removeQueue(QueueDto queue) {
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        @SuppressWarnings("unchecked")
-        Enumeration<DefaultMutableTreeNode> data = root.children();
+        Supplier<Enumeration<DefaultMutableTreeNode>> data = root::children;
 
-        findServerNode(data, queue.getServer()).ifPresent(serverNode ->
-                findQueueNode(data, queue).ifPresent(queueNode -> {
+        findServerNode(data.get(), queue.getServer()).ifPresent(serverNode ->
+                findQueueNode(data.get(), queue).ifPresent(queueNode -> {
                     serverNode.remove(queueNode);
                     model.reload(serverNode);
                 }));
@@ -212,11 +215,11 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     private void removeTemplate(TemplateMessageDto template) {
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        @SuppressWarnings("unchecked")
-        Enumeration<DefaultMutableTreeNode> data = root.children();
 
-        findQueueNode(data, template.getQueue()).ifPresent(queueNode ->
-                findTemplateNode(data, template).ifPresent(templateNode -> {
+        Supplier<Enumeration<DefaultMutableTreeNode>> data = root::children;
+
+        findQueueNode(data.get(), template.getQueue()).ifPresent(queueNode ->
+                findTemplateNode(data.get(), template).ifPresent(templateNode -> {
                     queueNode.remove(templateNode);
                     model.reload(queueNode);
                 }));

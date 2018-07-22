@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class HeaderDto {
 
     private String name;
-    private Object value;
+    private String value;
 
 }

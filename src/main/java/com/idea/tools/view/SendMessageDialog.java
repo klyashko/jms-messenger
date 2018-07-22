@@ -9,6 +9,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -22,7 +23,7 @@ public class SendMessageDialog extends ViewMessageDialog {
     private static final String SEND_SUCCESS_TEMPLATE = "Message has been successfully sent to queue %s";
     private static final String SEND_FAIL_TEMPLATE = "Message hasn't been sent. Reason: \n%s";
 
-    private SendMessageDialog(MessageDto message) {
+    protected SendMessageDialog(MessageDto message) {
         super(message);
         render();
     }
@@ -32,11 +33,11 @@ public class SendMessageDialog extends ViewMessageDialog {
         render();
     }
 
-    private void render() {
-        sendButton.setVisible(true);
-        closeAfterSendCheckBox.setVisible(true);
+    private void render() { }
 
-        sendButton.addActionListener(event -> {
+    @Override
+    protected void actionButton(JButton actionButton) {
+        actionButton.addActionListener(event -> {
             MessageDto msg = new MessageDto();
             fillMessage(msg);
 
@@ -53,6 +54,10 @@ public class SendMessageDialog extends ViewMessageDialog {
                 LOGGER.error("An exception has been thrown during a message sending", ex);
             }
         });
+    }
+
+    @Override
+    protected void closeAfterSendCheckBox(JCheckBox closeAfterSendCheckBox) {
     }
 
     public static void showDialog(QueueDto queue) {
@@ -81,7 +86,7 @@ public class SendMessageDialog extends ViewMessageDialog {
 
     @Override
     protected ViewMessagePayloadPanel payloadPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
-        return new SendMessagePayloadPanel();
+        return message.map(SendMessagePayloadPanel::new).orElseGet(SendMessagePayloadPanel::new);
     }
 
 }

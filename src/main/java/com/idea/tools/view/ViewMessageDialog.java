@@ -21,13 +21,13 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ViewMessageDialog extends JFrame {
 
-    protected JButton sendButton;
+    protected JButton actionButton;
     protected JButton closeButton;
     protected JCheckBox closeAfterSendCheckBox;
     private JPanel rootPanel;
     private JPanel tabPanel;
-    private JTextField templateNameField;
-    private JButton saveAsTemplateButton;
+    protected JTextField templateNameField;
+    protected JButton saveAsTemplateButton;
     private JPanel buttonsPanel;
 
     private ViewMessageMainPanel mainPanel;
@@ -72,28 +72,46 @@ public class ViewMessageDialog extends JFrame {
         IdeGlassPaneImpl pane = new IdeGlassPaneImpl(rootPane);
         setGlassPane(pane);
 
-        sendButton.setVisible(false);
-        closeAfterSendCheckBox.setVisible(false);
-        saveAsTemplateButton.setEnabled(false);
-        templateNameField.getDocument().addDocumentListener(
-                simpleListener(event -> saveAsTemplateButton.setEnabled(isNotBlank(templateNameField.getText())))
-        );
-        saveAsTemplateButton.addActionListener(event -> {
-            TemplateMessageDto template = new TemplateMessageDto();
-            fillMessage(template);
-            template.setName(templateNameField.getText());
-            templateService().saveOrUpdate(template);
-        });
+        actionButton(actionButton);
+        closeAfterSendCheckBox(closeAfterSendCheckBox);
+        saveAsTemplateButton(saveAsTemplateButton);
+        templateNameField(templateNameField);
 
         add(rootPanel);
 
         closeButton.addActionListener(event -> dispose());
     }
 
+    protected void actionButton(JButton actionButton) {
+        actionButton.setVisible(false);
+    }
+
+    protected void closeAfterSendCheckBox(JCheckBox closeAfterSendCheckBox) {
+        closeAfterSendCheckBox.setVisible(false);
+    }
+
+    protected void saveAsTemplateButton(JButton saveAsTemplateButton) {
+        saveAsTemplateButton.setEnabled(false);
+        saveAsTemplateButton.addActionListener(event -> {
+            TemplateMessageDto template = new TemplateMessageDto();
+            fillMessage(template);
+            templateService().saveOrUpdate(template);
+        });
+    }
+
+    protected void templateNameField(JTextField templateNameField) {
+        templateNameField.getDocument().addDocumentListener(
+                simpleListener(event -> saveAsTemplateButton.setEnabled(isNotBlank(templateNameField.getText())))
+        );
+    }
+
     protected void fillMessage(MessageDto msg) {
         mainPanel.fillMessage(msg);
         headersPanel.fillMessage(msg);
         payloadPanel.fillMessage(msg);
+        if (msg instanceof TemplateMessageDto) {
+            ((TemplateMessageDto) msg).setName(templateNameField.getText());
+        }
     }
 
     protected ViewMessageMainPanel mainPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {

@@ -31,7 +31,12 @@ public class Settings implements PersistentStateComponent<Settings> {
     public static Settings getOrCreate(Project project) {
         return settings.orElseGet(() -> {
             Settings settings = ServiceManager.getService(project, Settings.class);
-            settings.servers.forEach((id, server) -> server.getQueues().forEach(queue -> queue.setServer(server)));
+            settings.servers.forEach((id, server) ->
+                    server.getQueues().forEach(queue -> {
+                        queue.setServer(server);
+                        queue.getTemplates().forEach(template -> template.setQueue(queue));
+                    })
+            );
             Settings.settings = Optional.of(settings);
             return settings;
         });
