@@ -152,22 +152,17 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 
     private void addOrUpdateTemplate(TemplateMessageDto template) {
         QueueDto queue = template.getQueue();
-        ServerDto server = queue.getServer();
 
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> serverNodes = root.children();
 
-        findServerNode(serverNodes, server).ifPresent(serverNode -> {
-            @SuppressWarnings("unchecked")
-            Enumeration<DefaultMutableTreeNode> queueNodes = serverNode.children();
-            findQueueNode(queueNodes, queue).ifPresent(node -> {
-                node.removeAllChildren();
-                fillTemplateTree(queue, node);
-                model.nodeChanged(node);
-                model.reload(node);
-            });
+        findQueueNode(serverNodes, queue).ifPresent(node -> {
+            node.removeAllChildren();
+            fillTemplateTree(queue, node);
+            model.nodeChanged(node);
+            model.reload(node);
         });
     }
 
@@ -207,48 +202,44 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> data = root.children();
 
-        findServerNode(data, queue.getServer()).ifPresent(serverNode -> {
-            @SuppressWarnings("unchecked")
-            Enumeration<DefaultMutableTreeNode> queuesData = serverNode.children();
-            findQueueNode(queuesData, queue).ifPresent(queueNode -> {
-                serverNode.remove(queueNode);
-                model.reload(serverNode);
-            });
-        });
+        findServerNode(data, queue.getServer()).ifPresent(serverNode ->
+                findQueueNode(data, queue).ifPresent(queueNode -> {
+                    serverNode.remove(queueNode);
+                    model.reload(serverNode);
+                }));
     }
 
     private void removeTemplate(TemplateMessageDto template) {
-        QueueDto queue = template.getQueue();
-        ServerDto server = queue.getServer();
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> data = root.children();
 
-        findServerNode(data, server).ifPresent(serverNode -> {
-            @SuppressWarnings("unchecked")
-            Enumeration<DefaultMutableTreeNode> queuesData = serverNode.children();
-            findQueueNode(queuesData, queue).ifPresent(queueNode -> {
-                @SuppressWarnings("unchecked")
-                Enumeration<DefaultMutableTreeNode> templatesData = queueNode.children();
-                findTemplateNode(templatesData, template).ifPresent(templateNode -> {
+        findQueueNode(data, template.getQueue()).ifPresent(queueNode ->
+                findTemplateNode(data, template).ifPresent(templateNode -> {
                     queueNode.remove(templateNode);
                     model.reload(queueNode);
-                });
-            });
-        });
+                }));
     }
 
     private Optional<DefaultMutableTreeNode> findServerNode(Enumeration<DefaultMutableTreeNode> data, ServerDto server) {
         return findNode(data, ServerDto.class, s -> s.getId().equals(server.getId()));
     }
 
-    private Optional<DefaultMutableTreeNode> findTemplateNode(Enumeration<DefaultMutableTreeNode> data, TemplateMessageDto template) {
-        return findNode(data, TemplateMessageDto.class, t -> t.getId().equals(template.getId()));
+    private Optional<DefaultMutableTreeNode> findQueueNode(Enumeration<DefaultMutableTreeNode> data, QueueDto queue) {
+        return findServerNode(data, queue.getServer()).flatMap(serverNode -> {
+            @SuppressWarnings("unchecked")
+            Enumeration<DefaultMutableTreeNode> queues = serverNode.children();
+            return findNode(queues, QueueDto.class, s -> s.getId().equals(queue.getId()));
+        });
     }
 
-    private Optional<DefaultMutableTreeNode> findQueueNode(Enumeration<DefaultMutableTreeNode> data, QueueDto queue) {
-        return findNode(data, QueueDto.class, s -> s.getId().equals(queue.getId()));
+    private Optional<DefaultMutableTreeNode> findTemplateNode(Enumeration<DefaultMutableTreeNode> data, TemplateMessageDto template) {
+        return findQueueNode(data, template.getQueue()).flatMap(queueNode -> {
+            @SuppressWarnings("unchecked")
+            Enumeration<DefaultMutableTreeNode> templates = queueNode.children();
+            return findNode(templates, TemplateMessageDto.class, t -> t.getId().equals(template.getId()));
+        });
     }
 
     private <T> Optional<DefaultMutableTreeNode> findNode(Enumeration<DefaultMutableTreeNode> data, Class<T> clazz, Predicate<T> predicate) {
