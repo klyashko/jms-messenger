@@ -1,5 +1,6 @@
 package com.idea.tools.dto;
 
+import com.intellij.util.xmlb.annotations.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -24,4 +25,8 @@ public class MessageDto {
     private QueueDto queue;
     private List<HeaderDto> headers = new ArrayList<>();
 
+    @Transient
+    public QueueDto getQueue() {
+        return queue;
+    }
 }

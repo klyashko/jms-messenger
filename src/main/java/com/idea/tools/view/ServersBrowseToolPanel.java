@@ -3,6 +3,7 @@ package com.idea.tools.view;
 import com.idea.tools.App;
 import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.ServerDto;
+import com.idea.tools.dto.TemplateMessageDto;
 import com.idea.tools.markers.Listener;
 import com.idea.tools.settings.Settings;
 import com.idea.tools.view.action.*;
@@ -46,6 +47,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     private JPanel serverPanel;
     private Listener<ServerDto> serverListener;
     private Listener<QueueDto> queueListener;
+    private Listener<TemplateMessageDto> templateListener;
 
     public ServersBrowseToolPanel(final Project project) {
         super(true);
@@ -61,13 +63,20 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
                 .build();
 
         this.queueListener = Listener.<QueueDto>builder()
-                .add(this::addQueue)
-                .edit(this::editQueue)
+                .add(this::addOrUpdateQueue)
+                .edit(this::addOrUpdateQueue)
                 .remove(this::removeQueue)
+                .build();
+
+        this.templateListener = Listener.<TemplateMessageDto>builder()
+                .add(this::addOrUpdateTemplate)
+                .edit(this::addOrUpdateTemplate)
+                .remove(this::removeTemplate)
                 .build();
 
         serverService().addListener(serverListener);
         queueService().addListener(queueListener);
+        templateService().addListener(templateListener);
 
         serverPanel.setLayout(new BorderLayout());
         serverPanel.add(createScrollPane(serversTree), CENTER);
@@ -83,6 +92,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     public void dispose() {
         serverService().removeListener(serverListener);
         queueService().removeListener(queueListener);
+        templateService().removeListener(templateListener);
         toolWindowManager().unregisterToolWindow(JMS_MESSENGER_WINDOW_ID);
     }
 
@@ -125,17 +135,39 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         installPopupHandler(serversTree, popup, "POPUP", ActionManager.getInstance());
     }
 
-    private void addQueue(QueueDto queue) {
+    private void addOrUpdateQueue(QueueDto queue) {
+        ServerDto server = queue.getServer();
         DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         @SuppressWarnings("unchecked")
         Enumeration<DefaultMutableTreeNode> data = root.children();
 
-        findServerNode(data, queue.getServer()).ifPresent(node -> {
+        findServerNode(data, server).ifPresent(node -> {
             node.removeAllChildren();
-            fillQueueTree(queue.getServer(), node);
+            fillQueueTree(server, node);
             model.nodeChanged(node);
             model.reload(node);
+        });
+    }
+
+    private void addOrUpdateTemplate(TemplateMessageDto template) {
+        QueueDto queue = template.getQueue();
+        ServerDto server = queue.getServer();
+
+        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        @SuppressWarnings("unchecked")
+        Enumeration<DefaultMutableTreeNode> serverNodes = root.children();
+
+        findServerNode(serverNodes, server).ifPresent(serverNode -> {
+            @SuppressWarnings("unchecked")
+            Enumeration<DefaultMutableTreeNode> queueNodes = serverNode.children();
+            findQueueNode(queueNodes, queue).ifPresent(node -> {
+                node.removeAllChildren();
+                fillTemplateTree(queue, node);
+                model.nodeChanged(node);
+                model.reload(node);
+            });
         });
     }
 
@@ -155,22 +187,6 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
             root.add(node);
         });
         model.reload(root);
-    }
-
-    private void editQueue(QueueDto queue) {
-        ServerDto server = queue.getServer();
-        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        @SuppressWarnings("unchecked")
-        Enumeration<DefaultMutableTreeNode> data = root.children();
-
-        findServerNode(data, server).ifPresent(node -> {
-            node.removeAllChildren();
-            node.setUserObject(server);
-            fillQueueTree(server, node);
-            model.nodeChanged(node);
-            model.reload(node);
-        });
     }
 
     private void removeServer(ServerDto server) {
@@ -201,8 +217,34 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         });
     }
 
+    private void removeTemplate(TemplateMessageDto template) {
+        QueueDto queue = template.getQueue();
+        ServerDto server = queue.getServer();
+        DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        @SuppressWarnings("unchecked")
+        Enumeration<DefaultMutableTreeNode> data = root.children();
+
+        findServerNode(data, server).ifPresent(serverNode -> {
+            @SuppressWarnings("unchecked")
+            Enumeration<DefaultMutableTreeNode> queuesData = serverNode.children();
+            findQueueNode(queuesData, queue).ifPresent(queueNode -> {
+                @SuppressWarnings("unchecked")
+                Enumeration<DefaultMutableTreeNode> templatesData = queueNode.children();
+                findTemplateNode(templatesData, template).ifPresent(templateNode -> {
+                    queueNode.remove(templateNode);
+                    model.reload(queueNode);
+                });
+            });
+        });
+    }
+
     private Optional<DefaultMutableTreeNode> findServerNode(Enumeration<DefaultMutableTreeNode> data, ServerDto server) {
         return findNode(data, ServerDto.class, s -> s.getId().equals(server.getId()));
+    }
+
+    private Optional<DefaultMutableTreeNode> findTemplateNode(Enumeration<DefaultMutableTreeNode> data, TemplateMessageDto template) {
+        return findNode(data, TemplateMessageDto.class, t -> t.getId().equals(template.getId()));
     }
 
     private Optional<DefaultMutableTreeNode> findQueueNode(Enumeration<DefaultMutableTreeNode> data, QueueDto queue) {
@@ -240,7 +282,16 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 
     private void fillQueueTree(ServerDto server, DefaultMutableTreeNode serverNode) {
         Collections.sort(server.getQueues());
-        server.getQueues().forEach(queue -> serverNode.add(new DefaultMutableTreeNode(queue)));
+        server.getQueues().forEach(queue -> {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode(queue);
+            fillTemplateTree(queue, node);
+            serverNode.add(node);
+        });
+    }
+
+    private void fillTemplateTree(QueueDto queue, DefaultMutableTreeNode queueNode) {
+        Collections.sort(queue.getTemplates());
+        queue.getTemplates().forEach(template -> queueNode.add(new DefaultMutableTreeNode(template)));
     }
 
     private Tree createTree() {
@@ -264,9 +315,9 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 
     public <T> Optional<T> getSelectedValue(Class<T> clazz) {
         return Optional.ofNullable(serversTree.getLastSelectedPathComponent())
-                       .map(cast(DefaultMutableTreeNode.class))
-                       .map(DefaultMutableTreeNode::getUserObject)
-                       .map(cast(clazz));
+                .map(cast(DefaultMutableTreeNode.class))
+                .map(DefaultMutableTreeNode::getUserObject)
+                .map(cast(clazz));
     }
 
 }

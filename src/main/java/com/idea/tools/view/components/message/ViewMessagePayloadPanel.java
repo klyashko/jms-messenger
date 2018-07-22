@@ -22,6 +22,10 @@ public class ViewMessagePayloadPanel extends JPanel {
         render();
     }
 
+    public void fillMessage(MessageDto dto) {
+        dto.setPayload(payloadField.getText());
+    }
+
     private void render() {
         setValues();
         payloadField.setLineWrap(true);

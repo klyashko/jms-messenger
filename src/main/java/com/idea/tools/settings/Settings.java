@@ -2,6 +2,7 @@ package com.idea.tools.settings;
 
 import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.ServerDto;
+import com.idea.tools.dto.TemplateMessageDto;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
@@ -65,6 +66,20 @@ public class Settings implements PersistentStateComponent<Settings> {
         queues.add(queue);
     }
 
+    public void put(TemplateMessageDto template) {
+        QueueDto queue = template.getQueue();
+        List<TemplateMessageDto> templates = queue.getTemplates();
+
+        for (int i = 0; i < templates.size(); i++) {
+            TemplateMessageDto t = templates.get(i);
+            if (t.getId().equals(template.getId())) {
+                templates.set(i, template);
+                return;
+            }
+        }
+        templates.add(template);
+    }
+
     public void remove(ServerDto server) {
         if (server != null) {
             servers.remove(server.getId());
@@ -72,15 +87,11 @@ public class Settings implements PersistentStateComponent<Settings> {
     }
 
     public void remove(QueueDto queue) {
-        ServerDto server = queue.getServer();
-        List<QueueDto> queues = server.getQueues();
-        for (int i = 0; i < queues.size(); i++) {
-            QueueDto q = queues.get(i);
-            if (q.getId().equals(queue.getId())) {
-                queues.remove(i);
-                return;
-            }
-        }
+        queue.getServer().getQueues().removeIf(q -> q.getId().equals(queue.getId()));
+    }
+
+    public void remove(TemplateMessageDto template) {
+        template.getQueue().getTemplates().removeIf(t -> t.getId().equals(template.getId()));
     }
 
     @Override

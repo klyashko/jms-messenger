@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
-@ToString(exclude = "server")
-@EqualsAndHashCode(exclude = "server")
+@ToString(exclude = {"server", "templates"})
+@EqualsAndHashCode(exclude = {"server", "templates"})
 public class QueueDto implements Comparable<QueueDto> {
 
     private static final Comparator<String> COMPARATOR = Comparator.nullsLast(String::compareToIgnoreCase);
@@ -21,6 +23,7 @@ public class QueueDto implements Comparable<QueueDto> {
     private String name;
     private ServerDto server;
     private boolean addedManually;
+    private List<TemplateMessageDto> templates = new ArrayList<>();
 
     public QueueDto(String id, String name, ServerDto server) {
         this.id = id;

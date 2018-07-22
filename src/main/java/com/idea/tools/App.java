@@ -3,6 +3,7 @@ package com.idea.tools;
 import com.idea.tools.service.JmsService;
 import com.idea.tools.service.QueueService;
 import com.idea.tools.service.ServerService;
+import com.idea.tools.service.TemplateService;
 import com.idea.tools.settings.Settings;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.ShowSettingsUtil;
@@ -20,6 +21,7 @@ public class App {
     private static Settings settings;
     private static ServerService serverService;
     private static QueueService queueService;
+    private static TemplateService templateService;
     private static JmsService jmsService;
 
     public static Project getProject() {
@@ -40,6 +42,10 @@ public class App {
 
     public static QueueService queueService() {
         return getOrCreate(queueService, fetchSupplier(QueueService.class), App::setQueueService);
+    }
+
+    public static TemplateService templateService() {
+        return getOrCreate(templateService, fetchSupplier(TemplateService.class), App::setTemplateService);
     }
 
     public static JmsService jmsService() {
@@ -76,6 +82,10 @@ public class App {
 
     private static void setQueueService(QueueService queueService) {
         App.queueService = queueService;
+    }
+
+    private static void setTemplateService(TemplateService templateService) {
+        App.templateService = templateService;
     }
 
     private static void setJmsService(JmsService jmsService) {

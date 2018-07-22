@@ -1,7 +1,6 @@
 package com.idea.tools.view.components.message;
 
 import com.idea.tools.dto.HeaderDto;
-import com.idea.tools.dto.MessageDto;
 import com.idea.tools.view.components.HeaderTable;
 
 import javax.swing.*;
@@ -16,11 +15,13 @@ public class SendMessageHeadersPanel extends ViewMessageHeadersPanel {
         super(headers);
     }
 
-    protected JComponent tablePanelContent() {
+    @Override
+    protected HeaderTable tablePanelContent() {
         table = new HeaderTable(headers, h -> headerEditPanel.setHeader(h));
         return table;
     }
 
+    @Override
     protected JComponent editPanelContent() {
         headerEditPanel = new HeaderEditPanel(pair -> {
             boolean isNew = table.getData().stream().noneMatch(h -> h.getName().equals(pair.getName()));
@@ -38,10 +39,6 @@ public class SendMessageHeadersPanel extends ViewMessageHeadersPanel {
             table.getTable().clearSelection();
         });
         return headerEditPanel;
-    }
-
-    public void fillMessage(MessageDto dto) {
-        dto.setHeaders(table.getData());
     }
 
 }

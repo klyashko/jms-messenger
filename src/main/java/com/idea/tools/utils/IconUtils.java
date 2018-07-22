@@ -63,5 +63,8 @@ public class IconUtils extends IconUtil {
         return icon("read_message.png");
     }
 
+    public static Icon getTemplateIcon() {
+        return icon("template.png");
+    }
 
 }

@@ -1,7 +1,5 @@
 package com.idea.tools.view.components.message;
 
-import com.idea.tools.dto.MessageDto;
-
 public class SendMessagePayloadPanel extends ViewMessagePayloadPanel {
 
     public SendMessagePayloadPanel() {
@@ -13,7 +11,4 @@ public class SendMessagePayloadPanel extends ViewMessagePayloadPanel {
         return true;
     }
 
-    public void fillMessage(MessageDto dto) {
-        dto.setPayload(payloadField.getText());
-    }
 }

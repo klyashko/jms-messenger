@@ -13,13 +13,6 @@ public class SendMessageMainPanel extends ViewMessageMainPanel {
         super(queue);
     }
 
-    public void fillMessage(MessageDto dto) {
-        dto.setTimestamp((Long) timestampField.getValue());
-        dto.setJmsType(jmsTypeField.getText());
-        dto.setType(contentTypeField.getItemAt(contentTypeField.getSelectedIndex()));
-        dto.setQueue(queue);
-    }
-
     @Override
     protected boolean isReadOnly() {
         return false;

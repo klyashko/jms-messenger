@@ -3,16 +3,11 @@ package com.idea.tools.service;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.markers.Listener;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import static com.idea.tools.App.settings;
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static java.util.UUID.randomUUID;
 
-public class ServerService {
-
-    private List<Listener<ServerDto>> listeners = new LinkedList<>();
+public class ServerService extends AbstractPersistedService<ServerDto> {
 
     public ServerService() {
         Listener<ServerDto> listener = Listener.<ServerDto>builder()
@@ -21,36 +16,22 @@ public class ServerService {
                 .remove(settings()::remove)
                 .build();
 
-        listeners.add(listener);
+        addListener(listener);
     }
 
-    public void saveOrUpdate(ServerDto server) {
-        if (server.getId() == null) {
-            server.setId(randomUUID().toString());
-            listeners.forEach(listener -> listener.add(server));
-        } else {
-            listeners.forEach(listener -> listener.edit(server));
-        }
+    @Override
+    protected void persist(ServerDto server) {
+        server.setId(randomUUID().toString());
     }
 
-    public boolean remove(ServerDto server) {
-        if (server == null) {
-            return false;
-        }
-        boolean delete = showYesNoDialog(String.format("Do you want to delete server %s", server.getName()));
-
-        if (delete) {
-            listeners.forEach(listener -> listener.remove(server));
-        }
-        return delete;
+    @Override
+    protected boolean isNew(ServerDto server) {
+        return server.getId() == null;
     }
 
-    public void addListener(Listener<ServerDto> listener) {
-        listeners.add(listener);
-    }
-
-    public void removeListener(Listener<ServerDto> listener) {
-        listeners.remove(listener);
+    @Override
+    protected boolean confirmRemove(ServerDto server) {
+        return showYesNoDialog(String.format("Do you want to delete server %s", server.getName()));
     }
 
 }

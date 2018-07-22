@@ -22,10 +22,6 @@ public class SendMessageDialog extends ViewMessageDialog {
     private static final String SEND_SUCCESS_TEMPLATE = "Message has been successfully sent to queue %s";
     private static final String SEND_FAIL_TEMPLATE = "Message hasn't been sent. Reason: \n%s";
 
-    private SendMessageMainPanel mainPanel;
-    private SendMessagePayloadPanel payloadPanel;
-    private SendMessageHeadersPanel headersPanel;
-
     private SendMessageDialog(MessageDto message) {
         super(message);
         render();
@@ -42,9 +38,7 @@ public class SendMessageDialog extends ViewMessageDialog {
 
         sendButton.addActionListener(event -> {
             MessageDto msg = new MessageDto();
-            mainPanel.fillMessage(msg);
-            headersPanel.fillMessage(msg);
-            payloadPanel.fillMessage(msg);
+            fillMessage(msg);
 
             try {
                 jmsService().send(msg);
@@ -74,23 +68,20 @@ public class SendMessageDialog extends ViewMessageDialog {
         Supplier<RuntimeException> runtimeException =
                 () -> new IllegalArgumentException("MainPanel may not be initialized neither message or queue is present");
 
-        mainPanel = message.map(SendMessageMainPanel::new)
+        return message.map(SendMessageMainPanel::new)
                 .orElseGet(() -> queue.map(SendMessageMainPanel::new)
                         .orElseThrow(runtimeException));
-        return mainPanel;
     }
 
     @Override
     protected ViewMessageHeadersPanel headersPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
-        headersPanel = message.map(msg -> new SendMessageHeadersPanel(msg.getHeaders()))
+        return message.map(msg -> new SendMessageHeadersPanel(msg.getHeaders()))
                 .orElseGet(() -> new SendMessageHeadersPanel(new ArrayList<>()));
-        return headersPanel;
     }
 
     @Override
     protected ViewMessagePayloadPanel payloadPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
-        payloadPanel = new SendMessagePayloadPanel();
-        return payloadPanel;
+        return new SendMessagePayloadPanel();
     }
 
 }
