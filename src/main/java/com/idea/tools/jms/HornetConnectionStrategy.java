@@ -15,6 +15,7 @@ import java.util.*;
 
 import static com.idea.tools.dto.ConnectionType.HTTP;
 import static com.idea.tools.dto.ServerType.HORNETQ;
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.*;
 
 public class HornetConnectionStrategy extends AbstractConnectionStrategy {
 
@@ -43,10 +44,10 @@ public class HornetConnectionStrategy extends AbstractConnectionStrategy {
 
     private HornetQConnectionFactory connectionFactory(@NotNull ServerDto server) {
         Map<String, Object> params = new HashMap<>();
-        params.put("http-upgrade-enabled", "true");
-        params.put("http-upgrade-endpoint", "http-acceptor");
-        params.put("port", server.getPort());
-        params.put("host", server.getHost());
+        params.put(HTTP_UPGRADE_ENABLED_PROP_NAME, "true");
+        params.put(HTTP_UPGRADE_ENDPOINT_PROP_NAME, "http-acceptor");
+        params.put(PORT_PROP_NAME, server.getPort());
+        params.put(HOST_PROP_NAME, server.getHost());
 
         TransportConfiguration tc = new TransportConfiguration(
                 "org.hornetq.core.remoting.impl.netty.NettyConnectorFactory",

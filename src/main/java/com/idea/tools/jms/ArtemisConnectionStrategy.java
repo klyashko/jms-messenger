@@ -14,6 +14,7 @@ import javax.jms.*;
 import java.util.*;
 
 import static com.idea.tools.dto.ServerType.ARTEMIS;
+import static org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants.*;
 
 public class ArtemisConnectionStrategy extends AbstractConnectionStrategy {
 
@@ -43,11 +44,11 @@ public class ArtemisConnectionStrategy extends AbstractConnectionStrategy {
         switch (server.getConnectionType()) {
             case HTTP:
                 Map<String, Object> params = new HashMap<>();
-                params.put("httpUpgradeEndpoint", "http-acceptor");
+                params.put(HTTP_UPGRADE_ENDPOINT_PROP_NAME, "http-acceptor");
                 params.put("activemqServerName", "default");
-                params.put("httpUpgradeEnabled", "true");
-                params.put("port", server.getPort());
-                params.put("host", server.getHost());
+                params.put(HTTP_UPGRADE_ENABLED_PROP_NAME, "true");
+                params.put(PORT_PROP_NAME, server.getPort());
+                params.put(HOST_PROP_NAME, server.getHost());
 
                 TransportConfiguration tc = new TransportConfiguration(
                         "org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory",
