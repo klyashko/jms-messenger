@@ -29,6 +29,7 @@ public class LoadMessagesTask extends Task.Backgroundable {
     public void run(@NotNull ProgressIndicator indicator) {
         try {
             messages = jmsService().receive(table.getQueue());
+            Collections.sort(messages);
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.error("An exception han been thrown during loading messages from a queue", e, table.getQueue().getName());

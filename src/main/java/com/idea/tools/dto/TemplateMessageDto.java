@@ -10,7 +10,7 @@ import java.util.Comparator;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class TemplateMessageDto extends MessageDto implements Comparable<TemplateMessageDto> {
+public class TemplateMessageDto extends MessageDto {
 
     private static final Comparator<String> COMPARATOR = Comparator.nullsLast(String::compareToIgnoreCase);
 
@@ -18,7 +18,11 @@ public class TemplateMessageDto extends MessageDto implements Comparable<Templat
     private String name;
 
     @Override
-    public int compareTo(@NotNull TemplateMessageDto template) {
-        return COMPARATOR.compare(name, template.name);
+    public int compareTo(@NotNull MessageDto that) {
+        if (that instanceof TemplateMessageDto) {
+            return COMPARATOR.compare(name, ((TemplateMessageDto) that).name);
+        }
+        return super.compareTo(that);
     }
+
 }
