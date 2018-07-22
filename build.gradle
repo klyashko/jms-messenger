@@ -41,3 +41,8 @@ intellij {
     //noinspection GroovyAssignabilityCheck
     version '2018.1'
 }
+
+publishPlugin{
+    password = publishPluginUsername
+    username = publishPluginPassword
+}
