@@ -1,7 +1,7 @@
 package com.idea.tools.jms;
 
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.ServerDto;
 
 import javax.jms.Connection;
@@ -16,5 +16,5 @@ public interface ConnectionStrategy {
 
     Optional<MessageDto> map(Message message) throws JMSException;
 
-    List<QueueDto> getQueues(Connection connection);
+    List<DestinationDto> getDestinations(Connection connection);
 }

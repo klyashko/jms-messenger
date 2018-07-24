@@ -11,7 +11,7 @@ public class ToolBarSendMessageAction extends AbstractSendMessageAction {
 
     @Override
     public void update(AnActionEvent event) {
-        event.getPresentation().setEnabled(isQueueOrTemplateSelected());
+        event.getPresentation().setEnabled(isDestinationOrTemplateSelected());
     }
 
 }

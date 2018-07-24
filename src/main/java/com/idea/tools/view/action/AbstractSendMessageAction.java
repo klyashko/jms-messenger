@@ -1,6 +1,6 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.dto.QueueDto;
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.idea.tools.view.SendMessageDialog;
 import com.idea.tools.view.ServersBrowseToolPanel;
@@ -21,16 +21,16 @@ public abstract class AbstractSendMessageAction extends AbstractBrowserPanelActi
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        Optional<QueueDto> queue = serversPanel.getSelectedValue(QueueDto.class);
-        if (queue.isPresent()) {
-            queue.ifPresent(SendMessageDialog::showDialog);
+        Optional<DestinationDto> destination = serversPanel.getSelectedValue(DestinationDto.class);
+        if (destination.isPresent()) {
+            destination.ifPresent(SendMessageDialog::showDialog);
         } else {
             serversPanel.getSelectedValue(TemplateMessageDto.class).ifPresent(SendMessageDialog::showDialog);
         }
     }
 
-    boolean isQueueOrTemplateSelected() {
-        return isSelected(QueueDto.class) || isSelected(TemplateMessageDto.class);
+    boolean isDestinationOrTemplateSelected() {
+        return isSelected(DestinationDto.class) || isSelected(TemplateMessageDto.class);
     }
 
 }

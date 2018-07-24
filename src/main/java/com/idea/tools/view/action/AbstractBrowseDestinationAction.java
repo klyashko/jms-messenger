@@ -1,6 +1,7 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.dto.QueueDto;
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.dto.DestinationType;
 import com.idea.tools.task.LoadMessagesTask;
 import com.idea.tools.view.QueueBrowseToolPanel;
 import com.idea.tools.view.ServersBrowseToolPanel;
@@ -21,23 +22,24 @@ import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_ICO
 import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_WINDOW_ID;
 import static com.intellij.openapi.wm.ToolWindowAnchor.BOTTOM;
 
-public abstract class AbstractBrowseQueueAction extends AbstractBrowserPanelAction {
+public abstract class AbstractBrowseDestinationAction extends AbstractBrowserPanelAction {
 
     private static final Icon ICON = getBrowseIcon();
     private Optional<QueueBrowseToolPanel> panel = Optional.empty();
 
-    AbstractBrowseQueueAction(ServersBrowseToolPanel serversBrowseToolPanel) {
+    AbstractBrowseDestinationAction(ServersBrowseToolPanel serversBrowseToolPanel) {
         super("Browse queue", "", ICON, serversBrowseToolPanel);
     }
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversPanel.getSelectedValue(QueueDto.class)
-                    .ifPresent(queue -> {
-                        QueueBrowseToolPanel panel = getOrCreate();
-                        QueueBrowserTable table = panel.addQueueToBrowse(queue);
-                        new LoadMessagesTask(table).queue();
-                    });
+        serversPanel.getSelectedValue(DestinationDto.class)
+                .filter(d -> DestinationType.QUEUE.equals(d.getType()))
+                .ifPresent(queue -> {
+                    QueueBrowseToolPanel panel = getOrCreate();
+                    QueueBrowserTable table = panel.addQueueToBrowse(queue);
+                    new LoadMessagesTask(table).queue();
+                });
     }
 
     private QueueBrowseToolPanel getOrCreate() {
@@ -55,7 +57,9 @@ public abstract class AbstractBrowseQueueAction extends AbstractBrowserPanelActi
     }
 
     boolean isQueueSelected() {
-        return isSelected(QueueDto.class);
+        return serversPanel.getSelectedValue(DestinationDto.class)
+                .filter(d -> DestinationType.QUEUE.equals(d.getType()))
+                .isPresent();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.idea.tools.settings;
 
-import com.idea.tools.dto.QueueDto;
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.dto.DestinationType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -31,11 +32,23 @@ public class Settings implements PersistentStateComponent<Settings> {
     public static Settings getOrCreate(Project project) {
         return settings.orElseGet(() -> {
             Settings settings = ServiceManager.getService(project, Settings.class);
-            settings.servers.forEach((id, server) ->
-                    server.getQueues().forEach(queue -> {
-                        queue.setServer(server);
-                        queue.getTemplates().forEach(template -> template.setQueue(queue));
-                    })
+            settings.servers.forEach((id, server) -> {
+                        //TODO delete after migration
+                        server.getQueues().forEach(queue -> {
+                            DestinationDto destination = new DestinationDto();
+                            destination.setId(queue.getId());
+                            destination.setName(queue.getName());
+                            destination.setAddedManually(queue.isAddedManually());
+                            destination.setTemplates(queue.getTemplates());
+                            destination.setType(DestinationType.QUEUE);
+                            server.getDestinations().add(destination);
+                        });
+                        server.getQueues().clear();
+                        server.getDestinations().forEach(destination -> {
+                            destination.setServer(server);
+                            destination.getTemplates().forEach(template -> template.setDestination(destination));
+                        });
+                    }
             );
             Settings.settings = Optional.of(settings);
             return settings;
@@ -58,22 +71,22 @@ public class Settings implements PersistentStateComponent<Settings> {
         }
     }
 
-    public void put(QueueDto queue) {
-        ServerDto server = queue.getServer();
-        List<QueueDto> queues = server.getQueues();
-        for (int i = 0; i < queues.size(); i++) {
-            QueueDto q = queues.get(i);
-            if (q.getId().equals(queue.getId())) {
-                queues.set(i, queue);
+    public void put(DestinationDto destination) {
+        ServerDto server = destination.getServer();
+        List<DestinationDto> destinations = server.getDestinations();
+        for (int i = 0; i < destinations.size(); i++) {
+            DestinationDto d = destinations.get(i);
+            if (d.getId().equals(destination.getId())) {
+                destinations.set(i, destination);
                 return;
             }
         }
-        queues.add(queue);
+        destinations.add(destination);
     }
 
     public void put(TemplateMessageDto template) {
-        QueueDto queue = template.getQueue();
-        List<TemplateMessageDto> templates = queue.getTemplates();
+        DestinationDto destination = template.getDestination();
+        List<TemplateMessageDto> templates = destination.getTemplates();
 
         for (int i = 0; i < templates.size(); i++) {
             TemplateMessageDto t = templates.get(i);
@@ -91,12 +104,12 @@ public class Settings implements PersistentStateComponent<Settings> {
         }
     }
 
-    public void remove(QueueDto queue) {
-        queue.getServer().getQueues().removeIf(q -> q.getId().equals(queue.getId()));
+    public void remove(DestinationDto destination) {
+        destination.getServer().getDestinations().removeIf(q -> q.getId().equals(destination.getId()));
     }
 
     public void remove(TemplateMessageDto template) {
-        template.getQueue().getTemplates().removeIf(t -> t.getId().equals(template.getId()));
+        template.getDestination().getTemplates().removeIf(t -> t.getId().equals(template.getId()));
     }
 
     @Override

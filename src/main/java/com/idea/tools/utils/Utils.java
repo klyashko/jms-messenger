@@ -27,6 +27,10 @@ public class Utils {
         return source.stream().collect(Collectors.partitioningBy(predicate));
     }
 
+    public static <T, K> Map<K, List<T>> groupingBy(Collection<T> source, Function<T, K> classifier) {
+        return source.stream().collect(Collectors.groupingBy(classifier));
+    }
+
     public static Integer toInteger(String value) {
         if (value != null) {
             try {

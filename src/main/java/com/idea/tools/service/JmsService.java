@@ -12,8 +12,9 @@ import javax.jms.*;
 import java.lang.IllegalStateException;
 import java.util.*;
 
-import static com.idea.tools.App.queueService;
+import static com.idea.tools.App.destinationService;
 import static com.idea.tools.App.serverService;
+import static com.idea.tools.dto.DestinationType.QUEUE;
 import static com.idea.tools.dto.ServerType.*;
 import static com.idea.tools.utils.Checked.consumer;
 import static com.idea.tools.utils.Utils.partitioningBy;
@@ -40,18 +41,18 @@ public class JmsService {
     }
 
     public void send(MessageDto msg) throws Exception {
-        Assert.notNull(msg.getQueue(), "Queue must not be null");
-        Assert.notNull(msg.getQueue().getServer(), "Server must not be null");
+        Assert.notNull(msg.getDestination(), "Queue must not be null");
+        Assert.notNull(msg.getDestination().getServer(), "Server must not be null");
         Assert.notNull(msg.getType(), "Message type must not be null");
 
-        QueueDto queue = msg.getQueue();
-        ServerDto server = queue.getServer();
+        DestinationDto destination = msg.getDestination();
+        ServerDto server = destination.getServer();
 
         ConnectionStrategy strategy = connectionStrategy(server);
 
         try (Connection connection = strategy.connect(server);
              Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
-             MessageProducer producer = session.createProducer(session.createQueue(queue.getName()))
+             MessageProducer producer = session.createProducer(destination.getType().createDestination(session, destination))
         ) {
             Message jmsMessage = msg.getType().create(session, msg);
             jmsMessage.setJMSType(msg.getJmsType());
@@ -61,15 +62,16 @@ public class JmsService {
         }
     }
 
-    public List<MessageDto> receive(QueueDto queue) throws Exception {
-        Assert.notNull(queue.getServer(), "Server must not be null");
+    public List<MessageDto> receive(DestinationDto destination) throws Exception {
+        Assert.notNull(destination.getServer(), "Server must not be null");
+        Assert.equals(destination.getType(), QUEUE, "Only from queue message can be received");
 
-        ServerDto server = queue.getServer();
+        ServerDto server = destination.getServer();
         ConnectionStrategy strategy = connectionStrategy(server);
         List<MessageDto> msgs = new ArrayList<>();
         try (Connection connection = strategy.connect(server);
              Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
-             QueueBrowser browser = session.createBrowser(session.createQueue(queue.getName()))
+             QueueBrowser browser = session.createBrowser(session.createQueue(destination.getName()))
         ) {
             connection.start();
             @SuppressWarnings("unchecked")
@@ -77,7 +79,7 @@ public class JmsService {
             while (enumeration.hasMoreElements()) {
                 strategy.map(enumeration.nextElement())
                         .ifPresent(m -> {
-                            m.setQueue(queue);
+                            m.setDestination(destination);
                             msgs.add(m);
                         });
             }
@@ -87,16 +89,16 @@ public class JmsService {
 
     public void refresh(List<ServerDto> servers) {
         servers.forEach(server -> {
-            Map<Boolean, List<QueueDto>> tmp = partitioningBy(server.getQueues(), QueueDto::isAddedManually);
-            Map<String, QueueDto> toKeep = toMap(tmp.get(true), QueueDto::getName, identity());
+            Map<Boolean, List<DestinationDto>> tmp = partitioningBy(server.getDestinations(), DestinationDto::isAddedManually);
+            Map<String, DestinationDto> toKeep = toMap(tmp.get(true), DestinationDto::getName, identity());
 
             try {
                 ConnectionStrategy strategy = connectionStrategy(server);
                 try (Connection connection = strategy.connect(server)) {
-                    strategy.getQueues(connection).forEach(dto ->
+                    strategy.getDestinations(connection).forEach(dto ->
                             toKeep.computeIfAbsent(dto.getName(), name -> {
                                 dto.setServer(server);
-                                queueService().persist(dto);
+                                destinationService().persist(dto);
                                 return dto;
                             }));
                 }
@@ -104,20 +106,21 @@ public class JmsService {
                 LOGGER.error("An exception has been thrown during connecting to a server", e, server.getName());
             }
 
-            server.setQueues(new ArrayList<>(toKeep.values()));
+            server.setDestinations(new ArrayList<>(toKeep.values()));
             serverService().saveOrUpdate(server);
         });
     }
 
-    public boolean removeFromQueue(MessageDto messageDto, QueueDto queue) throws Exception {
-        Assert.notNull(queue.getServer(), "Server must not be null");
+    public boolean removeFromQueue(MessageDto messageDto, DestinationDto destination) throws Exception {
+        Assert.notNull(destination.getServer(), "Server must not be null");
+        Assert.equals(destination.getType(), QUEUE, "Only from queue message can be deleted");
 
-        ServerDto server = queue.getServer();
+        ServerDto server = destination.getServer();
         ConnectionStrategy strategy = connectionStrategy(server);
         String selector = String.format("JMSMessageID='%s'", messageDto.getMessageID());
         try (Connection connection = strategy.connect(server);
              Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
-             MessageConsumer consumer = session.createConsumer(session.createQueue(queue.getName()), selector)
+             MessageConsumer consumer = session.createConsumer(session.createQueue(destination.getName()), selector)
         ) {
             connection.start();
             return consumer.receive(100) != null;

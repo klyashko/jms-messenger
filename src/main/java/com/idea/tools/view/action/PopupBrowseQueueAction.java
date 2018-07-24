@@ -3,7 +3,7 @@ package com.idea.tools.view.action;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-public class PopupBrowseQueueAction extends AbstractBrowseQueueAction {
+public class PopupBrowseQueueAction extends AbstractBrowseDestinationAction {
 
     public PopupBrowseQueueAction(ServersBrowseToolPanel serversBrowseToolPanel) {
         super(serversBrowseToolPanel);

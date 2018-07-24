@@ -1,6 +1,7 @@
 package com.idea.tools.view.render;
 
-import com.idea.tools.dto.QueueDto;
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.dto.DestinationType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.intellij.ui.ColoredTreeCellRenderer;
@@ -29,9 +30,12 @@ public class TreeRender extends ColoredTreeCellRenderer {
             ServerDto server = (ServerDto) object;
             append(server.getName());
             setIcon(server.getType().getIcon());
-        } else if (object instanceof QueueDto) {
-            QueueDto queue = (QueueDto) object;
-            append(queue.getName(), REGULAR_ITALIC_ATTRIBUTES);
+        } else if (object instanceof DestinationType) {
+            DestinationType type = (DestinationType) object;
+            append(type.getLabel());
+        } else if (object instanceof DestinationDto) {
+            DestinationDto destination = (DestinationDto) object;
+            append(destination.getName(), REGULAR_ITALIC_ATTRIBUTES);
         } else if (object instanceof TemplateMessageDto) {
             TemplateMessageDto message = (TemplateMessageDto) object;
             append(message.getName());

@@ -1,8 +1,8 @@
 package com.idea.tools.task;
 
 import com.idea.tools.App;
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -15,20 +15,20 @@ import static com.idea.tools.utils.Checked.consumer;
 
 public class RemoveMessageTask extends Task.Backgroundable {
 
-    private final QueueDto queue;
+    private final DestinationDto destination;
     private final List<MessageDto> messages;
     private final QueueBrowserTable table;
 
-    public RemoveMessageTask(QueueDto queue, List<MessageDto> messages, QueueBrowserTable table) {
+    public RemoveMessageTask(DestinationDto destination, List<MessageDto> messages, QueueBrowserTable table) {
         super(App.getProject(), "Remove Messages");
-        this.queue = queue;
+        this.destination = destination;
         this.messages = messages;
         this.table = table;
     }
 
     @Override
     public void run(@NotNull ProgressIndicator indicator) {
-        messages.forEach(consumer(msg -> jmsService().removeFromQueue(msg, queue)));
+        messages.forEach(consumer(msg -> jmsService().removeFromQueue(msg, destination)));
     }
 
     @Override

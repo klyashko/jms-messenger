@@ -1,8 +1,8 @@
 package com.idea.tools.view.components.message;
 
 import com.idea.tools.dto.ContentType;
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
 
@@ -18,24 +18,24 @@ public class ViewMessageMainPanel extends JPanel {
 
     protected JPanel rootPanel;
     protected JTextField serverField;
-    protected JTextField queueField;
+    protected JTextField destinationField;
     protected JTextField jmsTypeField;
     protected JFormattedTextField timestampField;
     protected JComboBox<ContentType> contentTypeField;
-    protected QueueDto queue;
+    protected DestinationDto destination;
     private Optional<MessageDto> message = Optional.empty();
 
     public ViewMessageMainPanel(MessageDto message) {
         this(null, message);
     }
 
-    public ViewMessageMainPanel(QueueDto queue) {
-        this(queue, null);
+    public ViewMessageMainPanel(DestinationDto destination) {
+        this(destination, null);
     }
 
-    private ViewMessageMainPanel(QueueDto queue, MessageDto message) {
+    private ViewMessageMainPanel(DestinationDto queue, MessageDto message) {
         this.message = Optional.ofNullable(message);
-        this.queue = this.message.map(MessageDto::getQueue).orElse(queue);
+        this.destination = this.message.map(MessageDto::getDestination).orElse(queue);
         render();
     }
 
@@ -43,7 +43,7 @@ public class ViewMessageMainPanel extends JPanel {
         dto.setTimestamp((Long) timestampField.getValue());
         dto.setJmsType(jmsTypeField.getText());
         dto.setType(contentTypeField.getItemAt(contentTypeField.getSelectedIndex()));
-        dto.setQueue(queue);
+        dto.setDestination(destination);
     }
 
     private void render() {
@@ -60,8 +60,8 @@ public class ViewMessageMainPanel extends JPanel {
     }
 
     private void setValues() {
-        serverField.setText(queue.getServer().getName());
-        queueField.setText(queue.getName());
+        serverField.setText(destination.getServer().getName());
+        destinationField.setText(destination.getName());
         timestampField.setValue(System.currentTimeMillis());
         message.ifPresent(msg -> {
             timestampField.setValue(msg.getTimestamp());

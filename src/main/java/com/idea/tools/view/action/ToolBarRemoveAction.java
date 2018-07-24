@@ -1,6 +1,6 @@
 package com.idea.tools.view.action;
 
-import com.idea.tools.dto.QueueDto;
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.idea.tools.view.ServersBrowseToolPanel;
@@ -23,8 +23,8 @@ public class ToolBarRemoveAction extends AbstractBrowserPanelAction {
     public void actionPerformed(AnActionEvent e) {
         if (isSelected(ServerDto.class)) {
             serversPanel.getSelectedValue(ServerDto.class).ifPresent(serverService()::remove);
-        } else if (isSelected(QueueDto.class)) {
-            serversPanel.getSelectedValue(QueueDto.class).ifPresent(queueService()::remove);
+        } else if (isSelected(DestinationDto.class)) {
+            serversPanel.getSelectedValue(DestinationDto.class).ifPresent(destinationService()::remove);
         } else if (isSelected(TemplateMessageDto.class)) {
             serversPanel.getSelectedValue(TemplateMessageDto.class).ifPresent(templateService()::remove);
         }
@@ -32,7 +32,7 @@ public class ToolBarRemoveAction extends AbstractBrowserPanelAction {
 
     @Override
     public void update(AnActionEvent event) {
-        boolean enable = isSelected(ServerDto.class) || isSelected(QueueDto.class) || isSelected(TemplateMessageDto.class);
+        boolean enable = isSelected(ServerDto.class) || isSelected(DestinationDto.class) || isSelected(TemplateMessageDto.class);
         event.getPresentation().setEnabled(enable);
     }
 }

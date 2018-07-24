@@ -11,8 +11,8 @@ import java.util.Comparator;
 import java.util.List;
 
 @Data
-@ToString(exclude = "queue")
-@EqualsAndHashCode(exclude = "queue")
+@ToString(exclude = {"queue", "destination", "headers"})
+@EqualsAndHashCode(exclude = {"queue", "destination", "headers"})
 public class MessageDto implements Comparable<MessageDto> {
 
     private static final Comparator<Long> COMPARATOR = Comparator.nullsLast(Comparator.reverseOrder());
@@ -26,12 +26,19 @@ public class MessageDto implements Comparable<MessageDto> {
     private Integer deliveryMode;
     private Integer priority;
     private Long expiration;
+    @Deprecated
     private QueueDto queue;
+    private DestinationDto destination;
     private List<HeaderDto> headers = new ArrayList<>();
 
     @Transient
     public QueueDto getQueue() {
         return queue;
+    }
+
+    @Transient
+    public DestinationDto getDestination() {
+        return destination;
     }
 
     @Override

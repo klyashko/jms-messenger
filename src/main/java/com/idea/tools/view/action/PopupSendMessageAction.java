@@ -11,7 +11,7 @@ public class PopupSendMessageAction extends AbstractSendMessageAction {
 
     @Override
     public void update(AnActionEvent event) {
-        event.getPresentation().setVisible(isQueueOrTemplateSelected());
+        event.getPresentation().setVisible(isDestinationOrTemplateSelected());
     }
 
 }

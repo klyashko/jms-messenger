@@ -16,7 +16,7 @@ public class SendMessageTask extends Task.Backgroundable {
 
     private static final Logger LOGGER = Logger.getInstance(SendMessageTask.class);
 
-    private static final String SEND_SUCCESS_TEMPLATE = "Message has been successfully sent to queue %s";
+    private static final String SEND_SUCCESS_TEMPLATE = "Message has been successfully sent to destination %s";
     private static final String SEND_FAIL_TEMPLATE = "Message hasn't been sent. Reason: \n%s";
 
     private final MessageDto message;
@@ -39,7 +39,7 @@ public class SendMessageTask extends Task.Backgroundable {
 
     @Override
     public void onSuccess() {
-        String content = String.format(SEND_SUCCESS_TEMPLATE, message.getQueue().getName());
+        String content = String.format(SEND_SUCCESS_TEMPLATE, message.getDestination().getName());
         Notifications.Bus.notify(new Notification("jms", "Success", content, NotificationType.INFORMATION));
         onSuccess.run();
     }

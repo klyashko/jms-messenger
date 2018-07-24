@@ -1,7 +1,7 @@
 package com.idea.tools.view;
 
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.idea.tools.utils.GuiUtils;
 import com.idea.tools.view.components.message.ViewMessageHeadersPanel;
@@ -35,10 +35,10 @@ public class ViewMessageDialog extends JFrame {
     private ViewMessagePayloadPanel payloadPanel;
 
     private Optional<MessageDto> message = Optional.empty();
-    private Optional<QueueDto> queue = Optional.empty();
+    private Optional<DestinationDto> destination = Optional.empty();
 
-    protected ViewMessageDialog(QueueDto queue) {
-        this.queue = Optional.of(queue);
+    protected ViewMessageDialog(DestinationDto destination) {
+        this.destination = Optional.of(destination);
         render();
     }
 
@@ -57,9 +57,9 @@ public class ViewMessageDialog extends JFrame {
     }
 
     private void render() {
-        mainPanel = mainPanel(queue, message);
-        headersPanel = headersPanel(queue, message);
-        payloadPanel = payloadPanel(queue, message);
+        mainPanel = mainPanel(destination, message);
+        headersPanel = headersPanel(destination, message);
+        payloadPanel = payloadPanel(destination, message);
 
         JBTabsImpl tabs = new JBTabsImpl(getProject());
         tabs.addTab(new TabInfo(mainPanel).setText("Main"));
@@ -114,17 +114,17 @@ public class ViewMessageDialog extends JFrame {
         }
     }
 
-    protected ViewMessageMainPanel mainPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
+    protected ViewMessageMainPanel mainPanel(Optional<DestinationDto> destination, Optional<MessageDto> message) {
         return message.map(ViewMessageMainPanel::new)
                 .orElseThrow(() -> new IllegalArgumentException("Message must not me empty"));
     }
 
-    protected ViewMessageHeadersPanel headersPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
+    protected ViewMessageHeadersPanel headersPanel(Optional<DestinationDto> destination, Optional<MessageDto> message) {
         return message.map(msg -> new ViewMessageHeadersPanel(msg.getHeaders()))
                 .orElseThrow(() -> new IllegalArgumentException("Message must not me empty"));
     }
 
-    protected ViewMessagePayloadPanel payloadPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
+    protected ViewMessagePayloadPanel payloadPanel(Optional<DestinationDto> destination, Optional<MessageDto> message) {
         return message.map(ViewMessagePayloadPanel::new)
                 .orElseThrow(() -> new IllegalArgumentException("Message must not me empty"));
     }

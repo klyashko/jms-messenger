@@ -1,7 +1,7 @@
 package com.idea.tools.view;
 
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.idea.tools.task.SendMessageTask;
 import com.idea.tools.utils.GuiUtils;
 import com.idea.tools.view.components.message.*;
@@ -18,8 +18,8 @@ public class SendMessageDialog extends ViewMessageDialog {
         render();
     }
 
-    private SendMessageDialog(QueueDto queue) {
-        super(queue);
+    private SendMessageDialog(DestinationDto destination) {
+        super(destination);
         render();
     }
 
@@ -42,7 +42,7 @@ public class SendMessageDialog extends ViewMessageDialog {
     protected void closeAfterSendCheckBox(JCheckBox closeAfterSendCheckBox) {
     }
 
-    public static void showDialog(QueueDto queue) {
+    public static void showDialog(DestinationDto queue) {
         GuiUtils.showDialog(new SendMessageDialog(queue), "Send message");
     }
 
@@ -51,23 +51,23 @@ public class SendMessageDialog extends ViewMessageDialog {
     }
 
     @Override
-    protected ViewMessageMainPanel mainPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
+    protected ViewMessageMainPanel mainPanel(Optional<DestinationDto> destination, Optional<MessageDto> message) {
         Supplier<RuntimeException> runtimeException =
-                () -> new IllegalArgumentException("MainPanel may not be initialized neither message or queue is present");
+                () -> new IllegalArgumentException("MainPanel may not be initialized neither message or destination is present");
 
         return message.map(SendMessageMainPanel::new)
-                .orElseGet(() -> queue.map(SendMessageMainPanel::new)
+                .orElseGet(() -> destination.map(SendMessageMainPanel::new)
                         .orElseThrow(runtimeException));
     }
 
     @Override
-    protected ViewMessageHeadersPanel headersPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
+    protected ViewMessageHeadersPanel headersPanel(Optional<DestinationDto> destination, Optional<MessageDto> message) {
         return message.map(msg -> new SendMessageHeadersPanel(msg.getHeaders()))
                 .orElseGet(() -> new SendMessageHeadersPanel(new ArrayList<>()));
     }
 
     @Override
-    protected ViewMessagePayloadPanel payloadPanel(Optional<QueueDto> queue, Optional<MessageDto> message) {
+    protected ViewMessagePayloadPanel payloadPanel(Optional<DestinationDto> destination, Optional<MessageDto> message) {
         return message.map(SendMessagePayloadPanel::new).orElseGet(SendMessagePayloadPanel::new);
     }
 

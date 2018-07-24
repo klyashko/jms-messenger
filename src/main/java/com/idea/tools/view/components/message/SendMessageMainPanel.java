@@ -1,7 +1,7 @@
 package com.idea.tools.view.components.message;
 
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 
 public class SendMessageMainPanel extends ViewMessageMainPanel {
 
@@ -9,8 +9,8 @@ public class SendMessageMainPanel extends ViewMessageMainPanel {
         super(message);
     }
 
-    public SendMessageMainPanel(QueueDto queue) {
-        super(queue);
+    public SendMessageMainPanel(DestinationDto destination) {
+        super(destination);
     }
 
     @Override

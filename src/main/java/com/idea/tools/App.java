@@ -1,7 +1,7 @@
 package com.idea.tools;
 
+import com.idea.tools.service.DestinationService;
 import com.idea.tools.service.JmsService;
-import com.idea.tools.service.QueueService;
 import com.idea.tools.service.ServerService;
 import com.idea.tools.service.TemplateService;
 import com.idea.tools.settings.Settings;
@@ -20,7 +20,7 @@ public class App {
     private static Project project;
     private static Settings settings;
     private static ServerService serverService;
-    private static QueueService queueService;
+    private static DestinationService destinationService;
     private static TemplateService templateService;
     private static JmsService jmsService;
 
@@ -40,8 +40,8 @@ public class App {
         return getOrCreate(serverService, fetchSupplier(ServerService.class), App::setServerService);
     }
 
-    public static QueueService queueService() {
-        return getOrCreate(queueService, fetchSupplier(QueueService.class), App::setQueueService);
+    public static DestinationService destinationService() {
+        return getOrCreate(destinationService, fetchSupplier(DestinationService.class), App::setDestinationService);
     }
 
     public static TemplateService templateService() {
@@ -80,8 +80,8 @@ public class App {
         App.serverService = serverService;
     }
 
-    private static void setQueueService(QueueService queueService) {
-        App.queueService = queueService;
+    private static void setDestinationService(DestinationService destinationService) {
+        App.destinationService = destinationService;
     }
 
     private static void setTemplateService(TemplateService templateService) {

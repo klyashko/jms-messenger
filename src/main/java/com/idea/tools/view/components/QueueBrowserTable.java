@@ -1,7 +1,7 @@
 package com.idea.tools.view.components;
 
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.idea.tools.utils.TableModelBuilder;
 import com.idea.tools.view.button.MessagesReloadButton;
 import com.idea.tools.view.button.OpenMessageButton;
@@ -31,11 +31,11 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     private static final Logger LOGGER = Logger.getInstance(QueueBrowserTable.class);
 
     @Getter
-    private QueueDto queue;
+    private DestinationDto destination;
 
-    public QueueBrowserTable(QueueDto queue) {
+    public QueueBrowserTable(DestinationDto queue) {
         super(tableModel(), emptyList());
-        this.queue = queue;
+        this.destination = queue;
         render();
     }
 

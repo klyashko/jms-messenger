@@ -1,7 +1,7 @@
 package com.idea.tools.jms;
 
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.Assert;
 import org.hornetq.api.core.TransportConfiguration;
@@ -38,7 +38,7 @@ public class HornetConnectionStrategy extends AbstractConnectionStrategy {
     }
 
     @Override
-    public List<QueueDto> getQueues(Connection connection) {
+    public List<DestinationDto> getDestinations(Connection connection) {
         return Collections.emptyList();
     }
 

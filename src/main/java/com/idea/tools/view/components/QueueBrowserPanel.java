@@ -1,7 +1,7 @@
 package com.idea.tools.view.components;
 
+import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.idea.tools.utils.GuiUtils;
 import com.idea.tools.view.button.ShowHideButton;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
@@ -17,20 +17,20 @@ import static java.awt.BorderLayout.WEST;
 
 public class QueueBrowserPanel extends JPanel {
 
-    private QueueDto queue;
+    private DestinationDto destination;
 
     @Getter
     private QueueBrowserTable queueBrowserTable;
     private HeaderViewTable headerTable;
 
-    public QueueBrowserPanel(QueueDto queue) {
-        this.queue = queue;
+    public QueueBrowserPanel(DestinationDto queue) {
+        this.destination = queue;
         render();
     }
 
     private void render() {
         setLayout(new BorderLayout());
-        queueBrowserTable = new QueueBrowserTable(queue);
+        queueBrowserTable = new QueueBrowserTable(destination);
         headerTable = new HeaderViewTable(Collections.emptyList());
 
         queueBrowserTable.getTable().getSelectionModel().addListSelectionListener(event -> {

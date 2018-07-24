@@ -1,7 +1,8 @@
 package com.idea.tools.jms;
 
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.dto.DestinationType;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.dto.QueueDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.Assert;
 import org.apache.activemq.ActiveMQConnection;
@@ -43,7 +44,7 @@ public class ActiveMQConnectionStrategy extends AbstractConnectionStrategy {
     }
 
     @Override
-    public List<QueueDto> getQueues(Connection connection) {
+    public List<DestinationDto> getDestinations(Connection connection) {
         if (!(connection instanceof ActiveMQConnection)) {
             return Collections.emptyList();
         }
@@ -51,11 +52,20 @@ public class ActiveMQConnectionStrategy extends AbstractConnectionStrategy {
             ActiveMQConnection activeMQConnection = (ActiveMQConnection) connection;
             activeMQConnection.start();
             DestinationSource destinationSource = activeMQConnection.getDestinationSource();
-            return toList(destinationSource.getQueues(), function(q -> {
-                QueueDto dto = new QueueDto();
+            List<DestinationDto> queues = toList(destinationSource.getQueues(), function(q -> {
+                DestinationDto dto = new DestinationDto();
                 dto.setName(q.getQueueName());
+                dto.setType(DestinationType.QUEUE);
                 return dto;
             }));
+            List<DestinationDto> topics = toList(destinationSource.getTopics(), function(t -> {
+                DestinationDto dto = new DestinationDto();
+                dto.setName(t.getTopicName());
+                dto.setType(DestinationType.TOPIC);
+                return dto;
+            }));
+            queues.addAll(topics);
+            return queues;
         } catch (Exception e) {
             e.printStackTrace();
         }
