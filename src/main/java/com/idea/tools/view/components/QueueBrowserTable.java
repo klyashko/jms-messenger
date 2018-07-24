@@ -5,6 +5,7 @@ import com.idea.tools.dto.QueueDto;
 import com.idea.tools.utils.TableModelBuilder;
 import com.idea.tools.view.button.MessagesReloadButton;
 import com.idea.tools.view.button.OpenMessageButton;
+import com.idea.tools.view.button.RemoveMessageButton;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
@@ -19,8 +20,6 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.idea.tools.App.jmsService;
-import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
@@ -59,7 +58,7 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
         ToolbarDecorator decorator = createDecorator(getTable())
                 .setMoveDownAction(button -> doDown())
                 .setMoveUpAction(button -> doUp())
-                .setRemoveAction(button -> doRemove())
+                .addExtraAction(new RemoveMessageButton(this))
                 .addExtraAction(new MessagesReloadButton(this))
                 .addExtraAction(new OpenMessageButton(this))
                 .setToolbarPosition(TOP);
@@ -76,13 +75,6 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
 
     @Override
     protected boolean removeItem(MessageDto msg) {
-        boolean delete = showYesNoDialog("Delete message from the queue?");
-        try {
-            return delete && jmsService().removeFromQueue(msg, queue);
-        } catch (Exception ex) {
-            LOGGER.error("An exception has been thrown during receiving message", ex);
-            ex.printStackTrace();
-        }
         return false;
     }
 

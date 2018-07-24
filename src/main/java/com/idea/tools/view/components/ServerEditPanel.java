@@ -3,6 +3,7 @@ package com.idea.tools.view.components;
 import com.idea.tools.dto.ConnectionType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.ServerType;
+import com.idea.tools.task.TestConnectionTask;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
 import com.intellij.ui.JBColor;
@@ -13,7 +14,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import java.util.Objects;
 
-import static com.idea.tools.App.jmsService;
 import static com.idea.tools.App.serverService;
 import static com.idea.tools.utils.GuiUtils.createNumberInputField;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
@@ -28,6 +28,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 public class ServerEditPanel extends JPanel {
 
     private static final String CONNECTION_SUCCESS_TEXT = "Success";
+    private static final String CONNECTION_RUNNING_TEXT = "Test connection is running";
     private static final String CONNECTION_FAIL_TEXT = "Fail";
     private static final JBColor CONNECTION_SUCCESS_COLOR = GREEN;
     private static final JBColor CONNECTION_FAIL_COLOR = RED;
@@ -95,13 +96,7 @@ public class ServerEditPanel extends JPanel {
             ServerDto server = new ServerDto();
             fillServer(server);
             emptyStatus();
-            try {
-                jmsService().testConnection(server);
-                successStatus();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                failStatus(ex);
-            }
+            new TestConnectionTask(server, this::successStatus, this::failStatus).queue();
         });
 
         saveButton.addActionListener(event -> {
@@ -116,8 +111,8 @@ public class ServerEditPanel extends JPanel {
     }
 
     private void emptyStatus() {
-        connectionStatus.setText("");
-        connectionStatus.setVisible(false);
+        connectionStatus.setText(CONNECTION_RUNNING_TEXT);
+        connectionStatus.setVisible(true);
 
         connectionDetails.setText("");
         connectionDetails.setVisible(false);
@@ -129,7 +124,7 @@ public class ServerEditPanel extends JPanel {
         connectionStatus.setVisible(true);
     }
 
-    private void failStatus(@NotNull Exception ex) {
+    private void failStatus(@NotNull Throwable ex) {
         connectionStatus.setText(CONNECTION_FAIL_TEXT);
         connectionStatus.setForeground(CONNECTION_FAIL_COLOR);
         connectionStatus.setVisible(true);
