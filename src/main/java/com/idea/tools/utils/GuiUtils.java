@@ -36,8 +36,8 @@ public class GuiUtils {
         toolWindowPanel.setToolbar(actionToolbar);
     }
 
-    public static JComponent toolbar(ActionGroup actions, String name, boolean horizontal) {
-        return ActionManager.getInstance().createActionToolbar(name, actions, horizontal).getComponent();
+    public static JComponent toolbar(ActionGroup actions, String place, boolean horizontal) {
+        return ActionManager.getInstance().createActionToolbar(place, actions, horizontal).getComponent();
     }
 
     public static void runInSwingThread(Runnable runnable) {

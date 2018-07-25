@@ -1,9 +1,14 @@
 package com.idea.tools.view.components.message;
 
 import com.idea.tools.dto.MessageDto;
+import com.idea.tools.utils.GuiUtils;
+import com.idea.tools.view.button.CopyButton;
+import com.idea.tools.view.button.PasteButton;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.ui.components.JBScrollPane;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Optional;
 
 public class ViewMessagePayloadPanel extends JPanel {
@@ -11,6 +16,7 @@ public class ViewMessagePayloadPanel extends JPanel {
     protected JTextArea payloadField;
 
     private JPanel rootPanel;
+    private JPanel toolbarPanel;
     private Optional<MessageDto> message = Optional.empty();
 
     public ViewMessagePayloadPanel() {
@@ -28,6 +34,13 @@ public class ViewMessagePayloadPanel extends JPanel {
 
     private void render() {
         setValues();
+
+        DefaultActionGroup actions = new DefaultActionGroup("CopyPasteToolbar", false);
+        actions.add(new PasteButton(payloadField, isEditable()));
+        actions.add(new CopyButton(payloadField));
+
+        toolbarPanel.add(GuiUtils.toolbar(actions, "PayloadPanel", true), BorderLayout.EAST);
+
         payloadField.setLineWrap(true);
         payloadField.setEditable(isEditable());
         add(new JBScrollPane(rootPanel));

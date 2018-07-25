@@ -67,4 +67,12 @@ public class IconUtils extends IconUtil {
         return icon("template.png");
     }
 
+    public static Icon getCopyIcon() {
+        return icon("copy.png");
+    }
+
+    public static Icon getPasteIcon() {
+        return icon("paste.png");
+    }
+
 }
