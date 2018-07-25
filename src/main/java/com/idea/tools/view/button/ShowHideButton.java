@@ -16,16 +16,16 @@ public class ShowHideButton extends AnActionButton {
     private static final String SHOW_MSG = "Show custom properties";
     private static final String HIDE_MSG = "Hide custom properties";
 
-    private final JPanel panel;
+    private final JComponent component;
     private boolean state;
 
-    private ShowHideButton(JPanel panel, Icon icon, String text) {
+    private ShowHideButton(JComponent component, Icon icon, String text) {
         super(text, icon);
-        this.panel = panel;
-        this.state = panel.isVisible();
+        this.component = component;
+        this.state = component.isVisible();
     }
 
-    public static ShowHideButton of(JPanel panel) {
+    public static ShowHideButton of(JComponent panel) {
         if (panel.isVisible()) {
             return new ShowHideButton(panel, RIGHT_SHIFT_ICON, HIDE_MSG);
         } else {
@@ -36,7 +36,7 @@ public class ShowHideButton extends AnActionButton {
     @Override
     public void actionPerformed(AnActionEvent e) {
         state = !state;
-        panel.setVisible(state);
+        component.setVisible(state);
     }
 
     @Override
