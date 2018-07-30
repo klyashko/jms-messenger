@@ -1,6 +1,6 @@
 ### Jms-messenger
 
-#### Current version 0.1.1
+#### Current version 0.2.0
 
 #### Repository
  https://github.com/klyashko/jms-messenger
@@ -13,7 +13,7 @@
    * sending messages
 
 #### Plugin Compatibility
- Plugin required java jdk 1.8 or higher and version of ide 2018 or higher
+ Plugin required java jdk 1.8 or higher and version of ide 2017 or higher
  
 #### Usages
  Plugin designed to be used for development or testing purposes
@@ -25,8 +25,7 @@
  * ActiveMq (over TCP)
  * HornetQ (over HTTP)
  
-#### Limitation
- Currently only queue destinations are supported.  
+#### Limitation  
  Only text messages may be send or browse.
  
 #### Suggestions and bug reports

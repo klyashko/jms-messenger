@@ -6,6 +6,14 @@
  * [!] Bug fixing
 
 
+0.2.0 (30.07.2018)
+====================
+ * [+] Support 2017 ide
+ * [+] Topic support
+ * [+] Templates
+ * [\*] Copy paste buttons on payload panel
+ * [\*] Improvements in queue browse panel
+
 0.1.1 (22.07.2018)
 ====================
  * [!] Dependency fix

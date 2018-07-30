@@ -35,7 +35,6 @@ Plugin supports:
 
 <h4>Limitation:</h4>
 <ul>
- <li>Currently only queue destinations are supported.</li>
  <li>Only text messages may be send or browse.</li>
 </ul>
 
