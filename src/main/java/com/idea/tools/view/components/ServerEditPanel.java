@@ -19,8 +19,7 @@ import static com.idea.tools.utils.GuiUtils.createNumberInputField;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static com.idea.tools.utils.Utils.getOrDefault;
 import static com.idea.tools.utils.Utils.toInteger;
-import static com.intellij.ui.JBColor.GREEN;
-import static com.intellij.ui.JBColor.RED;
+import static com.intellij.ui.JBColor.*;
 import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
 import static java.awt.BorderLayout.CENTER;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -31,6 +30,7 @@ public class ServerEditPanel extends JPanel {
     private static final String CONNECTION_RUNNING_TEXT = "Test connection is running";
     private static final String CONNECTION_FAIL_TEXT = "Fail";
     private static final JBColor CONNECTION_SUCCESS_COLOR = GREEN;
+    private static final JBColor CONNECTION_RUNNING_COLOR = BLACK;
     private static final JBColor CONNECTION_FAIL_COLOR = RED;
 
     private ServerDto server;
@@ -112,6 +112,7 @@ public class ServerEditPanel extends JPanel {
 
     private void emptyStatus() {
         connectionStatus.setText(CONNECTION_RUNNING_TEXT);
+        connectionStatus.setForeground(CONNECTION_RUNNING_COLOR);
         connectionStatus.setVisible(true);
 
         connectionDetails.setText("");
