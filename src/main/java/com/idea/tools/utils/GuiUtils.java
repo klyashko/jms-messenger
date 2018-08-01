@@ -10,6 +10,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.text.NumberFormat;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
 import static javax.swing.JOptionPane.*;
@@ -27,12 +28,12 @@ public class GuiUtils {
     }
 
     public static void installActionGroupInToolBar(ActionGroup actionGroup,
-                                                   SimpleToolWindowPanel toolWindowPanel,
-                                                   String toolBarName) {
+            SimpleToolWindowPanel toolWindowPanel,
+            String toolBarName) {
 
         JComponent actionToolbar = ActionManager.getInstance()
-                                                .createActionToolbar(toolBarName, actionGroup, true)
-                                                .getComponent();
+                .createActionToolbar(toolBarName, actionGroup, true)
+                .getComponent();
         toolWindowPanel.setToolbar(actionToolbar);
     }
 
@@ -47,6 +48,13 @@ public class GuiUtils {
         } else {
             application.invokeLater(runnable);
         }
+    }
+
+    public static <T> JLabel label(T value, Function<T, String> function) {
+        if (value != null) {
+            return new JLabel(function.apply(value));
+        }
+        return new JLabel();
     }
 
     public static void showDialog(JFrame dialog, String title) {

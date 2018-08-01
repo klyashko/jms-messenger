@@ -45,7 +45,7 @@ Plugin supports:
 
     <depends>com.intellij.modules.lang</depends>
 
-    <idea-version since-build="162"/>
+    <idea-version since-build="162" until-build="181.*"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products
@@ -59,6 +59,8 @@ Plugin supports:
     </project-components>
 
     <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="com.idea.tools.run.configuration.JmsConfigurationType"/>
+
         <projectConfigurable groupId="tools" groupWeight="110" dynamic="true" displayName="Jms Messenger"
                              id="preferences.jms.messenger" instance="com.idea.tools.JmsMessengerComponent"/>
 

@@ -15,6 +15,14 @@ import java.util.stream.Collectors;
 @CommonsLog
 public class Utils {
 
+    public static <T> List<T> filter(List<T> source, Predicate<T> predicate) {
+        return source.stream().filter(predicate).collect(Collectors.toList());
+    }
+
+    public static <T> boolean anyMatch(Collection<T> source, Predicate<T> predicate) {
+        return source.stream().anyMatch(predicate);
+    }
+
     public static <T, R> List<R> toList(Collection<T> source, Function<T, R> function) {
         return source.stream().map(function).collect(Collectors.toList());
     }
