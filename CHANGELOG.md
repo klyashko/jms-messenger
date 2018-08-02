@@ -5,6 +5,9 @@
  * [\*] Improvement
  * [!] Bug fixing
 
+0.2.1 (02.08.2018)
+====================
+ * [\*] Support for several versions of ide
 
 0.2.0 (30.07.2018)
 ====================
