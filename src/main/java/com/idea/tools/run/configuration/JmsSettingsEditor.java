@@ -10,38 +10,35 @@ public class JmsSettingsEditor extends SettingsEditor<JmsRunConfiguration> {
 
     private JmsSettingsEditorPanel panel;
 
+    public JmsSettingsEditor(String templateId) {
+        this.panel = new JmsSettingsEditorPanel(templateId);
+    }
+
     public JmsSettingsEditor() {
         this.panel = new JmsSettingsEditorPanel();
     }
 
     @Override
     protected void disposeEditor() {
-        panel.dispose();
         super.disposeEditor();
     }
 
     @Override
     protected void resetEditorFrom(@NotNull JmsRunConfiguration s) {
-        System.out.println(s);
+//        System.out.println("resetEditorFrom " + s);
+        panel.setSelectedTemplateId(s.getMessageId());
     }
 
     @Override
     protected void applyEditorTo(@NotNull JmsRunConfiguration s) {
-        System.out.println(s);
+//        System.out.println("applyEditorTo " + s);
+        s.setMessageId(panel.getSelectedTemplateId());
     }
 
     @NotNull
     @Override
     protected JComponent createEditor() {
         return panel;
-    }
-
-    public String getTemplateId() {
-        return panel.getSelectedTemplateId();
-    }
-
-    public void setTemplateId(String id) {
-        panel.setSelectedTemplateId(id);
     }
 
 }
