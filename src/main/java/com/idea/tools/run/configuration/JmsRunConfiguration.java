@@ -1,10 +1,9 @@
 package com.idea.tools.run.configuration;
 
+import com.idea.tools.dto.TemplateMessageDto;
+import com.idea.tools.markers.Listener;
 import com.intellij.execution.Executor;
-import com.intellij.execution.configurations.ConfigurationFactory;
-import com.intellij.execution.configurations.RunConfiguration;
-import com.intellij.execution.configurations.RunConfigurationBase;
-import com.intellij.execution.configurations.RunProfileState;
+import com.intellij.execution.configurations.*;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
@@ -16,12 +15,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+import static com.idea.tools.App.templateService;
+
 public class JmsRunConfiguration extends RunConfigurationBase {
 
     private Optional<String> messageId;
 
     protected JmsRunConfiguration(@NotNull Project project, @NotNull ConfigurationFactory factory, String name) {
         super(project, factory, name);
+        Listener<TemplateMessageDto> listener = Listener.<TemplateMessageDto>builder()
+                .remove(t -> messageId = messageId.filter(id -> !id.equals(t.getId())))
+                .build();
+
+        templateService().addListener(listener);
     }
 
     @NotNull
@@ -31,8 +37,12 @@ public class JmsRunConfiguration extends RunConfigurationBase {
     }
 
     @Override
-    public void checkConfiguration() {
-//        System.out.println(getName() + " checkConfiguration");
+    public void checkConfiguration() throws RuntimeConfigurationException {
+        System.out.println(getName() + " checkConfiguration");
+        String id = messageId.orElse("");
+        if (id.equals("")) {
+            throw new RuntimeConfigurationException("Template id is not specified", "Jms messenger");
+        }
     }
 
     @Nullable
