@@ -5,6 +5,10 @@
  * [\*] Improvement
  * [!] Bug fixing
 
+0.3.0 (05.08.2018)
+====================
+ * [+] Runnable configuration for sending templates
+
 0.2.1 (02.08.2018)
 ====================
  * [\*] Support for several versions of ide
