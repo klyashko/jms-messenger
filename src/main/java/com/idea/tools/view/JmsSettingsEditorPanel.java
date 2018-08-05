@@ -22,13 +22,11 @@ public class JmsSettingsEditorPanel extends JPanel {
 
     public JmsSettingsEditorPanel(String templateId) {
         this();
-//        System.out.println("JmsSettingsEditorPanel is created with id " + templateId);
         setSelectedTemplateId(templateId);
     }
 
     public JmsSettingsEditorPanel() {
         render();
-//        System.out.println("JmsSettingsEditorPanel is created without id ");
     }
 
     public String getSelectedTemplateId() {
@@ -40,14 +38,7 @@ public class JmsSettingsEditorPanel extends JPanel {
     }
 
     public void setSelectedTemplateId(String id) {
-//        System.out.println("JmsSettingsEditorPanel id " + id + " is set");
-        TemplateMessageDto template = settings().getServersList()
-                .stream()
-                .flatMap(s -> s.getDestinations().stream())
-                .flatMap(d -> d.getTemplates().stream())
-                .filter(t -> t.getId().equals(id))
-                .findAny()
-                .orElse(null);
+        TemplateMessageDto template = settings().getTemplate(id);
         if (template != null) {
             DestinationDto destination = template.getDestination();
             List<TemplateMessageDto> templates = destination.getTemplates();

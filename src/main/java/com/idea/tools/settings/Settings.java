@@ -112,6 +112,15 @@ public class Settings implements PersistentStateComponent<Settings> {
         template.getDestination().getTemplates().removeIf(t -> t.getId().equals(template.getId()));
     }
 
+    public TemplateMessageDto getTemplate(String id) {
+        return getServersList().stream()
+                .flatMap(s -> s.getDestinations().stream())
+                .flatMap(d -> d.getTemplates().stream())
+                .filter(t -> t.getId().equals(id))
+                .findAny()
+                .orElse(null);
+    }
+
     @Override
     public void loadState(@NotNull Settings state) {
         XmlSerializerUtil.copyBean(state, this);

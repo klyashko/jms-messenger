@@ -25,13 +25,11 @@ public class JmsSettingsEditor extends SettingsEditor<JmsRunConfiguration> {
 
     @Override
     protected void resetEditorFrom(@NotNull JmsRunConfiguration s) {
-//        System.out.println("resetEditorFrom " + s);
         panel.setSelectedTemplateId(s.getMessageId());
     }
 
     @Override
     protected void applyEditorTo(@NotNull JmsRunConfiguration s) {
-//        System.out.println("applyEditorTo " + s);
         s.setMessageId(panel.getSelectedTemplateId());
     }
 
