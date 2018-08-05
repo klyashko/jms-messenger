@@ -29,7 +29,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static com.idea.tools.App.*;
-import static com.idea.tools.JmsMessengerWindowManager.JMS_MESSENGER_WINDOW_ID;
 import static com.idea.tools.dto.DestinationType.QUEUE;
 import static com.idea.tools.dto.DestinationType.TOPIC;
 import static com.idea.tools.utils.GuiUtils.installActionGroupInToolBar;
@@ -96,7 +95,6 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         serverService().removeListener(serverListener);
         destinationService().removeListener(destinationListener);
         templateService().removeListener(templateListener);
-        toolWindowManager().unregisterToolWindow(JMS_MESSENGER_WINDOW_ID);
     }
 
     public void init() {
