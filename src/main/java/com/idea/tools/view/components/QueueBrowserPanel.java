@@ -2,7 +2,6 @@ package com.idea.tools.view.components;
 
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.utils.GuiUtils;
 import com.idea.tools.view.button.CopyButton;
 import com.idea.tools.view.button.ShowHideButton;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
@@ -18,6 +17,7 @@ import java.awt.*;
 import java.util.Collections;
 
 import static com.idea.tools.App.getProject;
+import static com.idea.tools.utils.GuiUtils.toolbar;
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.WEST;
 
@@ -59,7 +59,7 @@ public class QueueBrowserPanel extends JPanel {
 
         JPanel headersPanel = new JPanel();
         headersPanel.setLayout(new BorderLayout());
-        headersPanel.add(GuiUtils.toolbar(actions, "showHideHeadersToolbar", false), WEST);
+        headersPanel.add(toolbar(actions, "showHideHeadersToolbar", false), WEST);
         headersPanel.add(tabsPanel, CENTER);
 
         add(queueBrowserTable, BorderLayout.CENTER);
@@ -82,10 +82,18 @@ public class QueueBrowserPanel extends JPanel {
         payloadField = new JTextArea();
         payloadField.setPreferredSize(new Dimension(450, 250));
 
+        JCheckBox wrapLinesCheckBox = new JCheckBox();
+        wrapLinesCheckBox.setText("Wrap lines");
+        wrapLinesCheckBox.setSelected(true);
+        wrapLinesCheckBox.addActionListener(event -> payloadField.setLineWrap(wrapLinesCheckBox.isSelected()));
+
+        payloadField.setLineWrap(wrapLinesCheckBox.isSelected());
+
         DefaultActionGroup copyActionGroup = new DefaultActionGroup("CopyPasteBrowseToolbar", false);
         copyActionGroup.add(new CopyButton(payloadField));
 
-        toolbarPanel.add(GuiUtils.toolbar(copyActionGroup, "PayloadBrowsePanel", true), BorderLayout.EAST);
+        toolbarPanel.add(toolbar(copyActionGroup, "PayloadBrowsePanel", true), BorderLayout.EAST);
+        toolbarPanel.add(wrapLinesCheckBox, BorderLayout.WEST);
 
         panel.add(toolbarPanel, BorderLayout.NORTH);
         panel.add(new JBScrollPane(payloadField), BorderLayout.CENTER);

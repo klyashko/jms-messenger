@@ -4,6 +4,11 @@
  * [-] Deleting functional
  * [\*] Improvement
  * [!] Bug fixing
+ 
+0.4.0 (08.08.2018)
+====================
+ * [\*] Message payload panel adjustment
+ * [\*] Server edit panel adjustment
 
 0.3.0 (05.08.2018)
 ====================

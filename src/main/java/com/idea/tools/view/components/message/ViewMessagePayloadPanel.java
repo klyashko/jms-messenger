@@ -1,7 +1,6 @@
 package com.idea.tools.view.components.message;
 
 import com.idea.tools.dto.MessageDto;
-import com.idea.tools.utils.GuiUtils;
 import com.idea.tools.view.button.CopyButton;
 import com.idea.tools.view.button.PasteButton;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
@@ -11,12 +10,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Optional;
 
+import static com.idea.tools.utils.GuiUtils.toolbar;
+
 public class ViewMessagePayloadPanel extends JPanel {
 
     protected JTextArea payloadField;
 
     private JPanel rootPanel;
     private JPanel toolbarPanel;
+    private JCheckBox wrapLinesCheckBox;
     private Optional<MessageDto> message = Optional.empty();
 
     public ViewMessagePayloadPanel() {
@@ -39,9 +41,11 @@ public class ViewMessagePayloadPanel extends JPanel {
         actions.add(new PasteButton(payloadField, isEditable()));
         actions.add(new CopyButton(payloadField));
 
-        toolbarPanel.add(GuiUtils.toolbar(actions, "PayloadPanel", true), BorderLayout.EAST);
+        toolbarPanel.add(toolbar(actions, "PayloadPanel", true), BorderLayout.EAST);
 
-        payloadField.setLineWrap(true);
+        wrapLinesCheckBox.addActionListener(event -> payloadField.setLineWrap(wrapLinesCheckBox.isSelected()));
+
+        payloadField.setLineWrap(wrapLinesCheckBox.isSelected());
         payloadField.setEditable(isEditable());
         add(new JBScrollPane(rootPanel));
     }

@@ -7,6 +7,7 @@ import com.idea.tools.task.TestConnectionTask;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
 import com.intellij.ui.JBColor;
+import com.intellij.ui.components.JBScrollPane;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +21,6 @@ import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static com.idea.tools.utils.Utils.getOrDefault;
 import static com.idea.tools.utils.Utils.toInteger;
 import static com.intellij.ui.JBColor.*;
-import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
 import static java.awt.BorderLayout.CENTER;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -68,7 +68,7 @@ public class ServerEditPanel extends JPanel {
     }
 
     private void render() {
-        add(createScrollPane(rootPanel), CENTER);
+        add(new JBScrollPane(rootPanel), CENTER);
 
         connectionDetails.setLineWrap(true);
         connectionDetails.setColumns(2);
