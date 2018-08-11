@@ -44,8 +44,6 @@ public class ServerEditMainPanel extends JPanel {
         ServerDto server = serverEditPanel.getServer();
 
         setValues(server);
-        updateNameFieldValue();
-        enableButtons();
 
         DocumentListener validator = simpleListener(event -> enableButtons());
 
@@ -96,6 +94,7 @@ public class ServerEditMainPanel extends JPanel {
         loginField.setText(server.getLogin());
         passwordField.setText(server.getPassword());
 
+        updateNameFieldValue();
         enableButtons();
     }
 

@@ -2,6 +2,7 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.task.TestConnectionTask;
+import com.idea.tools.view.components.ServerEditDestinationPanel;
 import com.idea.tools.view.components.ServerEditMainPanel;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.tabs.TabInfo;
@@ -14,6 +15,7 @@ import javax.swing.*;
 import static com.idea.tools.App.getProject;
 import static com.idea.tools.App.serverService;
 import static com.intellij.ui.JBColor.*;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class ServerEditPanel extends JPanel {
 
@@ -28,7 +30,9 @@ public class ServerEditPanel extends JPanel {
     private ServerDto server;
 
     private JBTabsImpl tabs;
+    private TabInfo destinations;
     private ServerEditMainPanel mainPanel;
+    private ServerEditDestinationPanel destinationPanel;
     private JPanel rootPanel;
     private JPanel tabsPanel;
     @Getter
@@ -49,6 +53,12 @@ public class ServerEditPanel extends JPanel {
         render();
     }
 
+    public void setNewValue(ServerDto server) {
+        this.server = server;
+        setValues();
+        enableDestinationPanel();
+    }
+
     private void render() {
         tabs = new JBTabsImpl(getProject());
 
@@ -56,6 +66,12 @@ public class ServerEditPanel extends JPanel {
         TabInfo main = new TabInfo(mainPanel);
         main.setText("Main settings");
         tabs.addTab(main);
+
+        destinationPanel = new ServerEditDestinationPanel(server);
+        destinations = new TabInfo(destinationPanel);
+        destinations.setText("Destinations");
+        enableDestinationPanel();
+        tabs.addTab(destinations);
 
         tabsPanel.add(tabs);
 
@@ -65,6 +81,7 @@ public class ServerEditPanel extends JPanel {
         saveButton.addActionListener(event -> {
             fillServer(server);
             serverService().saveOrUpdate(server);
+            enableDestinationPanel();
         });
 
         cancelButton.addActionListener(event -> setValues());
@@ -103,16 +120,17 @@ public class ServerEditPanel extends JPanel {
         connectionDetails.setVisible(true);
     }
 
-    public void setNewValue(ServerDto server) {
-        this.server = server;
-        setValues();
-    }
-
     private void fillServer(ServerDto server) {
         mainPanel.fillServer(server);
+        destinationPanel.fillServer(server);
     }
 
     private void setValues() {
         mainPanel.setValues(server);
+        destinationPanel.setValues(server);
+    }
+
+    private void enableDestinationPanel() {
+        destinations.setEnabled(isNotBlank(server.getId()));
     }
 }

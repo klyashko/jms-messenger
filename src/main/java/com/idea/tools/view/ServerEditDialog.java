@@ -27,8 +27,8 @@ public class ServerEditDialog extends JFrame {
 
     private void render(ServerDto server) {
         ServerEditPanel panel = new ServerEditPanel(server);
+        panel.getCancelButton().setText("Close");
         panel.getCancelButton().addActionListener(event -> dispose());
-        panel.getSaveButton().addActionListener(event -> dispose());
 
         JRootPane rootPane = new JRootPane();
         IdeGlassPaneImpl pane = new IdeGlassPaneImpl(rootPane);
