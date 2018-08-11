@@ -2,7 +2,6 @@ package com.idea.tools.view;
 
 import com.idea.tools.App;
 import com.idea.tools.dto.ServerDto;
-import com.idea.tools.view.components.ServerEditPanel;
 import com.idea.tools.view.components.ServiceConfigTable;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
