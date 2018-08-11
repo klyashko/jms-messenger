@@ -88,6 +88,7 @@
         </constraints>
         <properties>
           <text value="Unknown"/>
+          <visible value="false"/>
         </properties>
       </component>
       <component id="16725" class="javax.swing.JTextArea" binding="connectionDetails">
@@ -96,7 +97,9 @@
             <preferred-size width="200" height="50"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <visible value="false"/>
+        </properties>
       </component>
     </children>
   </grid>
