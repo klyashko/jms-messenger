@@ -24,14 +24,14 @@ public class SendMessageHeadersPanel extends ViewMessageHeadersPanel {
 
     @Override
     protected JComponent editPanelContent() {
-        headerEditPanel = new HeaderEditPanel(pair -> {
-            boolean isNew = table.getData().stream().noneMatch(h -> h.getName().equals(pair.getName()));
+        headerEditPanel = new HeaderEditPanel(header -> {
+            boolean isNew = table.getData().stream().noneMatch(h -> h.getName().equals(header.getName()));
             if (isNew) {
-                table.add(pair);
+                table.add(header);
             } else {
                 table.getData().replaceAll(h -> {
-                    if (h.getName().equals(pair.getName())) {
-                        return pair;
+                    if (h.getName().equals(header.getName())) {
+                        return header;
                     }
                     return h;
                 });

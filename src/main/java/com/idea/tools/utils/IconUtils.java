@@ -31,6 +31,10 @@ public class IconUtils extends IconUtil {
         return icon("artemis.png");
     }
 
+    public static Icon getKafkaIcon() {
+        return icon("kafka.png");
+    }
+
     public static Icon getJmsIcon() {
         return icon("jms.png");
     }

@@ -4,8 +4,6 @@ import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.DestinationType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.GuiUtils;
-import com.intellij.openapi.ui.ComboBox;
-import com.intellij.ui.EnumComboBoxModel;
 
 import javax.swing.*;
 
@@ -53,6 +51,8 @@ public class DestinationEditDialog extends JFrame {
     private void render() {
         add(rootPanel);
 
+        typeComboBox.setModel(new DefaultComboBoxModel<>(DestinationType.getTypes(server.getType())));
+
         setValues();
 
         nameField.getDocument().addDocumentListener(
@@ -75,7 +75,4 @@ public class DestinationEditDialog extends JFrame {
         typeComboBox.setSelectedItem(getOrDefault(destination.getType(), QUEUE));
     }
 
-    private void createUIComponents() {
-        typeComboBox = new ComboBox<>(new EnumComboBoxModel<>(DestinationType.class));
-    }
 }

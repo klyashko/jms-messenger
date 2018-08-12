@@ -13,6 +13,7 @@ public enum ConnectionType {
     public static final ConnectionType[] ARTEMIS_CONNECTION_TYPES = {HTTP, TCP};
     public static final ConnectionType[] HORNETQ_CONNECTION_TYPES = {HTTP};
     public static final ConnectionType[] ACTIVE_MQ_CONNECTION_TYPES = {TCP};
+    public static final ConnectionType[] KAFKA_CONNECTION_TYPES = {TCP};
 
     private String extension;
 

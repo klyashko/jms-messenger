@@ -6,7 +6,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
 
 import javax.swing.*;
-import java.util.Optional;
 
 import static com.intellij.util.IconUtil.getAddIcon;
 
@@ -20,7 +19,7 @@ public class ToolBarAddServerAction extends AnAction implements DumbAware {
 
     @Override
     public void actionPerformed(AnActionEvent event) {
-        ServerEditDialog.showDialog(Optional.empty());
+        ServerEditDialog.showDialog();
     }
 
 }

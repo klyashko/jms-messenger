@@ -34,4 +34,15 @@ public class DestinationDto implements Comparable<DestinationDto> {
         return COMPARATOR.compare(name, o.name);
     }
 
+    public static DestinationDto copy(DestinationDto dto) {
+        DestinationDto newDto = new DestinationDto();
+        newDto.setId(dto.id);
+        newDto.setName(dto.name);
+        newDto.setServer(dto.server);
+        newDto.setAddedManually(dto.addedManually);
+        newDto.setType(dto.type);
+        newDto.setTemplates(dto.templates);
+        return newDto;
+    }
+
 }

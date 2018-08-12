@@ -6,7 +6,6 @@ import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
 import javax.swing.*;
-import java.util.Optional;
 
 import static com.intellij.util.IconUtil.getEditIcon;
 
@@ -20,7 +19,7 @@ public abstract class AbstractEditServerAction extends AbstractBrowserPanelActio
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        serversPanel.getSelectedValue(ServerDto.class).ifPresent(server -> ServerEditDialog.showDialog(Optional.of(server)));
+        serversPanel.getSelectedValue(ServerDto.class).ifPresent(ServerEditDialog::showDialog);
     }
 
     boolean isServerSelected() {
