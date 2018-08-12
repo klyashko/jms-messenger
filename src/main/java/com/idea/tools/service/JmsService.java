@@ -1,10 +1,7 @@
 package com.idea.tools.service;
 
 import com.idea.tools.dto.*;
-import com.idea.tools.jms.ActiveMQConnectionStrategy;
-import com.idea.tools.jms.ArtemisConnectionStrategy;
-import com.idea.tools.jms.ConnectionStrategy;
-import com.idea.tools.jms.HornetConnectionStrategy;
+import com.idea.tools.jms.*;
 import com.idea.tools.utils.Assert;
 import com.intellij.openapi.diagnostic.Logger;
 
@@ -32,6 +29,7 @@ public class JmsService {
         STRATEGIES.put(ACTIVE_MQ, new ActiveMQConnectionStrategy());
         STRATEGIES.put(ARTEMIS, new ArtemisConnectionStrategy());
         STRATEGIES.put(HORNETQ, new HornetConnectionStrategy());
+        STRATEGIES.put(KAFKA, new KafkaConnectionStrategy());
     }
 
     public void testConnection(ServerDto server) throws Exception {
