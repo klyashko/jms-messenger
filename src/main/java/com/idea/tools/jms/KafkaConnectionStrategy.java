@@ -37,7 +37,7 @@ public class KafkaConnectionStrategy extends AbstractConnectionStrategy {
 
         ConnectionFactory factory = new MyKafkaConnectionFactory(settings);
 
-        return connect(server, factory);
+        return factory.createConnection();
     }
 
 

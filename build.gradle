@@ -35,7 +35,9 @@ dependencies {
 
     compile(group: 'org.hornetq', name: 'hornetq-jms-client', version: '2.4.7.Final')
 
-    compile(group: 'io.confluent', name: 'kafka-jms-client', version: '5.0.0')
+    compile(group: 'io.confluent', name: 'kafka-jms-client', version: '5.0.0'){
+        exclude group: 'io.netty', module: 'netty'
+    }
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
