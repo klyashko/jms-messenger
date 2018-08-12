@@ -1,9 +1,12 @@
 ### Jms-messenger
 
-#### Current version 0.4.0
+#### Current version 0.5.0
 
 #### Repository
- https://github.com/klyashko/jms-messenger
+ [https://github.com/klyashko/jms-messenger](https://github.com/klyashko/jms-messenger)
+ 
+#### Plugin page
+ [https://plugins.jetbrains.com/plugin/10949-jms-messenger](https://plugins.jetbrains.com/plugin/10949-jms-messenger)
  
 #### Description
  This is a plugin for Intellij idea which provides jms support.
@@ -20,13 +23,16 @@
 
 #### Supported jms providers:
  * Wildfly 10.x.x or higher (Artemis)
- * Artemis (over HTTP or TCP)
+ * Artemis (via HTTP or TCP)
  * Wildfly 9.x.x (HornetQ)
- * ActiveMq (over TCP)
- * HornetQ (over HTTP)
+ * ActiveMq (via TCP)
+ * HornetQ (via HTTP)
+ * Kafka (via TCP)
  
 #### Limitation  
+ Only sending messages is supported for kafka.
  Only text messages may be send or browse.
+ Authorization is not supported for kafka.
  
 #### Suggestions and bug reports
  In case of finding bug or having a suggestion about new features or supported providers you can open a ticket on

@@ -5,6 +5,12 @@
  * [\*] Improvement
  * [!] Bug fixing
  
+0.5.0 (12.08.2018)
+====================
+ * [+] Kafka support
+ * [\*] Improvement in server edit panel
+ * [-] Removing first queue implementation
+ 
 0.4.0 (08.08.2018)
 ====================
  * [\*] Message payload panel adjustment
