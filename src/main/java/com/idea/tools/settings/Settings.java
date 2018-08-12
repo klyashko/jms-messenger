@@ -1,7 +1,6 @@
 package com.idea.tools.settings;
 
 import com.idea.tools.dto.DestinationDto;
-import com.idea.tools.dto.DestinationType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -32,23 +31,11 @@ public class Settings implements PersistentStateComponent<Settings> {
     public static Settings getOrCreate(Project project) {
         return settings.orElseGet(() -> {
             Settings settings = ServiceManager.getService(project, Settings.class);
-            settings.servers.forEach((id, server) -> {
-                        //TODO delete after migration
-                        server.getQueues().forEach(queue -> {
-                            DestinationDto destination = new DestinationDto();
-                            destination.setId(queue.getId());
-                            destination.setName(queue.getName());
-                            destination.setAddedManually(queue.isAddedManually());
-                            destination.setTemplates(queue.getTemplates());
-                            destination.setType(DestinationType.QUEUE);
-                            server.getDestinations().add(destination);
-                        });
-                        server.getQueues().clear();
-                        server.getDestinations().forEach(destination -> {
-                            destination.setServer(server);
-                            destination.getTemplates().forEach(template -> template.setDestination(destination));
-                        });
-                    }
+            settings.servers.forEach((id, server) ->
+                    server.getDestinations().forEach(destination -> {
+                        destination.setServer(server);
+                        destination.getTemplates().forEach(template -> template.setDestination(destination));
+                    })
             );
             Settings.settings = Optional.of(settings);
             return settings;
