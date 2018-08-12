@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import java.util.Objects;
 
+import static com.idea.tools.dto.ServerType.KAFKA;
 import static com.idea.tools.utils.GuiUtils.createNumberInputField;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static com.idea.tools.utils.Utils.getOrDefault;
@@ -38,6 +39,20 @@ public class ServerEditMainPanel extends JPanel {
         render();
     }
 
+    public void fillServer(ServerDto server) {
+        server.setType(typeComboBox.getItemAt(typeComboBox.getSelectedIndex()));
+        server.setConnectionType(connectionType.getItemAt(connectionType.getSelectedIndex()));
+        server.setHost(hostField.getText());
+        server.setPort(toInteger(portField.getText()));
+        server.setLogin(loginField.getText());
+        server.setPassword(String.valueOf(passwordField.getPassword()));
+        server.setName(nameField.getText());
+    }
+
+    public void updateTabs() {
+        serverEditPanel.getKafka().setHidden(!KAFKA.equals(typeComboBox.getSelectedItem()));
+    }
+
     private void render() {
         add(new JBScrollPane(rootPanel), CENTER);
 
@@ -48,6 +63,7 @@ public class ServerEditMainPanel extends JPanel {
         DocumentListener validator = simpleListener(event -> enableButtons());
 
         typeComboBox.addActionListener(event -> updateConnectionTypeModel());
+        typeComboBox.addActionListener(event -> serverEditPanel.updateTabs());
 
         hostField.addActionListener(event -> updateNameFieldValue());
         hostField.getDocument().addDocumentListener(simpleListener(event -> updateNameFieldValue()));
@@ -69,16 +85,6 @@ public class ServerEditMainPanel extends JPanel {
 
     private boolean requiredFieldsAreFilled() {
         return isNotEmpty(hostField.getText()) && isNotEmpty(portField.getText());
-    }
-
-    public void fillServer(ServerDto server) {
-        server.setType(typeComboBox.getItemAt(typeComboBox.getSelectedIndex()));
-        server.setConnectionType(connectionType.getItemAt(connectionType.getSelectedIndex()));
-        server.setHost(hostField.getText());
-        server.setPort(toInteger(portField.getText()));
-        server.setLogin(loginField.getText());
-        server.setPassword(String.valueOf(passwordField.getPassword()));
-        server.setName(nameField.getText());
     }
 
     public void setValues(ServerDto server) {

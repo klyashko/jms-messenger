@@ -23,4 +23,13 @@ public enum DestinationType {
         return destination.apply(session, dto);
     }
 
+    public static DestinationType[] getTypes(ServerType type) {
+        switch (type) {
+            case KAFKA:
+                return new DestinationType[]{TOPIC};
+            default:
+                return new DestinationType[]{QUEUE, TOPIC};
+        }
+    }
+
 }

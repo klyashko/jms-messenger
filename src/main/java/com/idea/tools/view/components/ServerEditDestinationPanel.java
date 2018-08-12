@@ -4,8 +4,6 @@ import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.DestinationType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.task.LoadQueuesTask;
-import com.intellij.openapi.ui.ComboBox;
-import com.intellij.ui.EnumComboBoxModel;
 
 import javax.swing.*;
 
@@ -72,6 +70,7 @@ public class ServerEditDestinationPanel extends JPanel {
     public void setValues(ServerDto server) {
         this.server = server;
         table.setData(server.getDestinations());
+        typeCombobox.setModel(new DefaultComboBoxModel<>(DestinationType.getTypes(server.getType())));
         this.currentDestination = new DestinationDto();
     }
 
@@ -95,7 +94,4 @@ public class ServerEditDestinationPanel extends JPanel {
         saveButton.setEnabled(isNotBlank(nameField.getText()) && typeCombobox.getSelectedIndex() != -1);
     }
 
-    private void createUIComponents() {
-        typeCombobox = new ComboBox<>(new EnumComboBoxModel<>(DestinationType.class));
-    }
 }

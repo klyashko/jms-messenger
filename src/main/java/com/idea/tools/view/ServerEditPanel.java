@@ -3,6 +3,7 @@ package com.idea.tools.view;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.task.TestConnectionTask;
 import com.idea.tools.view.components.ServerEditDestinationPanel;
+import com.idea.tools.view.components.ServerEditKafkaPanel;
 import com.idea.tools.view.components.ServerEditMainPanel;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.tabs.TabInfo;
@@ -29,10 +30,17 @@ public class ServerEditPanel extends JPanel {
     @Getter
     private ServerDto server;
 
+    /**
+     * Tabs
+     */
     private JBTabsImpl tabs;
     private TabInfo destinations;
+    @Getter
+    private TabInfo kafka;
     private ServerEditMainPanel mainPanel;
     private ServerEditDestinationPanel destinationPanel;
+    private ServerEditKafkaPanel kafkaPanel;
+
     private JPanel rootPanel;
     private JPanel tabsPanel;
     @Getter
@@ -56,7 +64,12 @@ public class ServerEditPanel extends JPanel {
     public void setNewValue(ServerDto server) {
         this.server = server;
         setValues();
-        enableDestinationPanel();
+        updateTabs();
+    }
+
+    public void updateTabs() {
+        destinations.setEnabled(isNotBlank(server.getId()));
+        mainPanel.updateTabs();
     }
 
     private void render() {
@@ -67,11 +80,17 @@ public class ServerEditPanel extends JPanel {
         main.setText("Main settings");
         tabs.addTab(main);
 
+        kafkaPanel = new ServerEditKafkaPanel(server);
+        kafka = new TabInfo(kafkaPanel);
+        kafka.setText("Kafka settings");
+        tabs.addTab(kafka);
+
         destinationPanel = new ServerEditDestinationPanel(server);
         destinations = new TabInfo(destinationPanel);
         destinations.setText("Destinations");
-        enableDestinationPanel();
         tabs.addTab(destinations);
+
+        updateTabs();
 
         tabsPanel.add(tabs);
 
@@ -81,7 +100,7 @@ public class ServerEditPanel extends JPanel {
         saveButton.addActionListener(event -> {
             fillServer(server);
             serverService().saveOrUpdate(server);
-            enableDestinationPanel();
+            updateTabs();
         });
 
         cancelButton.addActionListener(event -> setValues());
@@ -122,15 +141,13 @@ public class ServerEditPanel extends JPanel {
 
     private void fillServer(ServerDto server) {
         mainPanel.fillServer(server);
+        kafkaPanel.fillServer(server);
         destinationPanel.fillServer(server);
     }
 
     private void setValues() {
         mainPanel.setValues(server);
+        kafkaPanel.setValues(server);
         destinationPanel.setValues(server);
-    }
-
-    private void enableDestinationPanel() {
-        destinations.setEnabled(isNotBlank(server.getId()));
     }
 }
