@@ -208,7 +208,13 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         findDestinationNode(data.get(), destination).ifPresent(queueNode -> {
             DefaultMutableTreeNode typeNode = (DefaultMutableTreeNode) queueNode.getParent();
             typeNode.remove(queueNode);
-            model.reload(typeNode);
+            if (typeNode.getChildCount() > 0) {
+                model.reload(typeNode);
+            } else {
+                DefaultMutableTreeNode serverNode = (DefaultMutableTreeNode) typeNode.getParent();
+                serverNode.remove(typeNode);
+                model.reload(serverNode);
+            }
         });
     }
 
@@ -229,11 +235,15 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         return findNode(data, ServerDto.class, s -> s.getId().equals(server.getId()));
     }
 
+    private Optional<DefaultMutableTreeNode> findDestinationTypeNode(Enumeration<DefaultMutableTreeNode> types, DestinationType type) {
+        return findNode(types, DestinationType.class, t -> t.equals(type));
+    }
+
     private Optional<DefaultMutableTreeNode> findDestinationNode(Enumeration<DefaultMutableTreeNode> data, DestinationDto destination) {
         return findServerNode(data, destination.getServer()).flatMap(serverNode -> {
             @SuppressWarnings("unchecked")
             Enumeration<DefaultMutableTreeNode> types = serverNode.children();
-            return findNode(types, DestinationType.class, type -> type.equals(destination.getType()))
+            return findDestinationTypeNode(types, destination.getType())
                     .flatMap(node -> {
                         @SuppressWarnings("unchecked")
                         Enumeration<DefaultMutableTreeNode> destinations = node.children();
@@ -282,10 +292,12 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     private void fillDestinationTypeTree(ServerDto server, DefaultMutableTreeNode serverNode) {
         Map<DestinationType, List<DestinationDto>> destinations = groupingBy(server.getDestinations(), DestinationDto::getType);
         for (DestinationType type : Arrays.asList(QUEUE, TOPIC)) {
-            List<DestinationDto> destinationList = destinations.getOrDefault(type, Collections.emptyList());
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(type);
-            fillDestinationTree(destinationList, node);
-            serverNode.add(node);
+            List<DestinationDto> destinationList = destinations.get(type);
+            if (destinationList != null) {
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode(type);
+                fillDestinationTree(destinationList, node);
+                serverNode.add(node);
+            }
         }
     }
 
