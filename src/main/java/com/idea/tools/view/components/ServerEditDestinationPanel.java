@@ -55,7 +55,7 @@ public class ServerEditDestinationPanel extends JPanel {
             table.clearSelection();
         });
 
-        loadFromServerButton.setEnabled(ACTIVE_MQ.equals(server.getType()));
+        enableLoadButton();
         loadFromServerButton.addActionListener(event -> new LoadQueuesTask(singletonList(server), () -> setValues(server)));
 
         setValues();
@@ -72,6 +72,7 @@ public class ServerEditDestinationPanel extends JPanel {
         table.setData(server.getDestinations());
         typeCombobox.setModel(new DefaultComboBoxModel<>(DestinationType.getTypes(server.getType())));
         this.currentDestination = new DestinationDto();
+        enableLoadButton();
     }
 
     public void setOnEdit(DestinationDto destination) {
@@ -92,6 +93,10 @@ public class ServerEditDestinationPanel extends JPanel {
 
     private void enableSaveButton() {
         saveButton.setEnabled(isNotBlank(nameField.getText()) && typeCombobox.getSelectedIndex() != -1);
+    }
+
+    private void enableLoadButton() {
+        loadFromServerButton.setEnabled(ACTIVE_MQ.equals(server.getType()));
     }
 
 }
