@@ -1,6 +1,5 @@
 package com.idea.tools.view;
 
-import com.idea.tools.App;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.view.components.ServiceConfigTable;
 import com.intellij.openapi.project.Project;
@@ -11,22 +10,24 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
-import static com.idea.tools.App.serverService;
-import static com.idea.tools.App.settings;
+import static com.idea.tools.service.ServerService.serverService;
+import static com.idea.tools.settings.Settings.settings;
 
 public class ConfigurationPanel {
+
+    private final Project project;
 
     private JPanel rootPanel;
     private ServiceConfigTable table;
     private ServerEditPanel panel;
 
     public ConfigurationPanel(Project project) {
-        App.setProject(project);
+        this.project = project;
         render();
     }
 
     private void render() {
-        this.panel = new ServerEditPanel();
+        this.panel = new ServerEditPanel(project);
         rootPanel = new JPanel(new BorderLayout());
         rootPanel.add(renderTable(), BorderLayout.WEST);
         rootPanel.add(panel, BorderLayout.CENTER);
@@ -34,10 +35,10 @@ public class ConfigurationPanel {
 
     @NotNull
     private ServiceConfigTable renderTable() {
-        List<ServerDto> data = settings().getServersList();
+        List<ServerDto> data = settings(project).getServersList();
         Collections.sort(data);
-        table = new ServiceConfigTable(data, this);
-        serverService().addListener(table);
+        table = new ServiceConfigTable(project, data, this);
+        serverService(project).addListener(table);
         return table;
     }
 
@@ -57,6 +58,6 @@ public class ConfigurationPanel {
     }
 
     public void dispose() {
-        serverService().removeListener(table);
+        serverService(project).removeListener(table);
     }
 }

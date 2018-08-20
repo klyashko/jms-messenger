@@ -1,6 +1,5 @@
 package com.idea.tools.view;
 
-import com.idea.tools.App;
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.DestinationType;
 import com.idea.tools.dto.ServerDto;
@@ -12,12 +11,12 @@ import com.idea.tools.view.render.TreeRender;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.TreeSpeedSearch;
 import com.intellij.ui.treeStructure.SimpleTree;
 import com.intellij.ui.treeStructure.Tree;
-import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -28,9 +27,12 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static com.idea.tools.App.*;
 import static com.idea.tools.dto.DestinationType.QUEUE;
 import static com.idea.tools.dto.DestinationType.TOPIC;
+import static com.idea.tools.service.DestinationService.destinationService;
+import static com.idea.tools.service.ServerService.serverService;
+import static com.idea.tools.service.TemplateService.templateService;
+import static com.idea.tools.settings.Settings.settings;
 import static com.idea.tools.utils.GuiUtils.installActionGroupInToolBar;
 import static com.idea.tools.utils.Utils.cast;
 import static com.idea.tools.utils.Utils.groupingBy;
@@ -40,11 +42,10 @@ import static java.awt.BorderLayout.CENTER;
 
 public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Disposable {
 
-    private static final Logger logger = Logger.getLogger(ServersBrowseToolPanel.class);
-
     private static final String LOADING = "Loading...";
     private final Tree serversTree;
     private final Settings settings;
+    private final Project project;
     private JPanel rootPanel;
     private JPanel serverPanel;
     private Listener<ServerDto> serverListener;
@@ -53,8 +54,8 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 
     public ServersBrowseToolPanel(final Project project) {
         super(true);
-        App.setProject(project);
-        settings = settings();
+        this.project = project;
+        settings = settings(project);
         setProvideQuickActions(false);
         serversTree = createTree();
 
@@ -76,9 +77,9 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
                 .remove(this::removeTemplate)
                 .build();
 
-        serverService().addListener(serverListener);
-        destinationService().addListener(destinationListener);
-        templateService().addListener(templateListener);
+        serverService(project).addListener(serverListener);
+        destinationService(project).addListener(destinationListener);
+        templateService(project).addListener(templateListener);
 
         serverPanel.setLayout(new BorderLayout());
         serverPanel.add(createScrollPane(serversTree), CENTER);
@@ -86,15 +87,15 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
         setContent(rootPanel);
     }
 
-    public static ServersBrowseToolPanel of() {
-        return fetch(ServersBrowseToolPanel.class);
+    public static ServersBrowseToolPanel of(Project project) {
+        return ServiceManager.getService(project, ServersBrowseToolPanel.class);
     }
 
     @Override
     public void dispose() {
-        serverService().removeListener(serverListener);
-        destinationService().removeListener(destinationListener);
-        templateService().removeListener(templateListener);
+        serverService(project).removeListener(serverListener);
+        destinationService(project).removeListener(destinationListener);
+        templateService(project).removeListener(templateListener);
     }
 
     public void init() {
@@ -106,15 +107,15 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     private void installActionsInToolbar() {
         DefaultActionGroup actions = new DefaultActionGroup("JmsMessengerToolbarGroup", false);
 
-        actions.add(new ToolBarAddServerAction());
-        actions.add(new ToolBarRemoveAction(this));
-        actions.add(new ToolBarEditServerAction(this));
+        actions.add(new ToolBarAddServerAction(project));
+        actions.add(new ToolBarRemoveAction(project, this));
+        actions.add(new ToolBarEditServerAction(project, this));
         actions.addSeparator();
-        actions.add(new ToolBarReconnectAction(this));
-        actions.add(new ToolBarSendMessageAction(this));
-        actions.add(new ToolBarBrowseQueueAction(this));
+        actions.add(new ToolBarReconnectAction(project, this));
+        actions.add(new ToolBarSendMessageAction(project, this));
+        actions.add(new ToolBarBrowseQueueAction(project, this));
         actions.addSeparator();
-        actions.add(new ToolBarOpenSettingsAction());
+        actions.add(new ToolBarOpenSettingsAction(project));
 
         installActionGroupInToolBar(actions, this, "JmsMessengerBrowserActions");
     }
@@ -122,19 +123,19 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
     private void installActionsInPopupMenu() {
         DefaultActionGroup popup = new DefaultActionGroup("JmsMessengerPopupAction", true);
 
-        popup.add(new PopupRemoveTemplateAction(this));
-        popup.add(new PopupEditTemplateAction(this));
+        popup.add(new PopupRemoveTemplateAction(project, this));
+        popup.add(new PopupEditTemplateAction(project, this));
         popup.addSeparator();
-        popup.add(new PopupRemoveDestinationAction(this));
-        popup.add(new PopupEditDestinationAction(this));
-        popup.add(new PopupAddDestinationAction(this));
+        popup.add(new PopupRemoveDestinationAction(project, this));
+        popup.add(new PopupEditDestinationAction(project, this));
+        popup.add(new PopupAddDestinationAction(project, this));
         popup.addSeparator();
-        popup.add(new PopupReconnectAction(this));
-        popup.add(new PopupSendMessageAction(this));
-        popup.add(new PopupBrowseQueueAction(this));
+        popup.add(new PopupReconnectAction(project, this));
+        popup.add(new PopupSendMessageAction(project, this));
+        popup.add(new PopupBrowseQueueAction(project, this));
         popup.addSeparator();
-        popup.add(new PopupRemoveServerAction(this));
-        popup.add(new PopupEditServerAction(this));
+        popup.add(new PopupRemoveServerAction(project, this));
+        popup.add(new PopupEditServerAction(project, this));
 
         installPopupHandler(serversTree, popup, "POPUP", ActionManager.getInstance());
     }

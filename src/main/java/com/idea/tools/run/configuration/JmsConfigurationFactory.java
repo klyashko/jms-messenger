@@ -6,8 +6,6 @@ import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import static com.idea.tools.App.setProject;
-
 public class JmsConfigurationFactory extends ConfigurationFactory {
 
     protected JmsConfigurationFactory(@NotNull ConfigurationType type) {
@@ -17,7 +15,6 @@ public class JmsConfigurationFactory extends ConfigurationFactory {
     @NotNull
     @Override
     public RunConfiguration createTemplateConfiguration(@NotNull Project project) {
-        setProject(project);
         return new JmsRunConfiguration(project, this, "Jms");
     }
 

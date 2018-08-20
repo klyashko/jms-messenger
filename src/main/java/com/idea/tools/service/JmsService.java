@@ -3,16 +3,18 @@ package com.idea.tools.service;
 import com.idea.tools.dto.*;
 import com.idea.tools.jms.*;
 import com.idea.tools.utils.Assert;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 
 import javax.jms.*;
 import java.lang.IllegalStateException;
 import java.util.*;
 
-import static com.idea.tools.App.destinationService;
-import static com.idea.tools.App.serverService;
 import static com.idea.tools.dto.DestinationType.QUEUE;
 import static com.idea.tools.dto.ServerType.*;
+import static com.idea.tools.service.DestinationService.destinationService;
+import static com.idea.tools.service.ServerService.serverService;
 import static com.idea.tools.utils.Checked.consumer;
 import static com.idea.tools.utils.Utils.partitioningBy;
 import static com.idea.tools.utils.Utils.toMap;
@@ -25,12 +27,16 @@ public class JmsService {
 
     private static final Map<ServerType, ConnectionStrategy> STRATEGIES = new HashMap<>();
 
+    private final Project project;
+
     static {
         STRATEGIES.put(ACTIVE_MQ, new ActiveMQConnectionStrategy());
         STRATEGIES.put(ARTEMIS, new ArtemisConnectionStrategy());
         STRATEGIES.put(HORNETQ, new HornetConnectionStrategy());
         STRATEGIES.put(KAFKA, new KafkaConnectionStrategy());
     }
+
+    public JmsService(Project project) {this.project = project;}
 
     public void testConnection(ServerDto server) throws Exception {
         try (Connection connection = connectionStrategy(server).connect(server)) {
@@ -85,28 +91,8 @@ public class JmsService {
         return msgs;
     }
 
-    public void refresh(List<ServerDto> servers) {
-        servers.forEach(server -> {
-            Map<Boolean, List<DestinationDto>> tmp = partitioningBy(server.getDestinations(), DestinationDto::isAddedManually);
-            Map<String, DestinationDto> toKeep = toMap(tmp.get(true), DestinationDto::getName, identity());
-
-            try {
-                ConnectionStrategy strategy = connectionStrategy(server);
-                try (Connection connection = strategy.connect(server)) {
-                    strategy.getDestinations(connection).forEach(dto ->
-                            toKeep.computeIfAbsent(dto.getName(), name -> {
-                                dto.setServer(server);
-                                destinationService().persist(dto);
-                                return dto;
-                            }));
-                }
-            } catch (Exception e) {
-                LOGGER.error("An exception has been thrown during connecting to a server", e, server.getName());
-            }
-
-            server.setDestinations(new ArrayList<>(toKeep.values()));
-            serverService().saveOrUpdate(server);
-        });
+    public static JmsService jmsService(Project project) {
+        return ServiceManager.getService(project, JmsService.class);
     }
 
     public boolean removeFromQueue(MessageDto messageDto, DestinationDto destination) throws Exception {
@@ -133,6 +119,30 @@ public class JmsService {
 
     private void setMessageProperties(Message msg, List<HeaderDto> properties) {
         properties.forEach(consumer(h -> msg.setObjectProperty(h.getName(), h.getValue())));
+    }
+
+    public void refresh(List<ServerDto> servers) {
+        servers.forEach(server -> {
+            Map<Boolean, List<DestinationDto>> tmp = partitioningBy(server.getDestinations(), DestinationDto::isAddedManually);
+            Map<String, DestinationDto> toKeep = toMap(tmp.get(true), DestinationDto::getName, identity());
+
+            try {
+                ConnectionStrategy strategy = connectionStrategy(server);
+                try (Connection connection = strategy.connect(server)) {
+                    strategy.getDestinations(connection).forEach(dto ->
+                            toKeep.computeIfAbsent(dto.getName(), name -> {
+                                dto.setServer(server);
+                                destinationService(project).persist(dto);
+                                return dto;
+                            }));
+                }
+            } catch (Exception e) {
+                LOGGER.error("An exception has been thrown during connecting to a server", e, server.getName());
+            }
+
+            server.setDestinations(new ArrayList<>(toKeep.values()));
+            serverService(project).saveOrUpdate(server);
+        });
     }
 
 }

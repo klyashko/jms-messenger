@@ -2,25 +2,28 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.TemplateMessageDto;
 import com.idea.tools.utils.GuiUtils;
+import com.intellij.openapi.project.Project;
 
 import javax.swing.*;
 
-import static com.idea.tools.App.templateService;
+import static com.idea.tools.service.TemplateService.templateService;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class TemplateEditMessageDialog extends SendMessageDialog {
 
+    private final Project project;
     private TemplateMessageDto message;
 
-    protected TemplateEditMessageDialog(TemplateMessageDto message) {
-        super(message);
+    private TemplateEditMessageDialog(Project project, TemplateMessageDto message) {
+        super(project, message);
         this.message = message;
+        this.project = project;
         render();
     }
 
-    public static void showDialog(TemplateMessageDto message) {
-        GuiUtils.showDialog(new TemplateEditMessageDialog(message), "Template settings");
+    public static void showDialog(Project project, TemplateMessageDto message) {
+        GuiUtils.showDialog(new TemplateEditMessageDialog(project, message), "Template settings");
     }
 
     private void render() {
@@ -33,7 +36,7 @@ public class TemplateEditMessageDialog extends SendMessageDialog {
         actionButton.setText("Save");
         actionButton.addActionListener(event -> {
             fillMessage(message);
-            templateService().saveOrUpdate(message);
+            templateService(project).saveOrUpdate(message);
             dispose();
         });
     }

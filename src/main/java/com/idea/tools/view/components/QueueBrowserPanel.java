@@ -5,6 +5,7 @@ import com.idea.tools.dto.MessageDto;
 import com.idea.tools.view.button.CopyButton;
 import com.idea.tools.view.button.ShowHideButton;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import com.intellij.ui.tabs.JBTabsPosition;
@@ -16,12 +17,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
 
-import static com.idea.tools.App.getProject;
 import static com.idea.tools.utils.GuiUtils.toolbar;
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.WEST;
 
 public class QueueBrowserPanel extends JPanel {
+
+    private final Project project;
 
     private DestinationDto destination;
 
@@ -31,14 +33,15 @@ public class QueueBrowserPanel extends JPanel {
     private JBTabsImpl tabsPanel;
     private JTextArea payloadField;
 
-    public QueueBrowserPanel(DestinationDto queue) {
+    public QueueBrowserPanel(Project project, DestinationDto queue) {
         this.destination = queue;
+        this.project = project;
         render();
     }
 
     private void render() {
         setLayout(new BorderLayout());
-        queueBrowserTable = new QueueBrowserTable(destination);
+        queueBrowserTable = new QueueBrowserTable(project, destination);
         headerTable = new HeaderViewTable(Collections.emptyList());
         initTabPanel();
 
@@ -67,7 +70,7 @@ public class QueueBrowserPanel extends JPanel {
     }
 
     private void initTabPanel() {
-        tabsPanel = new JBTabsImpl(getProject());
+        tabsPanel = new JBTabsImpl(project);
         tabsPanel.setTabsPosition(JBTabsPosition.right);
 
 //        Headers tab

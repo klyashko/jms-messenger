@@ -4,6 +4,7 @@ import com.idea.tools.dto.ServerDto;
 import com.idea.tools.markers.Listener;
 import com.idea.tools.utils.TableModelBuilder;
 import com.idea.tools.view.ConfigurationPanel;
+import com.intellij.openapi.project.Project;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
@@ -17,7 +18,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
-import static com.idea.tools.App.serverService;
+import static com.idea.tools.service.ServerService.serverService;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
@@ -26,10 +27,12 @@ import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements Listener<ServerDto> {
 
     private final ConfigurationPanel panel;
+    private final Project project;
 
-    public ServiceConfigTable(List<ServerDto> data, ConfigurationPanel panel) {
+    public ServiceConfigTable(Project project, List<ServerDto> data, ConfigurationPanel panel) {
         super(tableModel(), data);
         this.panel = panel;
+        this.project = project;
         render();
     }
 
@@ -88,7 +91,7 @@ public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements
 
     @Override
     protected boolean removeItem(ServerDto server) {
-        return serverService().remove(server);
+        return serverService(project).remove(server);
     }
 
     @Nullable

@@ -7,6 +7,7 @@ import com.idea.tools.view.button.MessagesReloadButton;
 import com.idea.tools.view.button.OpenMessageButton;
 import com.idea.tools.view.button.RemoveMessageButton;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
@@ -31,11 +32,15 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     private static final Logger LOGGER = Logger.getInstance(QueueBrowserTable.class);
 
     @Getter
+    private final Project project;
+
+    @Getter
     private DestinationDto destination;
 
-    public QueueBrowserTable(DestinationDto queue) {
+    public QueueBrowserTable(Project project, DestinationDto queue) {
         super(tableModel(), emptyList());
         this.destination = queue;
+        this.project = project;
         render();
     }
 

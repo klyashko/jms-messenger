@@ -22,7 +22,7 @@ public class OpenMessageButton extends AnActionButton {
     @Override
     public void actionPerformed(AnActionEvent e) {
         if (table.getTable().getSelectedRow() >= 0) {
-            ViewMessageDialog.showDialog(table.getData().get(table.getTable().getSelectedRow()));
+            ViewMessageDialog.showDialog(table.getProject(), table.getData().get(table.getTable().getSelectedRow()));
         }
     }
 

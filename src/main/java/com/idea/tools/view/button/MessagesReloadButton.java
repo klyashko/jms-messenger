@@ -21,6 +21,6 @@ public class MessagesReloadButton extends AnActionButton {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        new LoadMessagesTask(table).queue();
+        new LoadMessagesTask(table.getProject(), table).queue();
     }
 }
