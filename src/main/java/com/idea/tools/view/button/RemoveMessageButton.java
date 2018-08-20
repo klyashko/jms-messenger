@@ -28,12 +28,12 @@ public class RemoveMessageButton extends AnActionButton {
             MessageDto message = table.getData().get(table.getTable().getSelectedRow());
             boolean delete = showYesNoDialog("Delete message from the queue?");
             if (delete) {
-                new RemoveMessageTask(table.getDestination(), Collections.singletonList(message), table).queue();
+                new RemoveMessageTask(table.getProject(), table.getDestination(), Collections.singletonList(message), table).queue();
             }
         } else {
             boolean delete = showYesNoDialog("Delete all messages from the queue?");
             if (delete) {
-                new RemoveMessageTask(table.getDestination(), table.getData(), table).queue();
+                new RemoveMessageTask(table.getProject(), table.getDestination(), table.getData(), table).queue();
             }
         }
     }

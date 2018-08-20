@@ -1,6 +1,5 @@
 package com.idea.tools.task;
 
-import com.idea.tools.App;
 import com.idea.tools.dto.MessageDto;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
@@ -8,9 +7,10 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import static com.idea.tools.App.jmsService;
+import static com.idea.tools.service.JmsService.jmsService;
 
 public class SendMessageTask extends Task.Backgroundable {
 
@@ -22,8 +22,8 @@ public class SendMessageTask extends Task.Backgroundable {
     private final MessageDto message;
     private final Runnable onSuccess;
 
-    public SendMessageTask(MessageDto message, Runnable onSuccess) {
-        super(App.getProject(), "Sending Message");
+    public SendMessageTask(Project project, MessageDto message, Runnable onSuccess) {
+        super(project, "Sending Message");
         this.message = message;
         this.onSuccess = onSuccess;
     }
@@ -31,7 +31,7 @@ public class SendMessageTask extends Task.Backgroundable {
     @Override
     public void run(@NotNull ProgressIndicator indicator) {
         try {
-            jmsService().send(message);
+            jmsService(getProject()).send(message);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

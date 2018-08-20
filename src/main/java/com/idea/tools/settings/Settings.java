@@ -12,12 +12,13 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.MapAnnotation;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @State(name = "JmsMessengerSettings", storages = @Storage("JmsMessengerSettings.xml"))
 public class Settings implements PersistentStateComponent<Settings> {
-
-    private static Optional<Settings> settings = Optional.empty();
 
     @MapAnnotation(
             keyAttributeName = "id",
@@ -28,18 +29,15 @@ public class Settings implements PersistentStateComponent<Settings> {
     )
     private Map<String, ServerDto> servers = new HashMap<>();
 
-    public static Settings getOrCreate(Project project) {
-        return settings.orElseGet(() -> {
-            Settings settings = ServiceManager.getService(project, Settings.class);
-            settings.servers.forEach((id, server) ->
-                    server.getDestinations().forEach(destination -> {
-                        destination.setServer(server);
-                        destination.getTemplates().forEach(template -> template.setDestination(destination));
-                    })
-            );
-            Settings.settings = Optional.of(settings);
-            return settings;
-        });
+    public static Settings settings(Project project) {
+        Settings settings = ServiceManager.getService(project, Settings.class);
+        settings.servers.forEach((id, server) ->
+                server.getDestinations().forEach(destination -> {
+                    destination.setServer(server);
+                    destination.getTemplates().forEach(template -> template.setDestination(destination));
+                })
+        );
+        return settings;
     }
 
     @NotNull

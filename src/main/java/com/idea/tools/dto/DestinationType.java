@@ -24,12 +24,15 @@ public enum DestinationType {
     }
 
     public static DestinationType[] getTypes(ServerType type) {
-        switch (type) {
-            case KAFKA:
-                return new DestinationType[]{TOPIC};
-            default:
-                return new DestinationType[]{QUEUE, TOPIC};
+        if (type != null) {
+            switch (type) {
+                case KAFKA:
+                    return new DestinationType[]{TOPIC};
+                default:
+                    return new DestinationType[]{QUEUE, TOPIC};
+            }
         }
+        return new DestinationType[]{};
     }
 
 }

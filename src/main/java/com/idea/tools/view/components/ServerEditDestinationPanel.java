@@ -4,16 +4,19 @@ import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.DestinationType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.task.LoadQueuesTask;
+import com.intellij.openapi.project.Project;
 
 import javax.swing.*;
 
-import static com.idea.tools.App.destinationService;
 import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
+import static com.idea.tools.service.DestinationService.destinationService;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class ServerEditDestinationPanel extends JPanel {
+
+    private final Project project;
 
     private ServerDto server;
     private DestinationTable table;
@@ -27,14 +30,15 @@ public class ServerEditDestinationPanel extends JPanel {
     private JButton clearButton;
     private JButton loadFromServerButton;
 
-    public ServerEditDestinationPanel(ServerDto server) {
+    public ServerEditDestinationPanel(Project project, ServerDto server) {
         currentDestination = new DestinationDto();
         this.server = server;
+        this.project = project;
         render(server);
     }
 
     private void render(ServerDto server) {
-        table = new DestinationTable(this, server.getDestinations());
+        table = new DestinationTable(project, this, server.getDestinations());
         tablePanel.add(table);
 
         nameField.getDocument().addDocumentListener(simpleListener(event -> enableSaveButton()));
@@ -45,7 +49,7 @@ public class ServerEditDestinationPanel extends JPanel {
             if (currentDestination.getServer() == null) {
                 currentDestination.setServer(this.server);
             }
-            destinationService().saveOrUpdate(currentDestination);
+            destinationService(project).saveOrUpdate(currentDestination);
             table.setData(server.getDestinations());
         });
 
@@ -56,7 +60,7 @@ public class ServerEditDestinationPanel extends JPanel {
         });
 
         enableLoadButton();
-        loadFromServerButton.addActionListener(event -> new LoadQueuesTask(singletonList(server), () -> setValues(server)));
+        loadFromServerButton.addActionListener(event -> new LoadQueuesTask(project, singletonList(server), () -> setValues(server)));
 
         setValues();
 

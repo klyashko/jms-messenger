@@ -5,6 +5,7 @@ import com.idea.tools.task.TestConnectionTask;
 import com.idea.tools.view.components.ServerEditDestinationPanel;
 import com.idea.tools.view.components.ServerEditKafkaPanel;
 import com.idea.tools.view.components.ServerEditMainPanel;
+import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
@@ -13,8 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-import static com.idea.tools.App.getProject;
-import static com.idea.tools.App.serverService;
+import static com.idea.tools.service.ServerService.serverService;
 import static com.intellij.ui.JBColor.*;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -26,6 +26,8 @@ public class ServerEditPanel extends JPanel {
     private static final JBColor CONNECTION_SUCCESS_COLOR = GREEN;
     private static final JBColor CONNECTION_RUNNING_COLOR = BLACK;
     private static final JBColor CONNECTION_FAIL_COLOR = RED;
+
+    private final Project project;
 
     @Getter
     private ServerDto server;
@@ -52,12 +54,13 @@ public class ServerEditPanel extends JPanel {
     private JLabel connectionStatus;
     private JTextArea connectionDetails;
 
-    public ServerEditPanel() {
-        this(new ServerDto());
+    public ServerEditPanel(Project project) {
+        this(project, new ServerDto());
     }
 
-    public ServerEditPanel(ServerDto server) {
+    public ServerEditPanel(Project project, ServerDto server) {
         this.server = server;
+        this.project = project;
         render();
     }
 
@@ -73,7 +76,7 @@ public class ServerEditPanel extends JPanel {
     }
 
     private void render() {
-        tabs = new JBTabsImpl(getProject());
+        tabs = new JBTabsImpl(project);
 
         mainPanel = new ServerEditMainPanel(this);
         TabInfo main = new TabInfo(mainPanel);
@@ -85,7 +88,7 @@ public class ServerEditPanel extends JPanel {
         kafka.setText("Kafka settings");
         tabs.addTab(kafka);
 
-        destinationPanel = new ServerEditDestinationPanel(server);
+        destinationPanel = new ServerEditDestinationPanel(project, server);
         destinations = new TabInfo(destinationPanel);
         destinations.setText("Destinations");
         tabs.addTab(destinations);
@@ -99,8 +102,9 @@ public class ServerEditPanel extends JPanel {
 
         saveButton.addActionListener(event -> {
             fillServer(server);
-            serverService().saveOrUpdate(server);
+            serverService(project).saveOrUpdate(server);
             updateTabs();
+            saveButton.setEnabled(false);
         });
 
         cancelButton.addActionListener(event -> setValues());
@@ -109,7 +113,7 @@ public class ServerEditPanel extends JPanel {
             ServerDto s = new ServerDto();
             fillServer(s);
             emptyStatus();
-            new TestConnectionTask(s, this::successStatus, this::failStatus).queue();
+            new TestConnectionTask(project, s, this::successStatus, this::failStatus).queue();
         });
 
         add(rootPanel);

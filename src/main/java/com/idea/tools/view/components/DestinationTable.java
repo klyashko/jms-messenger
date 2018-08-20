@@ -2,6 +2,7 @@ package com.idea.tools.view.components;
 
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.utils.TableModelBuilder;
+import com.intellij.openapi.project.Project;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
@@ -12,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.util.List;
 
-import static com.idea.tools.App.destinationService;
+import static com.idea.tools.service.DestinationService.destinationService;
 import static com.idea.tools.utils.Utils.sort;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.LEFT;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
@@ -20,11 +21,14 @@ import static java.awt.BorderLayout.CENTER;
 
 public class DestinationTable extends AddEditRemovePanel<DestinationDto> {
 
+    private final Project project;
+
     private ServerEditDestinationPanel panel;
 
-    public DestinationTable(ServerEditDestinationPanel panel, List<DestinationDto> data) {
+    public DestinationTable(Project project, ServerEditDestinationPanel panel, List<DestinationDto> data) {
         super(tableModel(), sort(data));
         this.panel = panel;
+        this.project = project;
     }
 
     private static TableModel<DestinationDto> tableModel() {
@@ -70,7 +74,7 @@ public class DestinationTable extends AddEditRemovePanel<DestinationDto> {
 
     @Override
     protected boolean removeItem(DestinationDto dto) {
-        return destinationService().remove(dto);
+        return destinationService(project).remove(dto);
     }
 
     @Override

@@ -2,8 +2,11 @@ package com.idea.tools.utils;
 
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.application.Application;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
+import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.ui.content.ContentFactory;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -12,10 +15,21 @@ import java.text.NumberFormat;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.intellij.openapi.application.ApplicationManager.getApplication;
 import static javax.swing.JOptionPane.*;
 
 public class GuiUtils {
+
+    public static ToolWindowManager toolWindowManager(Project project) {
+        return ToolWindowManager.getInstance(project);
+    }
+
+    public static StartupManager startupManager(Project project) {
+        return StartupManager.getInstance(project);
+    }
+
+    public static ContentFactory contentFactory() {
+        return ContentFactory.SERVICE.getInstance();
+    }
 
     public static boolean showYesNoDialog(String msg) {
         return YES_OPTION == showConfirmDialog(null, msg, "Confirm", YES_NO_OPTION, WARNING_MESSAGE);
@@ -39,15 +53,6 @@ public class GuiUtils {
 
     public static JComponent toolbar(ActionGroup actions, String place, boolean horizontal) {
         return ActionManager.getInstance().createActionToolbar(place, actions, horizontal).getComponent();
-    }
-
-    public static void runInSwingThread(Runnable runnable) {
-        Application application = getApplication();
-        if (application.isDispatchThread()) {
-            runnable.run();
-        } else {
-            application.invokeLater(runnable);
-        }
     }
 
     public static <T> JLabel label(T value, Function<T, String> function) {

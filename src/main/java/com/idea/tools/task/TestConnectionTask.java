@@ -1,14 +1,14 @@
 package com.idea.tools.task;
 
-import com.idea.tools.App;
 import com.idea.tools.dto.ServerDto;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-import static com.idea.tools.App.jmsService;
+import static com.idea.tools.service.JmsService.jmsService;
 
 public class TestConnectionTask extends Task.Backgroundable {
 
@@ -16,8 +16,8 @@ public class TestConnectionTask extends Task.Backgroundable {
     private final Runnable onSuccess;
     private final Consumer<Throwable> onFail;
 
-    public TestConnectionTask(ServerDto server, Runnable onSuccess, Consumer<Throwable> onFail) {
-        super(App.getProject(), "Test Connection");
+    public TestConnectionTask(Project project, ServerDto server, Runnable onSuccess, Consumer<Throwable> onFail) {
+        super(project, "Test Connection");
         this.server = server;
         this.onSuccess = onSuccess;
         this.onFail = onFail;
@@ -26,7 +26,7 @@ public class TestConnectionTask extends Task.Backgroundable {
     @Override
     public void run(@NotNull ProgressIndicator indicator) {
         try {
-            jmsService().testConnection(server);
+            jmsService(getProject()).testConnection(server);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

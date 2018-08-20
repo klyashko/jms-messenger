@@ -7,19 +7,24 @@ import com.idea.tools.utils.GuiUtils;
 import com.idea.tools.view.components.message.ViewMessageHeadersPanel;
 import com.idea.tools.view.components.message.ViewMessageMainPanel;
 import com.idea.tools.view.components.message.ViewMessagePayloadPanel;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.impl.IdeGlassPaneImpl;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
+import lombok.AccessLevel;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.util.Optional;
 
-import static com.idea.tools.App.getProject;
-import static com.idea.tools.App.templateService;
+import static com.idea.tools.service.TemplateService.templateService;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ViewMessageDialog extends JFrame {
+
+    @Getter(AccessLevel.PROTECTED)
+    private final Project project;
 
     protected JButton actionButton;
     protected JButton closeButton;
@@ -37,13 +42,15 @@ public class ViewMessageDialog extends JFrame {
     private Optional<MessageDto> message = Optional.empty();
     private Optional<DestinationDto> destination = Optional.empty();
 
-    protected ViewMessageDialog(DestinationDto destination) {
+    protected ViewMessageDialog(Project project, DestinationDto destination) {
         this.destination = Optional.of(destination);
+        this.project = project;
         render();
     }
 
-    protected ViewMessageDialog(MessageDto message) {
+    protected ViewMessageDialog(Project project, MessageDto message) {
         this.message = Optional.of(message);
+        this.project = project;
         render();
     }
 
@@ -52,8 +59,8 @@ public class ViewMessageDialog extends JFrame {
         super.dispose();
     }
 
-    public static void showDialog(MessageDto message) {
-        GuiUtils.showDialog(new ViewMessageDialog(message), "Message");
+    public static void showDialog(Project project, MessageDto message) {
+        GuiUtils.showDialog(new ViewMessageDialog(project, message), "Message");
     }
 
     private void render() {
@@ -95,7 +102,7 @@ public class ViewMessageDialog extends JFrame {
         saveAsTemplateButton.addActionListener(event -> {
             TemplateMessageDto template = new TemplateMessageDto();
             fillMessage(template);
-            templateService().saveOrUpdate(template);
+            templateService(project).saveOrUpdate(template);
         });
     }
 

@@ -21,7 +21,9 @@ import org.jetbrains.annotations.Nullable;
 import java.io.OutputStream;
 import java.util.Optional;
 
-import static com.idea.tools.App.*;
+import static com.idea.tools.service.JmsService.jmsService;
+import static com.idea.tools.service.TemplateService.templateService;
+import static com.idea.tools.settings.Settings.settings;
 import static com.intellij.execution.ui.ConsoleViewContentType.*;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
@@ -35,13 +37,13 @@ public class JmsRunConfiguration extends RunConfigurationBase {
                 .remove(t -> messageId = messageId.filter(id -> !id.equals(t.getId())))
                 .build();
 
-        templateService().addListener(listener);
+        templateService(getProject()).addListener(listener);
     }
 
     @NotNull
     @Override
     public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
-        return messageId.map(JmsSettingsEditor::new).orElseGet(JmsSettingsEditor::new);
+        return messageId.map(id -> new JmsSettingsEditor(getProject(), id)).orElseGet(() -> new JmsSettingsEditor(getProject()));
     }
 
     @Override
@@ -57,7 +59,7 @@ public class JmsRunConfiguration extends RunConfigurationBase {
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) {
         return (exec, runner) -> {
             ConsoleViewImpl consoleView = new ConsoleViewImpl(getProject(), true);
-            MyProcessHandler handler = MyProcessHandler.send(messageId.orElse(""), consoleView);
+            MyProcessHandler handler = MyProcessHandler.send(getProject(), messageId.orElse(""), consoleView);
             return new DefaultExecutionResult(consoleView, handler);
         };
     }
@@ -85,11 +87,11 @@ public class JmsRunConfiguration extends RunConfigurationBase {
 
     private static class MyProcessHandler extends ProcessHandler {
 
-        private static MyProcessHandler send(String id, ConsoleView consoleView) {
+        private static MyProcessHandler send(Project project, String id, ConsoleView consoleView) {
             MyProcessHandler handler = new MyProcessHandler();
             handler.startNotify();
             runAsync(() -> {
-                TemplateMessageDto template = settings().getTemplate(id);
+                TemplateMessageDto template = settings(project).getTemplate(id);
                 if (template == null) {
                     consoleView.print("Template not found \n", new ConsoleViewContentType("Not found", LOG_WARNING_OUTPUT_KEY));
                     consoleView.print("FAIL", ERROR_OUTPUT);
@@ -100,7 +102,7 @@ public class JmsRunConfiguration extends RunConfigurationBase {
                     String sendingMsg = String.format("Sending message %s to destination %s\n", template.getName(), template.getDestination().getName());
                     consoleView.print(sendingMsg, NORMAL_OUTPUT);
 //                    Sending message
-                    jmsService().send(template);
+                    jmsService(project).send(template);
                     String sendMsg = String.format("Message %s is sent to destination %s\n", template.getName(), template.getDestination().getName());
                     consoleView.print(sendMsg, NORMAL_OUTPUT);
                     consoleView.print("SUCCESS", NORMAL_OUTPUT);

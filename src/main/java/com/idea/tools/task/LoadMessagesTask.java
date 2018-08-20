@@ -1,17 +1,17 @@
 package com.idea.tools.task;
 
-import com.idea.tools.App;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
 
-import static com.idea.tools.App.jmsService;
+import static com.idea.tools.service.JmsService.jmsService;
 
 public class LoadMessagesTask extends Task.Backgroundable {
 
@@ -20,15 +20,15 @@ public class LoadMessagesTask extends Task.Backgroundable {
     private final QueueBrowserTable table;
     private List<MessageDto> messages;
 
-    public LoadMessagesTask(@NotNull QueueBrowserTable table) {
-        super(App.getProject(), "Loading Messages");
+    public LoadMessagesTask(@NotNull Project project, @NotNull QueueBrowserTable table) {
+        super(project, "Loading Messages");
         this.table = table;
     }
 
     @Override
     public void run(@NotNull ProgressIndicator indicator) {
         try {
-            messages = jmsService().receive(table.getDestination());
+            messages = jmsService(getProject()).receive(table.getDestination());
             Collections.sort(messages);
         } catch (Exception e) {
             e.printStackTrace();

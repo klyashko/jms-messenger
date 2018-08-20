@@ -1,6 +1,5 @@
 package com.idea.tools;
 
-import com.idea.tools.settings.Settings;
 import com.idea.tools.view.ConfigurationPanel;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.options.SearchableConfigurable;
@@ -11,16 +10,11 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-import static com.idea.tools.App.settings;
-
-
 public class JmsMessengerComponent implements ProjectComponent, SearchableConfigurable {
 
 
     private static final String MESSENGER_PLUGIN_NAME = "Messenger Plugin";
     private static final String MESSENGER_COMPONENT_NAME = "Messenger Component";
-
-    private final Settings settings;
 
     private final Project project;
 
@@ -28,19 +22,17 @@ public class JmsMessengerComponent implements ProjectComponent, SearchableConfig
 
     public JmsMessengerComponent(Project project) {
         this.project = project;
-        App.setProject(project);
-        this.settings = settings();
     }
 
     @Override
     public void projectOpened() {
-        JmsMessengerWindowManager.of();
+        JmsMessengerWindowManager.of(project);
     }
 
     @Override
     public void projectClosed() {
         try {
-            JmsMessengerWindowManager.of().unregister();
+            JmsMessengerWindowManager.of(project).unregister();
         } catch (Exception ignored) {}
     }
 

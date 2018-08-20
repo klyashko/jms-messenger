@@ -2,18 +2,20 @@ package com.idea.tools.service;
 
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.markers.Listener;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.project.Project;
 
-import static com.idea.tools.App.settings;
+import static com.idea.tools.settings.Settings.settings;
 import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
 import static java.util.UUID.randomUUID;
 
 public class ServerService extends AbstractPersistedService<ServerDto> {
 
-    public ServerService() {
+    public ServerService(Project project) {
         Listener<ServerDto> listener = Listener.<ServerDto>builder()
-                .add(settings()::put)
-                .edit(settings()::put)
-                .remove(settings()::remove)
+                .add(settings(project)::put)
+                .edit(settings(project)::put)
+                .remove(settings(project)::remove)
                 .build();
 
         addListener(listener);
@@ -32,6 +34,10 @@ public class ServerService extends AbstractPersistedService<ServerDto> {
     @Override
     protected boolean confirmRemove(ServerDto server) {
         return showYesNoDialog(String.format("Do you want to delete server %s", server.getName()));
+    }
+
+    public static ServerService serverService(Project project) {
+        return ServiceManager.getService(project, ServerService.class);
     }
 
 }

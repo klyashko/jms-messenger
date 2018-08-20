@@ -5,6 +5,7 @@ import com.idea.tools.dto.MessageDto;
 import com.idea.tools.task.SendMessageTask;
 import com.idea.tools.utils.GuiUtils;
 import com.idea.tools.view.components.message.*;
+import com.intellij.openapi.project.Project;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -13,41 +14,45 @@ import java.util.function.Supplier;
 
 public class SendMessageDialog extends ViewMessageDialog {
 
-    protected SendMessageDialog(MessageDto message) {
-        super(message);
+    private final Project project;
+
+    protected SendMessageDialog(Project project, MessageDto message) {
+        super(project, message);
+        this.project = project;
         render();
     }
 
-    private SendMessageDialog(DestinationDto destination) {
-        super(destination);
+    private SendMessageDialog(Project project, DestinationDto destination) {
+        super(project, destination);
+        this.project = project;
         render();
     }
 
     private void render() { }
 
-    @Override
-    protected void actionButton(JButton actionButton) {
-        actionButton.addActionListener(event -> {
-            MessageDto msg = new MessageDto();
-            fillMessage(msg);
-            new SendMessageTask(msg, () -> {
-                if (closeAfterSendCheckBox.isSelected()) {
-                    dispose();
-                }
-            }).queue();
-        });
+    public static void showDialog(Project project, DestinationDto queue) {
+        GuiUtils.showDialog(new SendMessageDialog(project, queue), "Send message");
     }
 
     @Override
     protected void closeAfterSendCheckBox(JCheckBox closeAfterSendCheckBox) {
     }
 
-    public static void showDialog(DestinationDto queue) {
-        GuiUtils.showDialog(new SendMessageDialog(queue), "Send message");
+    public static void showDialog(Project project, MessageDto message) {
+        GuiUtils.showDialog(new SendMessageDialog(project, message), "Send message");
     }
 
-    public static void showDialog(MessageDto message) {
-        GuiUtils.showDialog(new SendMessageDialog(message), "Send message");
+    @Override
+    protected void actionButton(JButton actionButton) {
+        actionButton.addActionListener(event -> {
+            MessageDto msg = new MessageDto();
+            fillMessage(msg);
+            new SendMessageTask(project, msg, () -> {
+                if (closeAfterSendCheckBox.isSelected()) {
+                    dispose();
+                }
+            }).queue();
+        });
     }
 
     @Override
