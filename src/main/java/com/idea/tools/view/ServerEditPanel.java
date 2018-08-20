@@ -104,6 +104,7 @@ public class ServerEditPanel extends JPanel {
             fillServer(server);
             serverService(project).saveOrUpdate(server);
             updateTabs();
+            saveButton.setEnabled(false);
         });
 
         cancelButton.addActionListener(event -> setValues());
