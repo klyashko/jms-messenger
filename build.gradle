@@ -5,7 +5,7 @@ plugins {
 //noinspection GroovyAssignabilityCheck
 group 'com.tool.plugins'
 //noinspection GroovyAssignabilityCheck
-version '0.5.0'
+version '0.6.0'
 
 apply plugin: 'java'
 

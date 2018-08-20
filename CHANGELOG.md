@@ -4,6 +4,10 @@
  * [-] Deleting functional
  * [\*] Improvement
  * [!] Bug fixing
+
+0.6.0 (20.08.2018)
+====================
+ * [!] Fix for exception when one of projects gets closed
  
 0.5.0 (12.08.2018)
 ====================
