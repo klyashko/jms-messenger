@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -69,6 +70,14 @@ public class Utils {
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(String.format("Url is malformed <%s>", url));
         }
+    }
+
+    public static <T, R> Consumer<T> consumer(Class<R> clazz, Consumer<R> consumer) {
+        return value -> {
+            if (clazz.isInstance(value)) {
+                consumer.accept(clazz.cast(value));
+            }
+        };
     }
 
 }

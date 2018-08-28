@@ -53,7 +53,7 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
             return tab;
         });
         QueueBrowserTable table = ((QueueBrowserPanel) info.getComponent()).getQueueBrowserTable();
-        queuesTabPanel.select(info, false);
+        queuesTabPanel.select(info, true);
         return table;
     }
 

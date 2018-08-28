@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static com.idea.tools.service.TemplateService.templateService;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
+import static com.idea.tools.utils.Utils.consumer;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ViewMessageDialog extends JFrame {
@@ -116,9 +117,7 @@ public class ViewMessageDialog extends JFrame {
         mainPanel.fillMessage(msg);
         headersPanel.fillMessage(msg);
         payloadPanel.fillMessage(msg);
-        if (msg instanceof TemplateMessageDto) {
-            ((TemplateMessageDto) msg).setName(templateNameField.getText());
-        }
+        consumer(TemplateMessageDto.class, m -> m.setName(templateNameField.getText())).accept(msg);
     }
 
     protected ViewMessageMainPanel mainPanel(Optional<DestinationDto> destination, Optional<MessageDto> message) {

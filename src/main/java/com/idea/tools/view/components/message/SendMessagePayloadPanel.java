@@ -8,9 +8,7 @@ public class SendMessagePayloadPanel extends ViewMessagePayloadPanel {
         super(message);
     }
 
-    public SendMessagePayloadPanel() {
-        super();
-    }
+    public SendMessagePayloadPanel() { }
 
     @Override
     protected boolean isEditable() {
