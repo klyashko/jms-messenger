@@ -7,7 +7,7 @@
 
 0.7.0 (28.08.2018)
 ====================
- * [\*] Message view and sending refactoring
+ * [\*] Message view and sending panel refactoring
 
 0.6.0 (20.08.2018)
 ====================
