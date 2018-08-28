@@ -14,11 +14,8 @@ import static com.idea.tools.utils.GuiUtils.toolbar;
 
 public class ViewMessagePayloadPanel extends JPanel {
 
-    protected JTextArea payloadField;
+    private JTextArea payloadField;
 
-    private JPanel rootPanel;
-    private JPanel toolbarPanel;
-    private JCheckBox wrapLinesCheckBox;
     private Optional<MessageDto> message = Optional.empty();
 
     public ViewMessagePayloadPanel() {
@@ -28,6 +25,7 @@ public class ViewMessagePayloadPanel extends JPanel {
     public ViewMessagePayloadPanel(MessageDto message) {
         this.message = Optional.ofNullable(message);
         render();
+        setValues();
     }
 
     public void fillMessage(MessageDto dto) {
@@ -35,19 +33,30 @@ public class ViewMessagePayloadPanel extends JPanel {
     }
 
     private void render() {
-        setValues();
+        setLayout(new BorderLayout());
+        JPanel toolbarPanel = new JPanel(new BorderLayout());
+
+        JCheckBox wrapLinesCheckBox = new JCheckBox();
+        wrapLinesCheckBox.setText("Wrap lines");
+        wrapLinesCheckBox.setSelected(true);
+        wrapLinesCheckBox.addActionListener(event -> payloadField.setLineWrap(wrapLinesCheckBox.isSelected()));
+
+        payloadField = new JTextArea();
+        payloadField.setLineWrap(wrapLinesCheckBox.isSelected());
+        payloadField.setEditable(isEditable());
 
         DefaultActionGroup actions = new DefaultActionGroup("CopyPasteToolbar", false);
         actions.add(new PasteButton(payloadField, isEditable()));
         actions.add(new CopyButton(payloadField));
 
         toolbarPanel.add(toolbar(actions, "PayloadPanel", true), BorderLayout.EAST);
+        toolbarPanel.add(wrapLinesCheckBox, BorderLayout.WEST);
 
-        wrapLinesCheckBox.addActionListener(event -> payloadField.setLineWrap(wrapLinesCheckBox.isSelected()));
+        JBScrollPane pane = new JBScrollPane(payloadField);
+        pane.setPreferredSize(new Dimension(450, 300));
 
-        payloadField.setLineWrap(wrapLinesCheckBox.isSelected());
-        payloadField.setEditable(isEditable());
-        add(new JBScrollPane(rootPanel));
+        add(toolbarPanel, BorderLayout.NORTH);
+        add(pane, BorderLayout.CENTER);
     }
 
     private void setValues() {

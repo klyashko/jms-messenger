@@ -83,7 +83,6 @@ public class QueueBrowserPanel extends JPanel {
         JPanel toolbarPanel = new JPanel(new BorderLayout());
 
         payloadField = new JTextArea();
-        payloadField.setPreferredSize(new Dimension(450, 250));
 
         JCheckBox wrapLinesCheckBox = new JCheckBox();
         wrapLinesCheckBox.setText("Wrap lines");
