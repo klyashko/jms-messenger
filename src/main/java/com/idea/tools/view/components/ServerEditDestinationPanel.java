@@ -16,91 +16,92 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class ServerEditDestinationPanel extends JPanel {
 
-    private final Project project;
+	private final Project project;
 
-    private ServerDto server;
-    private DestinationTable table;
-    private DestinationDto currentDestination;
+	private ServerDto server;
+	private DestinationTable table;
+	private DestinationDto currentDestination;
 
-    private JPanel rootPanel;
-    private JPanel tablePanel;
-    private JComboBox<DestinationType> typeCombobox;
-    private JTextField nameField;
-    private JButton saveButton;
-    private JButton clearButton;
-    private JButton loadFromServerButton;
+	private JPanel rootPanel;
+	private JPanel tablePanel;
+	private JComboBox<DestinationType> typeCombobox;
+	private JTextField nameField;
+	private JButton saveButton;
+	private JButton clearButton;
+	private JButton loadFromServerButton;
 
-    public ServerEditDestinationPanel(Project project, ServerDto server) {
-        currentDestination = new DestinationDto();
-        this.server = server;
-        this.project = project;
-        render(server);
-    }
+	public ServerEditDestinationPanel(Project project, ServerDto server) {
+		currentDestination = new DestinationDto();
+		this.server = server;
+		this.project = project;
+		render(server);
+	}
 
-    private void render(ServerDto server) {
-        table = new DestinationTable(project, this, server.getDestinations());
-        tablePanel.add(table);
+	private void render(ServerDto server) {
+		table = new DestinationTable(project, this, server.getDestinations());
+		tablePanel.add(table);
 
-        nameField.getDocument().addDocumentListener(simpleListener(event -> enableSaveButton()));
-        typeCombobox.addActionListener(event -> enableSaveButton());
+		nameField.getDocument().addDocumentListener(simpleListener(event -> enableSaveButton()));
+		typeCombobox.addActionListener(event -> enableSaveButton());
 
-        saveButton.addActionListener(event -> {
-            fillValues();
-            if (currentDestination.getServer() == null) {
-                currentDestination.setServer(this.server);
-            }
-            destinationService(project).saveOrUpdate(currentDestination);
-            table.setData(server.getDestinations());
-        });
+		saveButton.addActionListener(event -> {
+			fillValues();
+			if (currentDestination.getServer() == null) {
+				currentDestination.setServer(this.server);
+			}
+			destinationService(project).saveOrUpdate(currentDestination);
+			table.setData(server.getDestinations());
+		});
 
-        clearButton.addActionListener(event -> {
-            currentDestination = new DestinationDto();
-            setValues();
-            table.clearSelection();
-        });
+		clearButton.addActionListener(event -> {
+			currentDestination = new DestinationDto();
+			setValues();
+			table.clearSelection();
+		});
 
-        enableLoadButton();
-        loadFromServerButton.addActionListener(event -> new LoadQueuesTask(project, singletonList(server), () -> setValues(server)));
+		enableLoadButton();
+		loadFromServerButton.addActionListener(event -> new LoadQueuesTask(project, singletonList(server), () -> setValues(server)));
 
-        setValues();
+		setValues();
 
-        add(rootPanel);
-    }
+		add(rootPanel);
+	}
 
-    public void fillServer(ServerDto server) {
-        server.setDestinations(table.getData());
-    }
+	public void fillServer(ServerDto server) {
+		server.setDestinations(table.getData());
+	}
 
-    public void setValues(ServerDto server) {
-        this.server = server;
-        table.setData(server.getDestinations());
-        typeCombobox.setModel(new DefaultComboBoxModel<>(DestinationType.getTypes(server.getType())));
-        this.currentDestination = new DestinationDto();
-        enableLoadButton();
-    }
+	public void setValues(ServerDto server) {
+		this.server = server;
+		table.setData(server.getDestinations());
+		typeCombobox.setModel(new DefaultComboBoxModel<>(DestinationType.getTypes(server.getType())));
+		this.currentDestination = new DestinationDto();
+		enableLoadButton();
+	}
 
-    public void setOnEdit(DestinationDto destination) {
-        this.currentDestination = DestinationDto.copy(destination);
-        setValues();
-    }
+	public void setOnEdit(DestinationDto destination) {
+		this.currentDestination = DestinationDto.copy(destination);
+		setValues();
+	}
 
-    private void setValues() {
-        nameField.setText(currentDestination.getName());
-        typeCombobox.setSelectedItem(currentDestination.getType());
-        enableSaveButton();
-    }
+	private void setValues() {
+		nameField.setText(currentDestination.getName());
+		typeCombobox.setModel(new DefaultComboBoxModel<>(DestinationType.getTypes(server.getType())));
+		typeCombobox.setSelectedItem(currentDestination.getType());
+		enableSaveButton();
+	}
 
-    private void fillValues() {
-        currentDestination.setName(nameField.getText());
-        currentDestination.setType(typeCombobox.getItemAt(typeCombobox.getSelectedIndex()));
-    }
+	private void fillValues() {
+		currentDestination.setName(nameField.getText());
+		currentDestination.setType(typeCombobox.getItemAt(typeCombobox.getSelectedIndex()));
+	}
 
-    private void enableSaveButton() {
-        saveButton.setEnabled(isNotBlank(nameField.getText()) && typeCombobox.getSelectedIndex() != -1);
-    }
+	private void enableSaveButton() {
+		saveButton.setEnabled(isNotBlank(nameField.getText()) && typeCombobox.getSelectedIndex() != -1);
+	}
 
-    private void enableLoadButton() {
-        loadFromServerButton.setEnabled(ACTIVE_MQ.equals(server.getType()));
-    }
+	private void enableLoadButton() {
+		loadFromServerButton.setEnabled(ACTIVE_MQ.equals(server.getType()));
+	}
 
 }

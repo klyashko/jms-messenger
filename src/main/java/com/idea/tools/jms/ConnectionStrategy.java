@@ -5,16 +5,19 @@ import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.ServerDto;
 
 import javax.jms.Connection;
-import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.QueueBrowser;
+import javax.jms.Session;
 import java.util.List;
 import java.util.Optional;
 
 public interface ConnectionStrategy {
 
-    Connection connect(ServerDto server) throws Exception;
+	Connection connect(ServerDto server) throws Exception;
 
-    Optional<MessageDto> map(Message message) throws JMSException;
+	QueueBrowser browser(Session session, String destination) throws Exception;
 
-    List<DestinationDto> getDestinations(Connection connection);
+	Optional<MessageDto> map(Message message) throws Exception;
+
+	List<DestinationDto> getDestinations(Connection connection);
 }

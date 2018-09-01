@@ -2,21 +2,16 @@ package com.idea.tools.jms;
 
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.DestinationType;
-import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.Assert;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.advisory.DestinationSource;
-import org.apache.activemq.command.ActiveMQTextMessage;
 
 import javax.jms.Connection;
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.TextMessage;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
 import static com.idea.tools.utils.Checked.function;
@@ -33,14 +28,6 @@ public class ActiveMQConnectionStrategy extends AbstractConnectionStrategy {
         String url = getUrlString(server);
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(uri(url));
         return connect(server, factory);
-    }
-
-    @Override
-    public Optional<MessageDto> map(Message message) throws JMSException {
-        if (message instanceof ActiveMQTextMessage) {
-            return Optional.ofNullable(super.mapTextMessage((TextMessage) message));
-        }
-        return Optional.empty();
     }
 
     @Override
