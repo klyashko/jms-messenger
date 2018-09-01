@@ -1,6 +1,6 @@
 ### Jms-messenger
 
-#### Current version 0.7.0
+#### Current version 0.8.0
 
 #### Repository
  [https://github.com/klyashko/jms-messenger](https://github.com/klyashko/jms-messenger)
@@ -27,6 +27,7 @@
  * Wildfly 9.x.x (HornetQ)
  * ActiveMq (via TCP)
  * HornetQ (via HTTP)
+ * RabbitMQ (via TCP)
  * Kafka (via TCP)
  
 #### Limitation  

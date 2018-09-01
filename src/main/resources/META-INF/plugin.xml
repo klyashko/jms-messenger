@@ -31,6 +31,7 @@ Plugin supports:
  <li>Wildfly 9.x.x (HornetQ)</li>
  <li>ActiveMq (via TCP)</li>
  <li>HornetQ (via HTTP)</li>
+ <li>RabbitMQ (via TCP)</li>
  <li>Kafka (via TCP)</li>
 </ul>
 

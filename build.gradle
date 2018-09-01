@@ -5,7 +5,7 @@ plugins {
 //noinspection GroovyAssignabilityCheck
 group 'com.tool.plugins'
 //noinspection GroovyAssignabilityCheck
-version '0.7.0'
+version '0.8.0'
 
 apply plugin: 'java'
 
@@ -13,7 +13,8 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
-	maven() { url "http://packages.confluent.io/maven/" }
+	maven() { //noinspection GroovyAssignabilityCheck
+		url "http://packages.confluent.io/maven/" }
 }
 
 configurations {
@@ -47,6 +48,7 @@ dependencies {
 intellij {
 	//noinspection GroovyAssignabilityCheck
 	version '2017.1'
+	//noinspection GroovyAssignabilityCheck
 	updateSinceUntilBuild false
 }
 
