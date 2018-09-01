@@ -4,6 +4,10 @@
  * [-] Deleting functional
  * [\*] Improvement
  * [!] Bug fixing
+ 
+0.8.0 (01.09.2018)
+====================
+ * [+] RabbitMQ support
 
 0.7.0 (28.08.2018)
 ====================
