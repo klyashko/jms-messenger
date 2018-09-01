@@ -73,15 +73,15 @@ public class RabbitMQConnectionStrategy extends AbstractConnectionStrategy {
 		// read the message id
 		in.readUTF();
 		// read JMS properties
-		int propsize = in.readInt();
-		for (int i = 0; i < propsize; i++) {
+		int propsSize = in.readInt();
+		for (int i = 0; i < propsSize; i++) {
 			String name = in.readUTF();
 			Object value = CustomRMQTextMessage.readPrimitive(in);
 			msg.setObjectProperty(name, value);
 		}
 		//read custom properties
-		propsize = in.readInt();
-		for (int i = 0; i < propsize; i++) {
+		propsSize = in.readInt();
+		for (int i = 0; i < propsSize; i++) {
 			String name = in.readUTF();
 			Object value = CustomRMQTextMessage.readPrimitive(in);
 			msg.setObjectProperty(name, value);
