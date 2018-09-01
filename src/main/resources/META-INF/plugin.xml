@@ -18,7 +18,7 @@ Plugin supports:
 <h4>Requirements:</h4>
 <ul>
  <li>Jdk 1.8 or higher</li>
- <li>Version of ide 2018 or higher</li>
+ <li>Version of ide 2016 or higher</li>
 </ul>
 
 <h4>Usages:</h4>
@@ -27,15 +27,18 @@ Plugin supports:
 <h4>Supported jms providers:</h4>
 <ul>
  <li>Wildfly 10.x.x or higher (Artemis)</li>
- <li>Artemis (over HTTP or TCP)</li>
+ <li>Artemis (via HTTP or TCP)</li>
  <li>Wildfly 9.x.x (HornetQ)</li>
- <li>ActiveMq (over TCP)</li>
- <li>HornetQ (over HTTP)</li>
+ <li>ActiveMq (via TCP)</li>
+ <li>HornetQ (via HTTP)</li>
+ <li>Kafka (via TCP)</li>
 </ul>
 
 <h4>Limitation:</h4>
 <ul>
+ <li>Only sending messages is supported for kafka.</li>
  <li>Only text messages may be send or browse.</li>
+ <li>Authorization is not supported for kafka.</li>
 </ul>
 
 <h4>Suggestions and bug reports:</h4>

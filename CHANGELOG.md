@@ -4,6 +4,20 @@
  * [-] Deleting functional
  * [\*] Improvement
  * [!] Bug fixing
+
+0.7.0 (28.08.2018)
+====================
+ * [\*] Message view and sending panel refactoring
+
+0.6.0 (20.08.2018)
+====================
+ * [!] Fix for exception when one of projects gets closed
+ 
+0.5.0 (12.08.2018)
+====================
+ * [+] Kafka support
+ * [\*] Improvement in server edit panel
+ * [-] Removing first queue implementation
  
 0.4.0 (08.08.2018)
 ====================
