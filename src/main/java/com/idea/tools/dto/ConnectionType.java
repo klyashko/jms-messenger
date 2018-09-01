@@ -7,18 +7,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum ConnectionType {
 
-    HTTP("http"),
-    TCP("tcp");
+	HTTP("http"),
+	TCP("tcp");
 
-    public static final ConnectionType[] ARTEMIS_CONNECTION_TYPES = {HTTP, TCP};
-    public static final ConnectionType[] HORNETQ_CONNECTION_TYPES = {HTTP};
-    public static final ConnectionType[] ACTIVE_MQ_CONNECTION_TYPES = {TCP};
-    public static final ConnectionType[] KAFKA_CONNECTION_TYPES = {TCP};
+	public static final ConnectionType[] ARTEMIS_CONNECTION_TYPES = {HTTP, TCP};
+	public static final ConnectionType[] HORNETQ_CONNECTION_TYPES = {HTTP};
+	public static final ConnectionType[] ACTIVE_MQ_CONNECTION_TYPES = {TCP};
+	public static final ConnectionType[] KAFKA_CONNECTION_TYPES = {TCP};
+	public static final ConnectionType[] RABBIT_MQ_CONNECTION_TYPES = {TCP};
 
-    private String extension;
+	private String extension;
 
-    ConnectionType(String extension) {
-        this.extension = extension;
-    }
+	ConnectionType(String extension) {
+		this.extension = extension;
+	}
 
 }

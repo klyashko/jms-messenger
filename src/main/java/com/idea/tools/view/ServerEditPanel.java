@@ -5,6 +5,7 @@ import com.idea.tools.task.TestConnectionTask;
 import com.idea.tools.view.components.ServerEditDestinationPanel;
 import com.idea.tools.view.components.ServerEditKafkaPanel;
 import com.idea.tools.view.components.ServerEditMainPanel;
+import com.idea.tools.view.components.ServerEditRabbitMQPanel;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.tabs.TabInfo;
@@ -20,138 +21,147 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class ServerEditPanel extends JPanel {
 
-    private static final String CONNECTION_SUCCESS_TEXT = "Success";
-    private static final String CONNECTION_RUNNING_TEXT = "Test connection is running";
-    private static final String CONNECTION_FAIL_TEXT = "Fail";
-    private static final JBColor CONNECTION_SUCCESS_COLOR = GREEN;
-    private static final JBColor CONNECTION_RUNNING_COLOR = BLACK;
-    private static final JBColor CONNECTION_FAIL_COLOR = RED;
+	private static final String CONNECTION_SUCCESS_TEXT = "Success";
+	private static final String CONNECTION_RUNNING_TEXT = "Test connection is running";
+	private static final String CONNECTION_FAIL_TEXT = "Fail";
+	private static final JBColor CONNECTION_SUCCESS_COLOR = GREEN;
+	private static final JBColor CONNECTION_RUNNING_COLOR = BLACK;
+	private static final JBColor CONNECTION_FAIL_COLOR = RED;
 
-    private final Project project;
+	private final Project project;
 
-    @Getter
-    private ServerDto server;
+	@Getter
+	private ServerDto server;
 
-    /**
-     * Tabs
-     */
-    private JBTabsImpl tabs;
-    private TabInfo destinations;
-    @Getter
-    private TabInfo kafka;
-    private ServerEditMainPanel mainPanel;
-    private ServerEditDestinationPanel destinationPanel;
-    private ServerEditKafkaPanel kafkaPanel;
+	/**
+	 * Tabs
+	 */
+	private TabInfo destinations;
+	@Getter
+	private TabInfo kafka;
+	@Getter
+	private TabInfo rabbitMQ;
+	private ServerEditMainPanel mainPanel;
+	private ServerEditDestinationPanel destinationPanel;
+	private ServerEditKafkaPanel kafkaPanel;
+	private ServerEditRabbitMQPanel rabbitMQPanel;
 
-    private JPanel rootPanel;
-    private JPanel tabsPanel;
-    @Getter
-    private JButton saveButton;
-    @Getter
-    private JButton cancelButton;
-    @Getter
-    private JButton testConnectionButton;
-    private JLabel connectionStatus;
-    private JTextArea connectionDetails;
+	private JPanel rootPanel;
+	private JPanel tabsPanel;
+	@Getter
+	private JButton saveButton;
+	@Getter
+	private JButton cancelButton;
+	@Getter
+	private JButton testConnectionButton;
+	private JLabel connectionStatus;
+	private JTextArea connectionDetails;
 
-    public ServerEditPanel(Project project) {
-        this(project, new ServerDto());
-    }
+	public ServerEditPanel(Project project) {
+		this(project, new ServerDto());
+	}
 
-    public ServerEditPanel(Project project, ServerDto server) {
-        this.server = server;
-        this.project = project;
-        render();
-    }
+	public ServerEditPanel(Project project, ServerDto server) {
+		this.server = server;
+		this.project = project;
+		render();
+	}
 
-    public void setNewValue(ServerDto server) {
-        this.server = server;
-        setValues();
-        updateTabs();
-    }
+	public void setNewValue(ServerDto server) {
+		this.server = server;
+		setValues();
+		updateTabs();
+	}
 
-    public void updateTabs() {
-        destinations.setEnabled(isNotBlank(server.getId()));
-        mainPanel.updateTabs();
-    }
+	public void updateTabs() {
+		destinations.setEnabled(isNotBlank(server.getId()));
+		mainPanel.updateTabs();
+	}
 
-    private void render() {
-        tabs = new JBTabsImpl(project);
+	private void render() {
+		JBTabsImpl tabs = new JBTabsImpl(project);
 
-        mainPanel = new ServerEditMainPanel(this);
-        TabInfo main = new TabInfo(mainPanel);
-        main.setText("Main settings");
-        tabs.addTab(main);
+		mainPanel = new ServerEditMainPanel(this);
+		TabInfo main = new TabInfo(mainPanel);
+		main.setText("Main settings");
+		tabs.addTab(main);
 
-        kafkaPanel = new ServerEditKafkaPanel(server);
-        kafka = new TabInfo(kafkaPanel);
-        kafka.setText("Kafka settings");
-        tabs.addTab(kafka);
+		kafkaPanel = new ServerEditKafkaPanel(server);
+		kafka = new TabInfo(kafkaPanel);
+		kafka.setText("Kafka settings");
+		tabs.addTab(kafka);
 
-        destinationPanel = new ServerEditDestinationPanel(project, server);
-        destinations = new TabInfo(destinationPanel);
-        destinations.setText("Destinations");
-        tabs.addTab(destinations);
+		rabbitMQPanel = new ServerEditRabbitMQPanel(server);
+		rabbitMQ = new TabInfo(rabbitMQPanel);
+		rabbitMQ.setText("RabbitMQ settings");
+		tabs.addTab(rabbitMQ);
 
-        updateTabs();
+		destinationPanel = new ServerEditDestinationPanel(project, server);
+		destinations = new TabInfo(destinationPanel);
+		destinations.setText("Destinations");
+		tabs.addTab(destinations);
 
-        tabsPanel.add(tabs);
+		updateTabs();
 
-        connectionDetails.setLineWrap(true);
-        connectionDetails.setColumns(2);
+		tabsPanel.add(tabs);
 
-        saveButton.addActionListener(event -> {
-            fillServer(server);
-            serverService(project).saveOrUpdate(server);
-            updateTabs();
-            saveButton.setEnabled(false);
-        });
+		connectionDetails.setLineWrap(true);
+		connectionDetails.setColumns(2);
 
-        cancelButton.addActionListener(event -> setValues());
+		saveButton.addActionListener(event -> {
+			fillServer(server);
+			serverService(project).saveOrUpdate(server);
+			updateTabs();
+			saveButton.setEnabled(false);
+		});
 
-        testConnectionButton.addActionListener(event -> {
-            ServerDto s = new ServerDto();
-            fillServer(s);
-            emptyStatus();
-            new TestConnectionTask(project, s, this::successStatus, this::failStatus).queue();
-        });
+		cancelButton.addActionListener(event -> setValues());
 
-        add(rootPanel);
-    }
+		testConnectionButton.addActionListener(event -> {
+			ServerDto s = new ServerDto();
+			fillServer(s);
+			emptyStatus();
+			new TestConnectionTask(project, s, this::successStatus, this::failStatus).queue();
+		});
 
-    private void emptyStatus() {
-        connectionStatus.setText(CONNECTION_RUNNING_TEXT);
-        connectionStatus.setForeground(CONNECTION_RUNNING_COLOR);
-        connectionStatus.setVisible(true);
+		add(rootPanel);
+	}
 
-        connectionDetails.setText("");
-        connectionDetails.setVisible(false);
-    }
+	private void emptyStatus() {
+		connectionStatus.setText(CONNECTION_RUNNING_TEXT);
+		connectionStatus.setForeground(CONNECTION_RUNNING_COLOR);
+		connectionStatus.setVisible(true);
 
-    private void successStatus() {
-        connectionStatus.setText(CONNECTION_SUCCESS_TEXT);
-        connectionStatus.setForeground(CONNECTION_SUCCESS_COLOR);
-        connectionStatus.setVisible(true);
-    }
+		connectionDetails.setText("");
+		connectionDetails.setVisible(false);
+	}
 
-    private void failStatus(@NotNull Throwable ex) {
-        connectionStatus.setText(CONNECTION_FAIL_TEXT);
-        connectionStatus.setForeground(CONNECTION_FAIL_COLOR);
-        connectionStatus.setVisible(true);
+	private void successStatus() {
+		connectionStatus.setText(CONNECTION_SUCCESS_TEXT);
+		connectionStatus.setForeground(CONNECTION_SUCCESS_COLOR);
+		connectionStatus.setVisible(true);
+	}
 
-        connectionDetails.setText(ex.getMessage());
-        connectionDetails.setVisible(true);
-    }
+	private void failStatus(@NotNull Throwable ex) {
+		connectionStatus.setText(CONNECTION_FAIL_TEXT);
+		connectionStatus.setForeground(CONNECTION_FAIL_COLOR);
+		connectionStatus.setVisible(true);
 
-    private void fillServer(ServerDto server) {
-        mainPanel.fillServer(server);
-        kafkaPanel.fillServer(server);
-        destinationPanel.fillServer(server);
-    }
+		connectionDetails.setText(ex.getMessage());
+		connectionDetails.setVisible(true);
+	}
 
-    private void setValues() {
-        mainPanel.setValues(server);
-        kafkaPanel.setValues(server);
-        destinationPanel.setValues(server);
-    }
+	private void fillServer(ServerDto server) {
+		mainPanel.fillServer(server);
+		kafkaPanel.fillServer(server);
+		rabbitMQPanel.fillServer(server);
+		destinationPanel.fillServer(server);
+	}
+
+	private void setValues() {
+		mainPanel.setValues(server);
+		kafkaPanel.setValues(server);
+		rabbitMQPanel.setValues(server);
+		destinationPanel.setValues(server);
+	}
 }
