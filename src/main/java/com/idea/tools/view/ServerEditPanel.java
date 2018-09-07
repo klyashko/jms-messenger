@@ -2,10 +2,7 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.task.TestConnectionTask;
-import com.idea.tools.view.components.ServerEditDestinationPanel;
-import com.idea.tools.view.components.ServerEditKafkaPanel;
-import com.idea.tools.view.components.ServerEditMainPanel;
-import com.idea.tools.view.components.ServerEditRabbitMQPanel;
+import com.idea.tools.view.components.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.tabs.TabInfo;
@@ -41,10 +38,13 @@ public class ServerEditPanel extends JPanel {
 	private TabInfo kafka;
 	@Getter
 	private TabInfo rabbitMQ;
+	@Getter
+	private TabInfo ssl;
 	private ServerEditMainPanel mainPanel;
 	private ServerEditDestinationPanel destinationPanel;
 	private ServerEditKafkaPanel kafkaPanel;
 	private ServerEditRabbitMQPanel rabbitMQPanel;
+	private ServerEditSslPanel sslPanel;
 
 	private JPanel rootPanel;
 	private JPanel tabsPanel;
@@ -86,6 +86,11 @@ public class ServerEditPanel extends JPanel {
 		main.setText("Main settings");
 		tabs.addTab(main);
 
+		sslPanel = new ServerEditSslPanel(server);
+		ssl = new TabInfo(sslPanel);
+		ssl.setText("SSL");
+		tabs.addTab(ssl);
+
 		kafkaPanel = new ServerEditKafkaPanel(server);
 		kafka = new TabInfo(kafkaPanel);
 		kafka.setText("Kafka settings");
@@ -112,7 +117,6 @@ public class ServerEditPanel extends JPanel {
 			fillServer(server);
 			serverService(project).saveOrUpdate(server);
 			updateTabs();
-			saveButton.setEnabled(false);
 		});
 
 		cancelButton.addActionListener(event -> setValues());
@@ -153,6 +157,7 @@ public class ServerEditPanel extends JPanel {
 
 	private void fillServer(ServerDto server) {
 		mainPanel.fillServer(server);
+		sslPanel.fillServer(server);
 		kafkaPanel.fillServer(server);
 		rabbitMQPanel.fillServer(server);
 		destinationPanel.fillServer(server);
@@ -160,6 +165,7 @@ public class ServerEditPanel extends JPanel {
 
 	private void setValues() {
 		mainPanel.setValues(server);
+		sslPanel.setValues(server);
 		kafkaPanel.setValues(server);
 		rabbitMQPanel.setValues(server);
 		destinationPanel.setValues(server);

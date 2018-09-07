@@ -13,6 +13,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
+import static com.idea.tools.dto.ConnectionType.SSL;
 import static com.idea.tools.dto.ServerType.KAFKA;
 import static com.idea.tools.dto.ServerType.RABBIT_MQ;
 import static com.idea.tools.utils.GuiUtils.createNumberInputField;
@@ -54,6 +55,7 @@ public class ServerEditMainPanel extends JPanel {
 	public void updateTabs() {
 		serverEditPanel.getKafka().setHidden(!KAFKA.equals(typeComboBox.getSelectedItem()));
 		serverEditPanel.getRabbitMQ().setHidden(!RABBIT_MQ.equals(typeComboBox.getSelectedItem()));
+		serverEditPanel.getSsl().setHidden(!SSL.equals(connectionType.getSelectedItem()));
 	}
 
 	private void render() {
@@ -71,6 +73,7 @@ public class ServerEditMainPanel extends JPanel {
 		typeComboBox.addActionListener(listener);
 
 		connectionType.addActionListener(listener);
+		connectionType.addActionListener(event -> serverEditPanel.updateTabs());
 
 		hostField.addActionListener(event -> updateNameFieldValue());
 		hostField.getDocument().addDocumentListener(simpleListener(event -> updateNameFieldValue()));
@@ -113,7 +116,6 @@ public class ServerEditMainPanel extends JPanel {
 
 		updateNameFieldValue();
 		enableButtons();
-		serverEditPanel.getSaveButton().setEnabled(false);
 	}
 
 	private void updateNameFieldValue() {
