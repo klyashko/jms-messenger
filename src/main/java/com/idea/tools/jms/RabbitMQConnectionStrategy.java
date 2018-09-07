@@ -24,7 +24,7 @@ public class RabbitMQConnectionStrategy extends AbstractConnectionStrategy {
 	@Override
 	public Connection connect(ServerDto server) throws Exception {
 		validate(server);
-		Assert.equals(server.getType(), RABBIT_MQ, String.format("Unsupported server type %s", server.getType()));
+		Assert.equals(server.getType(), RABBIT_MQ, "Unsupported server type %s", server.getType());
 
 		RMQConnectionFactory factory = new RMQConnectionFactory();
 		factory.setVirtualHost(server.getVirtualHost());

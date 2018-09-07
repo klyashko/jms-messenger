@@ -19,7 +19,7 @@ public class KafkaConnectionStrategy extends AbstractConnectionStrategy {
 	@Override
 	public Connection connect(ServerDto server) throws Exception {
 		validate(server);
-		Assert.equals(server.getType(), KAFKA, String.format("Unsupported server type %s", server.getType()));
+		Assert.equals(server.getType(), KAFKA, "Unsupported server type %s", server.getType());
 		Assert.notBlank(server.getClientId(), "Client id must not be empty");
 		Assert.notBlank(server.getZookeeperHost(), "Zookeeper host must not be empty");
 		Assert.notNull(server.getZookeeperPort(), "Zookeeper port must not be null");

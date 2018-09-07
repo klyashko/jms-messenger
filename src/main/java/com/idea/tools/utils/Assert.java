@@ -6,9 +6,9 @@ import java.util.function.Function;
 
 public class Assert {
 
-    public static <T> void equals(T value, T expected, String msg) {
+    public static <T> void equals(T value, T expected, String msg, Object... args) {
         if (!expected.equals(value)) {
-            throw new IllegalArgumentException(msg);
+            throw new IllegalArgumentException(String.format(msg, args));
         }
     }
 

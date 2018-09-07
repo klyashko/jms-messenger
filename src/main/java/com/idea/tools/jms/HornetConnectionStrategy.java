@@ -21,8 +21,8 @@ public class HornetConnectionStrategy extends AbstractConnectionStrategy {
 	@Override
 	public Connection connect(ServerDto server) throws Exception {
 		validate(server);
-		Assert.equals(server.getType(), HORNETQ, String.format("Unsupported server type %s", server.getType()));
-		Assert.equals(server.getConnectionType(), HTTP, String.format("Unsupported connection type %s", server.getConnectionType()));
+		Assert.equals(server.getType(), HORNETQ, "Unsupported server type %s", server.getType());
+		Assert.equals(server.getConnectionType(), HTTP, "Unsupported connection type %s", server.getConnectionType());
 
 		ConnectionFactory factory = connectionFactory(server);
 		return connect(server, factory);

@@ -20,7 +20,7 @@ public class ArtemisConnectionStrategy extends AbstractConnectionStrategy {
 	@Override
 	public Connection connect(ServerDto server) throws Exception {
 		validate(server);
-		Assert.equals(server.getType(), ARTEMIS, String.format("Unsupported server type %s", server.getType()));
+		Assert.equals(server.getType(), ARTEMIS, "Unsupported server type %s", server.getType());
 
 		ConnectionFactory factory = connectionFactory(server);
 		return connect(server, factory);
