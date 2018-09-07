@@ -28,8 +28,8 @@ Plugin supports:
 <ul>
  <li>Wildfly 10.x.x or higher (Artemis)</li>
  <li>Artemis (via HTTP or TCP)</li>
+ <li>ActiveMq (via TCP or SSL)</li>
  <li>Wildfly 9.x.x (HornetQ)</li>
- <li>ActiveMq (via TCP)</li>
  <li>HornetQ (via HTTP)</li>
  <li>RabbitMQ (via TCP)</li>
  <li>Kafka (via TCP)</li>

@@ -5,6 +5,10 @@
  * [\*] Improvement
  * [!] Bug fixing
  
+0.9.0 (07.09.2018)
+====================
+ * [+] SSL configuration for ActiveMQ
+ 
 0.8.0 (01.09.2018)
 ====================
  * [+] RabbitMQ support

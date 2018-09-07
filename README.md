@@ -1,6 +1,6 @@
 ### Jms-messenger
 
-#### Current version 0.8.0
+#### Current version 0.9.0
 
 #### Repository
  [https://github.com/klyashko/jms-messenger](https://github.com/klyashko/jms-messenger)
@@ -24,8 +24,8 @@
 #### Supported jms providers:
  * Wildfly 10.x.x or higher (Artemis)
  * Artemis (via HTTP or TCP)
+ * ActiveMq (via TCP or SSL)
  * Wildfly 9.x.x (HornetQ)
- * ActiveMq (via TCP)
  * HornetQ (via HTTP)
  * RabbitMQ (via TCP)
  * Kafka (via TCP)
