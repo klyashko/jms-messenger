@@ -4,6 +4,10 @@
  * [-] Deleting functional
  * [\*] Improvement
  * [!] Bug fixing
+
+1.0.0 (14.01.2019)
+====================
+ * [\*] File dialog windows for ActiveMQ SSL configuration
  
 0.9.0 (07.09.2018)
 ====================
