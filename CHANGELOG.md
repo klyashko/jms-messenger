@@ -5,6 +5,10 @@
  * [\*] Improvement
  * [!] Bug fixing
 
+1.0.1 (19.01.2019)
+====================
+ * [!] Fix for deserialization RabbitMQ message in case it isn't sent by java client
+
 1.0.0 (14.01.2019)
 ====================
  * [\*] File dialog windows for ActiveMQ SSL configuration
