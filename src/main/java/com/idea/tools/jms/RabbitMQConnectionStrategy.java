@@ -9,7 +9,6 @@ import com.rabbitmq.jms.client.RMQMessage;
 import com.rabbitmq.jms.client.message.RMQBytesMessage;
 import com.rabbitmq.jms.client.message.RMQTextMessage;
 import com.rabbitmq.jms.util.WhiteListObjectInputStream;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.jms.*;
 import java.io.ByteArrayInputStream;
@@ -18,6 +17,7 @@ import java.io.ObjectInput;
 import java.util.Optional;
 
 import static com.idea.tools.dto.ServerType.RABBIT_MQ;
+import static com.idea.tools.utils.Utils.getOrDefault;
 
 public class RabbitMQConnectionStrategy extends AbstractConnectionStrategy {
 
@@ -47,20 +47,49 @@ public class RabbitMQConnectionStrategy extends AbstractConnectionStrategy {
 	@Override
 	public Optional<MessageDto> map(Message message) throws Exception {
 		if (message instanceof RMQBytesMessage) {
-			BytesMessage byteMessage = (BytesMessage) message;
-			byte[] byteData = new byte[(int) byteMessage.getBodyLength()];
-			byteMessage.readBytes(byteData);
-			byteMessage.reset();
+			byte[] byteData = readBody((BytesMessage) message);
+			//try to extract wrapped jms message (works only for java clients)
 			RMQMessage msg = deserialize(byteData);
-			return msg != null ? super.map(msg) : Optional.empty();
+			return msg != null ? super.map(msg) : super.map(message);
 		}
 		return super.map(message);
+	}
+
+	@Override
+	protected MessageDto mapMessage(Message msg) throws JMSException {
+		if (isAmqp(msg)) {
+			MessageDto dto = new MessageDto();
+			dto.setMessageID(getOrDefault(msg::getJMSMessageID, ""));
+			dto.setCorrelationId(getOrDefault(msg::getJMSCorrelationID, ""));
+			dto.setJmsType(msg.getJMSType());
+			dto.setTimestamp(getOrDefault(msg::getJMSTimestamp, 0L));
+			dto.setHeaders(mapProperties(msg));
+			dto.setPriority(getOrDefault(msg::getJMSPriority, -1));
+			dto.setExpiration(getOrDefault(msg::getJMSExpiration, -1L));
+			dto.setDeliveryMode(msg.getJMSDeliveryMode());
+			return dto;
+		}
+		return super.mapMessage(msg);
+	}
+
+	private boolean isAmqp(Message message) throws JMSException {
+		Destination destination = message.getJMSDestination();
+		if (destination instanceof RMQDestination) {
+			return ((RMQDestination) destination).isAmqp();
+		}
+		return false;
 	}
 
 	private RMQMessage deserialize(byte[] b) throws Exception {
 		/* If we don't recognise the message format this throws an exception */
 		ByteArrayInputStream bin = new ByteArrayInputStream(b);
-		WhiteListObjectInputStream in = new WhiteListObjectInputStream(bin);
+		WhiteListObjectInputStream in;
+		try {
+			in = new WhiteListObjectInputStream(bin);
+		} catch (Exception e) {
+			// Unable to deserialize message
+			return null;
+		}
 		// read the class name from the stream
 		String clazz = in.readUTF();
 
@@ -70,37 +99,31 @@ public class RabbitMQConnectionStrategy extends AbstractConnectionStrategy {
 			return null;
 		}
 
-		// read the message id
+		// skip a message id
 		in.readUTF();
 		// read JMS properties
+		readProperties(in, msg);
+		//read custom properties
+		readProperties(in, msg);
+		// read the body of the message
+		msg.readBody(in, bin);
+		return msg;
+	}
+
+	private void readProperties(WhiteListObjectInputStream in, CustomRMQTextMessage msg) throws Exception {
 		int propsSize = in.readInt();
 		for (int i = 0; i < propsSize; i++) {
 			String name = in.readUTF();
 			Object value = CustomRMQTextMessage.readPrimitive(in);
 			msg.setObjectProperty(name, value);
 		}
-		//read custom properties
-		propsSize = in.readInt();
-		for (int i = 0; i < propsSize; i++) {
-			String name = in.readUTF();
-			Object value = CustomRMQTextMessage.readPrimitive(in);
-			msg.setObjectProperty(name, value);
-		}
-		// read the body of the message
-		msg.readBody(in, bin);
-		return msg;
 	}
 
 	private CustomRMQTextMessage instantiate(String clazz) {
-		if (StringUtils.isBlank(clazz)) {
-			return null;
+		if ("com.rabbitmq.jms.client.message.RMQTextMessage".equals(clazz)) {
+			return new CustomRMQTextMessage();
 		}
-		switch (clazz) {
-			case "com.rabbitmq.jms.client.message.RMQTextMessage":
-				return new CustomRMQTextMessage();
-			default:
-				return null;
-		}
+		return null;
 	}
 
 	private static class CustomRMQTextMessage extends RMQTextMessage {

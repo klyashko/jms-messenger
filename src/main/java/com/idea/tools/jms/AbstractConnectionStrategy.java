@@ -19,6 +19,8 @@ public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
 	public Optional<MessageDto> map(Message message) throws Exception {
 		if (message instanceof TextMessage) {
 			return Optional.ofNullable(mapTextMessage((TextMessage) message));
+		} else if (message instanceof BytesMessage) {
+			return Optional.ofNullable(mapBytesMessage((BytesMessage) message));
 		}
 		return Optional.empty();
 	}
@@ -54,19 +56,39 @@ public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
 		return String.format("%s://%s:%s", server.getConnectionType().getExtension(), server.getHost(), server.getPort());
 	}
 
-	protected MessageDto mapTextMessage(TextMessage msg) throws JMSException {
+	protected MessageDto mapMessage(Message msg) throws JMSException {
 		MessageDto dto = new MessageDto();
 		dto.setMessageID(msg.getJMSMessageID());
 		dto.setCorrelationId(msg.getJMSCorrelationID());
 		dto.setJmsType(msg.getJMSType());
 		dto.setTimestamp(msg.getJMSTimestamp());
-		dto.setType(TEXT);
-		dto.setPayload(msg.getText());
 		dto.setHeaders(mapProperties(msg));
 		dto.setPriority(msg.getJMSPriority());
 		dto.setExpiration(msg.getJMSExpiration());
 		dto.setDeliveryMode(msg.getJMSDeliveryMode());
 		return dto;
+	}
+
+	protected MessageDto mapTextMessage(TextMessage msg) throws JMSException {
+		MessageDto dto = mapMessage(msg);
+		dto.setType(TEXT);
+		dto.setPayload(msg.getText());
+		return dto;
+	}
+
+	protected MessageDto mapBytesMessage(BytesMessage msg) throws JMSException {
+		MessageDto dto = mapMessage(msg);
+		//FIXME provide support for byte messages
+		dto.setType(TEXT);
+		dto.setPayload(new String(readBody(msg)));
+		return dto;
+	}
+
+	protected byte[] readBody(BytesMessage msg) throws JMSException {
+		byte[] data = new byte[(int) msg.getBodyLength()];
+		msg.readBytes(data);
+		msg.reset();
+		return data;
 	}
 
 	protected List<HeaderDto> mapProperties(Message msg) throws JMSException {
