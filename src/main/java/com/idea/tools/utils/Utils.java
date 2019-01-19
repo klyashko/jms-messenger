@@ -1,5 +1,6 @@
 package com.idea.tools.utils;
 
+import com.idea.tools.utils.function.ThrowingSupplier;
 import lombok.extern.apachecommons.CommonsLog;
 
 import java.net.URI;
@@ -78,6 +79,14 @@ public class Utils {
                 consumer.accept(clazz.cast(value));
             }
         };
+    }
+
+    public static <T> T getOrNull(ThrowingSupplier<T> supplier) {
+        return supplier.getOptional().orElse(null);
+    }
+
+    public static <T> T getOrDefault(ThrowingSupplier<T> supplier, T def) {
+        return supplier.getOptional().orElse(def);
     }
 
 }
