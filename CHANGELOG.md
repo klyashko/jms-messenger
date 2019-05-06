@@ -5,6 +5,10 @@
  * [\*] Improvement
  * [!] Bug fixing
 
+1.0.2 (06.05.2019)
+====================
+ * [\*] Fix for connection type label
+
 1.0.1 (19.01.2019)
 ====================
  * [!] Fix for deserialization RabbitMQ message in case it isn't sent by java client
