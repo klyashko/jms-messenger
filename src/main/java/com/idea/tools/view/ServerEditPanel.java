@@ -19,9 +19,11 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 public class ServerEditPanel extends JPanel {
 
 	private static final String CONNECTION_SUCCESS_TEXT = "Success";
+	private static final String CHANGES_HAS_BEEN_SAVED_TEXT = "Changes has been saved";
 	private static final String CONNECTION_RUNNING_TEXT = "Test connection is running";
 	private static final String CONNECTION_FAIL_TEXT = "Fail";
 	private static final JBColor CONNECTION_SUCCESS_COLOR = GREEN;
+	private static final JBColor CHANGES_HAS_BEEN_SAVED_COLOR = GREEN;
 	private static final JBColor CONNECTION_RUNNING_COLOR = BLACK;
 	private static final JBColor CONNECTION_FAIL_COLOR = RED;
 
@@ -117,6 +119,7 @@ public class ServerEditPanel extends JPanel {
 			fillServer(server);
 			serverService(project).saveOrUpdate(server);
 			updateTabs();
+			changesHasBeenSavedStatus();
 		});
 
 		cancelButton.addActionListener(event -> setValues());
@@ -124,7 +127,6 @@ public class ServerEditPanel extends JPanel {
 		testConnectionButton.addActionListener(event -> {
 			ServerDto s = new ServerDto();
 			fillServer(s);
-			emptyStatus();
 			new TestConnectionTask(project, s, this::successStatus, this::failStatus).queue();
 		});
 
@@ -141,12 +143,21 @@ public class ServerEditPanel extends JPanel {
 	}
 
 	private void successStatus() {
+		emptyStatus();
 		connectionStatus.setText(CONNECTION_SUCCESS_TEXT);
 		connectionStatus.setForeground(CONNECTION_SUCCESS_COLOR);
 		connectionStatus.setVisible(true);
 	}
 
+	private void changesHasBeenSavedStatus() {
+		emptyStatus();
+		connectionStatus.setText(CHANGES_HAS_BEEN_SAVED_TEXT);
+		connectionStatus.setForeground(CHANGES_HAS_BEEN_SAVED_COLOR);
+		connectionStatus.setVisible(true);
+	}
+
 	private void failStatus(@NotNull Throwable ex) {
+		emptyStatus();
 		connectionStatus.setText(CONNECTION_FAIL_TEXT);
 		connectionStatus.setForeground(CONNECTION_FAIL_COLOR);
 		connectionStatus.setVisible(true);
