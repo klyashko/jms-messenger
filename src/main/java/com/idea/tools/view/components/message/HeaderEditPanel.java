@@ -1,6 +1,7 @@
 package com.idea.tools.view.components.message;
 
 import com.idea.tools.dto.HeaderDto;
+import com.idea.tools.dto.MessageDto;
 
 import javax.swing.*;
 import java.util.function.Consumer;
@@ -36,6 +37,14 @@ public class HeaderEditPanel extends JPanel {
 		this.header = header;
 		setValues();
 		enableButton();
+	}
+
+	public void setValues(MessageDto dto) {
+		trimEmptyHeaderToCheckBox.setSelected(dto.isTrimEmptyHeadersToNull());
+	}
+
+	public void fillMessage(MessageDto dto) {
+		dto.setTrimEmptyHeadersToNull(trimEmptyHeaderToCheckBox.isSelected());
 	}
 
 	private void render() {
