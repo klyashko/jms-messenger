@@ -17,76 +17,80 @@ import java.util.stream.Collectors;
 @CommonsLog
 public class Utils {
 
-    public static <T> List<T> filter(List<T> source, Predicate<T> predicate) {
-        return source.stream().filter(predicate).collect(Collectors.toList());
-    }
+	public static <T> List<T> filter(List<T> source, Predicate<T> predicate) {
+		return source.stream().filter(predicate).collect(Collectors.toList());
+	}
 
-    public static <T> boolean anyMatch(Collection<T> source, Predicate<T> predicate) {
-        return source.stream().anyMatch(predicate);
-    }
+	public static <T> boolean anyMatch(Collection<T> source, Predicate<T> predicate) {
+		return source.stream().anyMatch(predicate);
+	}
 
-    public static <T, R> List<R> toList(Collection<T> source, Function<T, R> function) {
-        return source.stream().map(function).collect(Collectors.toList());
-    }
+	public static <V> boolean noneMatch(Collection<V> source, Predicate<V> predicate) {
+		return source.stream().noneMatch(predicate);
+	}
 
-    public static <S, K, V> Map<K, V> toMap(Collection<S> source, Function<S, K> key, Function<S, V> value) {
-        return source.stream().collect(Collectors.toMap(key, value));
-    }
+	public static <T, R> List<R> toList(Collection<T> source, Function<T, R> function) {
+		return source.stream().map(function).collect(Collectors.toList());
+	}
 
-    public static <T> Map<Boolean, List<T>> partitioningBy(Collection<T> source, Predicate<T> predicate) {
-        return source.stream().collect(Collectors.partitioningBy(predicate));
-    }
+	public static <S, K, V> Map<K, V> toMap(Collection<S> source, Function<S, K> key, Function<S, V> value) {
+		return source.stream().collect(Collectors.toMap(key, value));
+	}
 
-    public static <T, K> Map<K, List<T>> groupingBy(Collection<T> source, Function<T, K> classifier) {
-        return source.stream().collect(Collectors.groupingBy(classifier));
-    }
+	public static <T> Map<Boolean, List<T>> partitioningBy(Collection<T> source, Predicate<T> predicate) {
+		return source.stream().collect(Collectors.partitioningBy(predicate));
+	}
 
-    public static Integer toInteger(String value) {
-        if (value != null) {
-            try {
-                return Integer.valueOf(value);
-            } catch (NumberFormatException e) {
-                log.error("An exception during an integer parsing", e);
-            }
-        }
-        return null;
-    }
+	public static <T, K> Map<K, List<T>> groupingBy(Collection<T> source, Function<T, K> classifier) {
+		return source.stream().collect(Collectors.groupingBy(classifier));
+	}
 
-    public static <T> T getOrDefault(T value, T defaultValue) {
-        return value != null ? value : defaultValue;
-    }
+	public static Integer toInteger(String value) {
+		if (value != null) {
+			try {
+				return Integer.valueOf(value);
+			} catch (NumberFormatException e) {
+				log.error("An exception during an integer parsing", e);
+			}
+		}
+		return null;
+	}
 
-    public static <T, R> Function<T, R> cast(Class<R> clazz) {
-        return value -> clazz.isInstance(value) ? clazz.cast(value) : null;
-    }
+	public static <T> T getOrDefault(T value, T defaultValue) {
+		return value != null ? value : defaultValue;
+	}
 
-    public static <T extends Comparable<? super T>> List<T> sort(List<T> source) {
-        Collections.sort(source);
-        return source;
-    }
+	public static <T, R> Function<T, R> cast(Class<R> clazz) {
+		return value -> clazz.isInstance(value) ? clazz.cast(value) : null;
+	}
 
-    public static URI uri(String url) {
-        try {
-            return new URI(url);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(String.format("Url is malformed <%s>", url));
-        }
-    }
+	public static <T extends Comparable<? super T>> List<T> sort(List<T> source) {
+		Collections.sort(source);
+		return source;
+	}
 
-    public static <T, R> Consumer<T> consumer(Class<R> clazz, Consumer<R> consumer) {
-        return value -> {
-            if (clazz.isInstance(value)) {
-                consumer.accept(clazz.cast(value));
-            }
-        };
-    }
+	public static URI uri(String url) {
+		try {
+			return new URI(url);
+		} catch (URISyntaxException e) {
+			throw new IllegalArgumentException(String.format("Url is malformed <%s>", url));
+		}
+	}
 
-    public static <T> T getOrNull(ThrowingSupplier<T> supplier) {
-        return supplier.getOptional().orElse(null);
-    }
+	public static <T, R> Consumer<T> consumer(Class<R> clazz, Consumer<R> consumer) {
+		return value -> {
+			if (clazz.isInstance(value)) {
+				consumer.accept(clazz.cast(value));
+			}
+		};
+	}
 
-    public static <T> T getOrDefault(ThrowingSupplier<T> supplier, T def) {
-        return supplier.getOptional().orElse(def);
-    }
+	public static <T> T getOrNull(ThrowingSupplier<T> supplier) {
+		return supplier.getOptional().orElse(null);
+	}
+
+	public static <T> T getOrDefault(ThrowingSupplier<T> supplier, T def) {
+		return supplier.getOptional().orElse(def);
+	}
 
 }

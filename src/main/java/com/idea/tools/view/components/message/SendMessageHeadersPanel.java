@@ -7,40 +7,42 @@ import javax.swing.*;
 import java.util.Collections;
 import java.util.List;
 
+import static com.idea.tools.utils.Utils.noneMatch;
+
 public class SendMessageHeadersPanel extends ViewMessageHeadersPanel {
 
-    private HeaderTable table;
-    private HeaderEditPanel headerEditPanel;
+	private HeaderTable table;
+	private HeaderEditPanel headerEditPanel;
 
-    public SendMessageHeadersPanel(List<HeaderDto> headers) {
-        super(headers);
-    }
+	public SendMessageHeadersPanel(List<HeaderDto> headers) {
+		super(headers);
+	}
 
-    @Override
-    protected HeaderTable tablePanelContent() {
-        table = new HeaderTable(headers, h -> headerEditPanel.setHeader(h));
-        return table;
-    }
+	@Override
+	protected HeaderTable tablePanelContent() {
+		table = new HeaderTable(headers, h -> headerEditPanel.setHeader(h));
+		return table;
+	}
 
-    @Override
-    protected JComponent editPanelContent() {
-        headerEditPanel = new HeaderEditPanel(header -> {
-            boolean isNew = table.getData().stream().noneMatch(h -> h.getName().equals(header.getName()));
-            if (isNew) {
-                table.add(header);
-            } else {
-                table.getData().replaceAll(h -> {
-                    if (h.getName().equals(header.getName())) {
-                        return header;
-                    }
-                    return h;
-                });
-                Collections.sort(table.getData());
-                table.repaint();
-            }
-            table.getTable().clearSelection();
-        });
-        return headerEditPanel;
-    }
+	@Override
+	protected JComponent editPanelContent() {
+		headerEditPanel = new HeaderEditPanel(header -> {
+			boolean isNew = noneMatch(table.getData(), h -> h.getName().equals(header.getName()));
+			if (isNew) {
+				table.add(header);
+			} else {
+				table.getData().replaceAll(h -> {
+					if (h.getName().equals(header.getName())) {
+						return header;
+					}
+					return h;
+				});
+				Collections.sort(table.getData());
+				table.repaint();
+			}
+			table.getTable().clearSelection();
+		});
+		return headerEditPanel;
+	}
 
 }
