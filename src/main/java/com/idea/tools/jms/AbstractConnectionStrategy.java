@@ -95,8 +95,9 @@ public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
 		List<HeaderDto> properties = new ArrayList<>();
 		Enumeration srcProperties = msg.getPropertyNames();
 		while (srcProperties.hasMoreElements()) {
-			String propertyName = (String) srcProperties.nextElement();
-			properties.add(new HeaderDto(propertyName, msg.getObjectProperty(propertyName).toString()));
+			String name = (String) srcProperties.nextElement();
+			String value = Objects.toString(msg.getObjectProperty(name));
+			properties.add(new HeaderDto(name, value));
 		}
 		return properties;
 	}

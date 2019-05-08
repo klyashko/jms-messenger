@@ -11,6 +11,7 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	//noinspection GroovyAssignabilityCheck
 	maven() { url = "http://packages.confluent.io/maven/" }
 }
 
@@ -43,7 +44,7 @@ dependencies {
 }
 
 intellij {
-	version = '2017.1'
+	version = '2018.1'
 	updateSinceUntilBuild = false
 }
 
