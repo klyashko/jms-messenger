@@ -6,7 +6,6 @@ import com.idea.tools.utils.TableModelBuilder;
 import com.idea.tools.view.ConfigurationPanel;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.AddEditRemovePanel;
-import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,13 +14,13 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.util.Collections;
 import java.util.List;
 
 import static com.idea.tools.service.ServerService.serverService;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
+import static java.util.Collections.sort;
 import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 
 public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements Listener<ServerDto> {
@@ -58,14 +57,14 @@ public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements
     @Override
     protected void initPanel() {
         setLayout(new BorderLayout());
-        ToolbarDecorator decorator = createDecorator(getTable())
-                .setMinimumSize(new Dimension(250, -1))
-                .setPreferredSize(new Dimension(250, -1))
-                .setAddAction(button -> panel.editServer(null))
+        JPanel panel = createDecorator(getTable())
+                .setMinimumSize(new Dimension(170, -1))
+                .setPreferredSize(new Dimension(170, -1))
+                .setAddAction(button -> this.panel.editServer(null))
                 .setRemoveAction(button -> doRemove())
-                .setToolbarPosition(TOP);
+                .setToolbarPosition(TOP)
+                .createPanel();
 
-        JPanel panel = decorator.createPanel();
         add(panel, CENTER);
     }
 
@@ -78,7 +77,7 @@ public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements
 
         TableColumn nameColumn = model.getColumn(1);
         nameColumn.setMinWidth(100);
-        nameColumn.setMaxWidth(100);
+        nameColumn.setMaxWidth(130);
 
         getTable().setSelectionMode(SINGLE_SELECTION);
     }
@@ -104,7 +103,7 @@ public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements
     @SuppressWarnings("Duplicates")
     public void add(ServerDto server) {
         getData().add(server);
-        Collections.sort(getData());
+        sort(getData());
         int index = getData().indexOf(server);
         AbstractTableModel model = (AbstractTableModel) getTable().getModel();
         model.fireTableRowsInserted(index, index);
