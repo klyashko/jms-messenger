@@ -4,6 +4,11 @@
  * [-] Deleting functional
  * [\*] Improvement
  * [!] Bug fixing
+
+1.2.0 (10.06.2019)
+====================
+ * [\*] Validation for host field on server edit panel
+ * [!] Fix for destination table update on server edit panel
  
 1.1.0 (08.05.2019)
 ====================
