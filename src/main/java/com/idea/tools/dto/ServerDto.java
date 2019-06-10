@@ -20,6 +20,7 @@ public class ServerDto implements Comparable<ServerDto> {
 	private Integer port;
 	private String login;
 	private String password;
+	private boolean isLocal;
 	private List<DestinationDto> destinations = new ArrayList<>();
 
 	private ZookeeperConfiguration zookeeperConfiguration = new ZookeeperConfiguration();

@@ -5,7 +5,11 @@
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <minimumSize width="249" height="350"/>
+      <preferredSize width="450" height="550"/>
+      <requestFocusEnabled value="true"/>
+    </properties>
     <border type="none"/>
     <children>
       <grid id="30251" binding="tabsPanel" layout-manager="BorderLayout" hgap="0" vgap="0">

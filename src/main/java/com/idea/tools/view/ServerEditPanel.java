@@ -8,6 +8,8 @@ import com.intellij.ui.JBColor;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
 import lombok.Getter;
+import org.apache.commons.validator.routines.DomainValidator;
+import org.apache.commons.validator.routines.InetAddressValidator;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -127,10 +129,21 @@ public class ServerEditPanel extends JPanel {
 		testConnectionButton.addActionListener(event -> {
 			ServerDto s = new ServerDto();
 			fillServer(s);
-			new TestConnectionTask(project, s, this::successStatus, this::failStatus).queue();
+			if (isValid(s)) {
+				new TestConnectionTask(project, s, this::successStatus, this::failStatus).queue();
+			}
 		});
 
 		add(rootPanel);
+	}
+
+	private boolean isValid(ServerDto server) {
+		boolean isValid = InetAddressValidator.getInstance().isValid(server.getHost()) ||
+				DomainValidator.getInstance(server.isLocal()).isValid(server.getHost());
+		if (!isValid) {
+			failStatus(String.format("'%s' is not valid", server.getHost()));
+		}
+		return isValid;
 	}
 
 	private void emptyStatus() {
@@ -157,12 +170,16 @@ public class ServerEditPanel extends JPanel {
 	}
 
 	private void failStatus(@NotNull Throwable ex) {
+		failStatus(ex.getMessage());
+	}
+
+	private void failStatus(String msg) {
 		emptyStatus();
 		connectionStatus.setText(CONNECTION_FAIL_TEXT);
 		connectionStatus.setForeground(CONNECTION_FAIL_COLOR);
 		connectionStatus.setVisible(true);
 
-		connectionDetails.setText(ex.getMessage());
+		connectionDetails.setText(msg);
 		connectionDetails.setVisible(true);
 	}
 
