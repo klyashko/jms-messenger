@@ -50,7 +50,7 @@ public class ServerEditDestinationPanel extends JPanel {
 				currentDestination.setServer(this.server);
 			}
 			destinationService(project).saveOrUpdate(currentDestination);
-			table.setData(server.getDestinations());
+			table.setData(this.server.getDestinations());
 		});
 
 		clearButton.addActionListener(event -> {
