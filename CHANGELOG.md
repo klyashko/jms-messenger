@@ -5,6 +5,11 @@
  * [\*] Improvement
  * [!] Bug fixing
 
+1.3.0 (28.07.2019)
+====================
+ * [!] Fix for overlapping toolbar and drop-down queue browse action (issue #7)
+ * [!] Fix configuration window resize on Linux (issue #6)
+
 1.2.0 (10.06.2019)
 ====================
  * [\*] Validation for host field on server edit panel
