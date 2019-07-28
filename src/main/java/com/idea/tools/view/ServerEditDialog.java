@@ -9,35 +9,39 @@ import javax.swing.*;
 
 public class ServerEditDialog extends JFrame {
 
-    private final Project project;
+	private final Project project;
 
-    private ServerEditDialog(Project project, ServerDto server) {
-        this.project = project;
-        render(server);
-    }
+	private ServerEditDialog(Project project, ServerDto server) {
+		this.project = project;
+		render(server);
+	}
 
-    public static void showDialog(Project project) {
-        showDialog(project, new ServerDto());
-    }
+	public static void showDialog(Project project) {
+		showDialog(project, new ServerDto());
+	}
 
-    public static void showDialog(Project project, ServerDto server) {
-        SwingUtilities.invokeLater(() -> {
-            ServerEditDialog dialog = new ServerEditDialog(project, server);
-            dialog.setLocationRelativeTo(null);
-            dialog.pack();
-            dialog.setVisible(true);
-        });
-    }
+	public static void showDialog(Project project, ServerDto server) {
+		SwingUtilities.invokeLater(() -> {
+			ServerEditDialog dialog = new ServerEditDialog(project, server);
+			dialog.setLocationRelativeTo(null);
+			dialog.pack();
+			dialog.setVisible(true);
+		});
+	}
 
-    private void render(ServerDto server) {
-        ServerEditPanel panel = new ServerEditPanel(project, server);
-        panel.getCancelButton().setText("Close");
-        panel.getCancelButton().addActionListener(event -> dispose());
+	private void render(ServerDto server) {
+		ServerEditPanel panel = new ServerEditPanel(project, server);
+		panel.getCancelButton().setText("Close");
+		panel.getCancelButton().addActionListener(event -> dispose());
 
-        JRootPane rootPane = new JRootPane();
-        IdeGlassPaneImpl pane = new IdeGlassPaneImpl(rootPane);
-        setGlassPane(pane);
+		JRootPane rootPane = new JRootPane();
+		rootPane.setSize(panel.getWidth(), panel.getHeight());
+		IdeGlassPaneImpl pane = new IdeGlassPaneImpl(rootPane);
+		pane.setSize(panel.getWidth(), panel.getHeight());
+		setGlassPane(pane);
 
-        add(new JBScrollPane(panel));
-    }
+		JBScrollPane scrollPane = new JBScrollPane(panel);
+		scrollPane.setSize(panel.getWidth(), panel.getHeight());
+		add(scrollPane);
+	}
 }
