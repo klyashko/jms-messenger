@@ -61,23 +61,15 @@ Plugin supports:
         <projectConfigurable groupId="tools" groupWeight="110" dynamic="true" displayName="Jms Messenger"
                              id="preferences.jms.messenger" instance="com.idea.tools.JmsMessengerComponent"/>
 
-        <projectService serviceInterface="com.idea.tools.view.ServersBrowseToolPanel"
-                        serviceImplementation="com.idea.tools.view.ServersBrowseToolPanel"/>
-        <projectService serviceInterface="com.idea.tools.view.QueueBrowseToolPanel"
-                        serviceImplementation="com.idea.tools.view.QueueBrowseToolPanel"/>
-        <projectService serviceInterface="com.idea.tools.JmsMessengerWindowManager"
-                        serviceImplementation="com.idea.tools.JmsMessengerWindowManager"/>
+        <projectService serviceImplementation="com.idea.tools.view.ServersBrowseToolPanel"/>
+        <projectService serviceImplementation="com.idea.tools.view.QueueBrowseToolPanel"/>
+        <projectService serviceImplementation="com.idea.tools.JmsMessengerWindowManager"/>
 
-        <projectService serviceInterface="com.idea.tools.settings.Settings"
-                        serviceImplementation="com.idea.tools.settings.Settings"/>
-        <projectService serviceInterface="com.idea.tools.service.ServerService"
-                        serviceImplementation="com.idea.tools.service.ServerService"/>
-        <projectService serviceInterface="com.idea.tools.service.DestinationService"
-                        serviceImplementation="com.idea.tools.service.DestinationService"/>
-        <projectService serviceInterface="com.idea.tools.service.TemplateService"
-                        serviceImplementation="com.idea.tools.service.TemplateService"/>
-        <projectService serviceInterface="com.idea.tools.service.JmsService"
-                        serviceImplementation="com.idea.tools.service.JmsService"/>
+        <projectService serviceImplementation="com.idea.tools.settings.Settings"/>
+        <projectService serviceImplementation="com.idea.tools.service.ServerService"/>
+        <projectService serviceImplementation="com.idea.tools.service.DestinationService"/>
+        <projectService serviceImplementation="com.idea.tools.service.TemplateService"/>
+        <projectService serviceImplementation="com.idea.tools.service.JmsService"/>
     </extensions>
     <change-notes><![CDATA[
 <a href="https://github.com/klyashko/jms-messenger/blob/master/CHANGELOG.md">Changelog</a><br/>
