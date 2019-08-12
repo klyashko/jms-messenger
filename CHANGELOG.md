@@ -7,6 +7,7 @@
 
 1.4.0 (WIP)
 ====================
+ * [\*] moving credentials to Idea Credentials storage
  * [\*] update message table in swing thread
  * [\*] update server tree in swing thread
  * [!] fix for loading queues vie configuration panel

@@ -34,6 +34,22 @@ public class ServerDto implements Comparable<ServerDto> {
 
 	private SSLConfiguration sslConfiguration = new SSLConfiguration();
 
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	@Override
 	public int compareTo(@NotNull ServerDto o) {
 		return COMPARATOR.compare(name, o.name);
