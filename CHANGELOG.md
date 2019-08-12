@@ -9,6 +9,7 @@
 ====================
  * [\*] update message table in swing thread
  * [\*] update server tree in swing thread
+ * [!] fix for loading queues vie configuration panel
 
 1.3.0 (28.07.2019)
 ====================
