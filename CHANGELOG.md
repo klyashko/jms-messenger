@@ -5,6 +5,10 @@
  * [\*] Improvement
  * [!] Bug fixing
 
+1.4.0 (WIP)
+====================
+ * [\*] update server tree in swing thread
+
 1.3.0 (28.07.2019)
 ====================
  * [!] Fix for overlapping toolbar and drop-down queue browse action (issue #7)
