@@ -7,6 +7,7 @@
 
 1.4.0 (WIP)
 ====================
+ * [\*] update message table in swing thread
  * [\*] update server tree in swing thread
 
 1.3.0 (28.07.2019)
