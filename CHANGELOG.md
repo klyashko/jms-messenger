@@ -5,7 +5,7 @@
  * [\*] Improvement
  * [!] Bug fixing
 
-1.4.0 (WIP)
+1.4.0 (12.08.2019)
 ====================
  * [\*] moving credentials to Idea Credentials storage
  * [\*] update message table in swing thread
