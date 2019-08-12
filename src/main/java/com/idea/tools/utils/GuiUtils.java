@@ -2,6 +2,7 @@ package com.idea.tools.utils;
 
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.application.Application;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
@@ -16,6 +17,7 @@ import java.text.NumberFormat;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static com.intellij.openapi.application.ApplicationManager.getApplication;
 import static javax.swing.JOptionPane.*;
 
 public class GuiUtils {
@@ -70,6 +72,15 @@ public class GuiUtils {
 			dialog.pack();
 			dialog.setVisible(true);
 		});
+	}
+
+	public static void runInSwingThread(Runnable runnable) {
+		Application application = getApplication();
+		if (application.isDispatchThread()) {
+			runnable.run();
+		} else {
+			application.invokeAndWait(runnable);
+		}
 	}
 
 	public static void addSimpleListener(JTextComponent component, Consumer<DocumentEvent> consumer) {

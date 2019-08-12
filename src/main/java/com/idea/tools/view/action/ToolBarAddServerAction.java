@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -16,12 +17,12 @@ public class ToolBarAddServerAction extends AnAction implements DumbAware {
     private final Project project;
 
     public ToolBarAddServerAction(Project project) {
-        super("Add server", "", ICON);
+        super("Add Server", "", ICON);
         this.project = project;
     }
 
     @Override
-    public void actionPerformed(AnActionEvent event) {
+    public void actionPerformed(@NotNull AnActionEvent event) {
         ServerEditDialog.showDialog(project);
     }
 

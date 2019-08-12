@@ -5,6 +5,7 @@ import com.idea.tools.task.LoadQueuesTask;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.Collections;
@@ -15,25 +16,26 @@ import static com.idea.tools.utils.IconUtils.getRefreshIcon;
 
 public abstract class AbstractReconnectAction extends AbstractBrowserPanelAction {
 
-    private static final Icon ICON = getRefreshIcon();
+	private static final Icon ICON = getRefreshIcon();
 
-    private final Project project;
+	private final Project project;
 
-    AbstractReconnectAction(Project project, ServersBrowseToolPanel serversBrowseToolPanel) {
-        super("Refresh", "", ICON, serversBrowseToolPanel);
-        this.project = project;
-    }
+	AbstractReconnectAction(Project project, ServersBrowseToolPanel serversBrowseToolPanel) {
+		super("Refresh", "", ICON, serversBrowseToolPanel);
+		this.project = project;
+	}
 
-    @Override
-    public void actionPerformed(AnActionEvent event) {
-        List<ServerDto> servers = serversPanel.getSelectedValue(ServerDto.class)
-                                              .map(Collections::singletonList)
-                .orElseGet(settings(project)::getServersList);
-        new LoadQueuesTask(project, servers).queue();
-    }
+	@Override
+	public void actionPerformed(@NotNull AnActionEvent event) {
+		List<ServerDto> servers = serversPanel.getSelectedValue(ServerDto.class)
+				.map(Collections::singletonList)
+				.orElseGet(settings(project)::getServersList);
+		LoadQueuesTask task = new LoadQueuesTask(project, servers);
+		task.queue();
+	}
 
-    boolean isServerSelected() {
-        return isSelected(ServerDto.class);
-    }
+	boolean isServerSelected() {
+		return isSelected(ServerDto.class);
+	}
 
 }

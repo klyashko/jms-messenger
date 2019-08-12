@@ -2,7 +2,7 @@ package com.idea.tools.task;
 
 import com.idea.tools.dto.ServerDto;
 import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.Task;
+import com.intellij.openapi.progress.Task.Backgroundable;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import static com.idea.tools.service.JmsService.jmsService;
 
-public class LoadQueuesTask extends Task.Backgroundable {
+public class LoadQueuesTask extends Backgroundable {
 
     private final List<ServerDto> servers;
     private Optional<Runnable> onSuccess = Optional.empty();
