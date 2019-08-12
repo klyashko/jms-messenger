@@ -13,26 +13,31 @@ import static com.idea.tools.service.JmsService.jmsService;
 
 public class LoadQueuesTask extends Backgroundable {
 
-    private final List<ServerDto> servers;
-    private Optional<Runnable> onSuccess = Optional.empty();
+	private final List<ServerDto> servers;
+	private Optional<Runnable> onSuccess = Optional.empty();
 
-    public LoadQueuesTask(@NotNull Project project, @NotNull List<ServerDto> servers) {
-        super(project, "Loading Queues");
-        this.servers = servers;
-    }
+	public LoadQueuesTask(@NotNull Project project, @NotNull List<ServerDto> servers) {
+		super(project, "Loading Queues");
+		this.servers = servers;
+	}
 
-    public LoadQueuesTask(@NotNull Project project, @NotNull List<ServerDto> servers, Runnable onSuccess) {
-        this(project, servers);
-        this.onSuccess = Optional.of(onSuccess);
-    }
+	private LoadQueuesTask(@NotNull Project project, @NotNull List<ServerDto> servers, Runnable onSuccess) {
+		this(project, servers);
+		this.onSuccess = Optional.of(onSuccess);
+	}
 
-    @Override
-    public void run(@NotNull ProgressIndicator indicator) {
-        jmsService(getProject()).refresh(servers);
-    }
+	public static void createAndQueue(@NotNull Project project, @NotNull List<ServerDto> servers, Runnable onSuccess) {
+		new LoadQueuesTask(project, servers, onSuccess).queue();
+	}
 
-    @Override
-    public void onSuccess() {
-        onSuccess.ifPresent(Runnable::run);
-    }
+	@Override
+	public void run(@NotNull ProgressIndicator indicator) {
+		jmsService(getProject()).refresh(servers);
+	}
+
+	@Override
+	public void onSuccess() {
+		onSuccess.ifPresent(Runnable::run);
+	}
+
 }
