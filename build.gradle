@@ -46,15 +46,10 @@ dependencies {
 }
 
 intellij {
-	version = '2019.2'
+	version = '2019.3.3'
 	updateSinceUntilBuild = false
 }
 
 patchPluginXml {
 	sinceBuild '162.*'
-}
-
-publishPlugin {
-	password = publishPluginUsername
-	username = publishPluginPassword
 }
