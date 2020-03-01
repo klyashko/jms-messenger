@@ -23,7 +23,12 @@ configurations {
 }
 
 dependencies {
-	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.0'
+	compileOnly('org.projectlombok:lombok:1.18.12')
+	annotationProcessor('org.projectlombok:lombok:1.18.12')
+
+	testCompileOnly('org.projectlombok:lombok:1.18.12')
+	testAnnotationProcessor('org.projectlombok:lombok:1.18.12')
+
 	compile(group: 'org.apache.commons', name: 'commons-lang3', version: '3.7')
 	compile(group: 'commons-validator', name: 'commons-validator', version: '1.6')
 

@@ -1,10 +1,23 @@
 package com.idea.tools.run.configuration;
 
+import static com.idea.tools.service.JmsService.jmsService;
+import static com.idea.tools.service.TemplateService.templateService;
+import static com.idea.tools.settings.Settings.settings;
+import static com.intellij.execution.ui.ConsoleViewContentType.ERROR_OUTPUT;
+import static com.intellij.execution.ui.ConsoleViewContentType.LOG_WARNING_OUTPUT_KEY;
+import static com.intellij.execution.ui.ConsoleViewContentType.NORMAL_OUTPUT;
+import static java.util.concurrent.CompletableFuture.runAsync;
+
 import com.idea.tools.dto.TemplateMessageDto;
 import com.idea.tools.markers.Listener;
 import com.intellij.execution.DefaultExecutionResult;
 import com.intellij.execution.Executor;
-import com.intellij.execution.configurations.*;
+import com.intellij.execution.configurations.ConfigurationFactory;
+import com.intellij.execution.configurations.RunConfiguration;
+import com.intellij.execution.configurations.RunConfigurationBase;
+import com.intellij.execution.configurations.RunConfigurationOptions;
+import com.intellij.execution.configurations.RunProfileState;
+import com.intellij.execution.configurations.RuntimeConfigurationException;
 import com.intellij.execution.impl.ConsoleViewImpl;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
@@ -14,20 +27,14 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
+import java.io.OutputStream;
+import java.util.Optional;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.OutputStream;
-import java.util.Optional;
-
-import static com.idea.tools.service.JmsService.jmsService;
-import static com.idea.tools.service.TemplateService.templateService;
-import static com.idea.tools.settings.Settings.settings;
-import static com.intellij.execution.ui.ConsoleViewContentType.*;
-import static java.util.concurrent.CompletableFuture.runAsync;
-
-public class JmsRunConfiguration extends RunConfigurationBase {
+//TODO figure out what this generic is.
+public class JmsRunConfiguration extends RunConfigurationBase<RunConfigurationOptions> {
 
     private Optional<String> messageId = Optional.empty();
 

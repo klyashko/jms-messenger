@@ -1,5 +1,7 @@
 package com.idea.tools.settings;
 
+import static com.idea.tools.service.ServerService.credentials;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.TemplateMessageDto;
@@ -10,15 +12,11 @@ import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.intellij.util.xmlb.annotations.MapAnnotation;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.idea.tools.service.ServerService.credentials;
-import static com.idea.tools.service.ServerService.updateCredentials;
+import org.jetbrains.annotations.NotNull;
 
 @State(name = "JmsMessengerSettings", storages = @Storage("JmsMessengerSettings.xml"))
 public class Settings implements PersistentStateComponent<Settings> {
@@ -35,8 +33,6 @@ public class Settings implements PersistentStateComponent<Settings> {
 	public static Settings settings(Project project) {
 		Settings settings = ServiceManager.getService(project, Settings.class);
 		settings.servers.forEach((id, server) -> {
-			//TODO delete on next release
-			updateCredentials(server);
 			credentials(server).ifPresent(credentials -> {
 				server.setLogin(credentials.getUserName());
 				server.setPassword(credentials.getPasswordAsString());
