@@ -1,18 +1,11 @@
 package com.idea.tools.service;
 
-import com.idea.tools.dto.*;
-import com.idea.tools.jms.*;
-import com.idea.tools.utils.Assert;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-
-import javax.jms.*;
-import java.lang.IllegalStateException;
-import java.util.*;
-
 import static com.idea.tools.dto.DestinationType.QUEUE;
-import static com.idea.tools.dto.ServerType.*;
+import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
+import static com.idea.tools.dto.ServerType.ARTEMIS;
+import static com.idea.tools.dto.ServerType.HORNETQ;
+import static com.idea.tools.dto.ServerType.KAFKA;
+import static com.idea.tools.dto.ServerType.RABBIT_MQ;
 import static com.idea.tools.service.DestinationService.destinationService;
 import static com.idea.tools.service.ServerService.serverService;
 import static com.idea.tools.utils.Checked.consumer;
@@ -20,6 +13,33 @@ import static com.idea.tools.utils.Utils.partitioningBy;
 import static com.idea.tools.utils.Utils.toMap;
 import static java.util.function.Function.identity;
 import static javax.jms.Session.AUTO_ACKNOWLEDGE;
+
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.dto.HeaderDto;
+import com.idea.tools.dto.MessageDto;
+import com.idea.tools.dto.ServerDto;
+import com.idea.tools.dto.ServerType;
+import com.idea.tools.jms.ActiveMQConnectionStrategy;
+import com.idea.tools.jms.ArtemisConnectionStrategy;
+import com.idea.tools.jms.ConnectionStrategy;
+import com.idea.tools.jms.HornetConnectionStrategy;
+import com.idea.tools.jms.KafkaConnectionStrategy;
+import com.idea.tools.jms.RabbitMQConnectionStrategy;
+import com.idea.tools.utils.Assert;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.jms.Connection;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.QueueBrowser;
+import javax.jms.Session;
 
 public class JmsService {
 

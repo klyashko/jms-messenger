@@ -1,5 +1,11 @@
 package com.idea.tools;
 
+import static com.idea.tools.utils.GuiUtils.contentFactory;
+import static com.idea.tools.utils.GuiUtils.startupManager;
+import static com.idea.tools.utils.GuiUtils.toolWindowManager;
+import static com.idea.tools.utils.IconUtils.getJmsIcon;
+import static com.intellij.openapi.wm.ToolWindowAnchor.RIGHT;
+
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.DumbAwareRunnable;
@@ -8,12 +14,7 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentManager;
-
 import javax.swing.*;
-
-import static com.idea.tools.utils.GuiUtils.*;
-import static com.idea.tools.utils.IconUtils.getJmsIcon;
-import static com.intellij.openapi.wm.ToolWindowAnchor.RIGHT;
 
 public class JmsMessengerWindowManager {
 

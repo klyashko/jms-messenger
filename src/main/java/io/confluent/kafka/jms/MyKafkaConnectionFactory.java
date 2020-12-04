@@ -1,12 +1,11 @@
 package io.confluent.kafka.jms;
 
-import org.apache.kafka.common.serialization.ByteArraySerializer;
-
-import javax.jms.Connection;
-import javax.jms.JMSException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import javax.jms.Connection;
+import javax.jms.JMSException;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
 
 public class MyKafkaConnectionFactory extends KafkaConnectionFactory {
 

@@ -1,19 +1,21 @@
 package com.idea.tools.jms;
 
+import static com.idea.tools.dto.ServerType.ARTEMIS;
+import static org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants.HOST_PROP_NAME;
+import static org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants.HTTP_UPGRADE_ENABLED_PROP_NAME;
+import static org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants.HTTP_UPGRADE_ENDPOINT_PROP_NAME;
+import static org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants.PORT_PROP_NAME;
+
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.Assert;
+import java.util.HashMap;
+import java.util.Map;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.core.client.impl.ServerLocatorImpl;
 import org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory;
 import org.jetbrains.annotations.NotNull;
-
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.idea.tools.dto.ServerType.ARTEMIS;
-import static org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants.*;
 
 public class ArtemisConnectionStrategy extends AbstractConnectionStrategy {
 

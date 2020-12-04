@@ -1,16 +1,15 @@
 package com.idea.tools.view.components.message;
 
+import static com.idea.tools.utils.GuiUtils.toolbar;
+
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.view.button.CopyButton;
 import com.idea.tools.view.button.PasteButton;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.ui.components.JBScrollPane;
-
-import javax.swing.*;
 import java.awt.*;
 import java.util.Optional;
-
-import static com.idea.tools.utils.GuiUtils.toolbar;
+import javax.swing.*;
 
 public class ViewMessagePayloadPanel extends JPanel {
 

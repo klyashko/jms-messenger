@@ -1,8 +1,6 @@
 package com.idea.tools.utils;
 
 import com.idea.tools.utils.function.ThrowingSupplier;
-import lombok.extern.apachecommons.CommonsLog;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -13,6 +11,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import lombok.extern.apachecommons.CommonsLog;
 
 @CommonsLog
 public class Utils {

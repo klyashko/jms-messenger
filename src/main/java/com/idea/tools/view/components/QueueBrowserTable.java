@@ -1,5 +1,11 @@
 package com.idea.tools.view.components;
 
+import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
+import static com.intellij.ui.ToolbarDecorator.createDecorator;
+import static java.awt.BorderLayout.CENTER;
+import static java.util.Collections.emptyList;
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.utils.TableModelBuilder;
@@ -11,21 +17,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
-import lombok.Getter;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
-import static com.intellij.ui.ToolbarDecorator.createDecorator;
-import static java.awt.BorderLayout.CENTER;
-import static java.util.Collections.emptyList;
-import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
+import javax.swing.*;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import lombok.Getter;
+import org.jetbrains.annotations.Nullable;
 
 public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
 
@@ -35,7 +34,7 @@ public class QueueBrowserTable extends AddEditRemovePanel<MessageDto> {
     private final Project project;
 
     @Getter
-    private DestinationDto destination;
+    private final DestinationDto destination;
 
     public QueueBrowserTable(Project project, DestinationDto queue) {
         super(tableModel(), emptyList());

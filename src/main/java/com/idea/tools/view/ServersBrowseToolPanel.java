@@ -1,32 +1,5 @@
 package com.idea.tools.view;
 
-import com.idea.tools.dto.DestinationDto;
-import com.idea.tools.dto.DestinationType;
-import com.idea.tools.dto.ServerDto;
-import com.idea.tools.dto.TemplateMessageDto;
-import com.idea.tools.markers.Listener;
-import com.idea.tools.settings.Settings;
-import com.idea.tools.view.action.*;
-import com.idea.tools.view.render.TreeRender;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.SimpleToolWindowPanel;
-import com.intellij.ui.TreeSpeedSearch;
-import com.intellij.ui.treeStructure.SimpleTree;
-import com.intellij.ui.treeStructure.Tree;
-
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import java.awt.*;
-import java.util.List;
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-
 import static com.idea.tools.dto.DestinationType.QUEUE;
 import static com.idea.tools.dto.DestinationType.TOPIC;
 import static com.idea.tools.service.DestinationService.destinationService;
@@ -41,6 +14,52 @@ import static com.intellij.ui.PopupHandler.installPopupHandler;
 import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
 import static java.awt.BorderLayout.CENTER;
 
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.dto.DestinationType;
+import com.idea.tools.dto.ServerDto;
+import com.idea.tools.dto.TemplateMessageDto;
+import com.idea.tools.markers.Listener;
+import com.idea.tools.settings.Settings;
+import com.idea.tools.view.action.PopupAddDestinationAction;
+import com.idea.tools.view.action.PopupBrowseQueueAction;
+import com.idea.tools.view.action.PopupEditDestinationAction;
+import com.idea.tools.view.action.PopupEditServerAction;
+import com.idea.tools.view.action.PopupEditTemplateAction;
+import com.idea.tools.view.action.PopupReconnectAction;
+import com.idea.tools.view.action.PopupRemoveDestinationAction;
+import com.idea.tools.view.action.PopupRemoveServerAction;
+import com.idea.tools.view.action.PopupRemoveTemplateAction;
+import com.idea.tools.view.action.PopupSendMessageAction;
+import com.idea.tools.view.action.ToolBarAddServerAction;
+import com.idea.tools.view.action.ToolBarBrowseQueueAction;
+import com.idea.tools.view.action.ToolBarEditServerAction;
+import com.idea.tools.view.action.ToolBarOpenSettingsAction;
+import com.idea.tools.view.action.ToolBarReconnectAction;
+import com.idea.tools.view.action.ToolBarRemoveAction;
+import com.idea.tools.view.action.ToolBarSendMessageAction;
+import com.idea.tools.view.render.TreeRender;
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.SimpleToolWindowPanel;
+import com.intellij.ui.TreeSpeedSearch;
+import com.intellij.ui.treeStructure.SimpleTree;
+import com.intellij.ui.treeStructure.Tree;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
 public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Disposable {
 
 	private static final String LOADING = "Loading...";
@@ -49,9 +68,9 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 	private final Project project;
 	private JPanel rootPanel;
 	private JPanel serverPanel;
-	private Listener<ServerDto> serverListener;
-	private Listener<DestinationDto> destinationListener;
-	private Listener<TemplateMessageDto> templateListener;
+	private final Listener<ServerDto> serverListener;
+	private final Listener<DestinationDto> destinationListener;
+	private final Listener<TemplateMessageDto> templateListener;
 
 	public ServersBrowseToolPanel(final Project project) {
 		super(true);

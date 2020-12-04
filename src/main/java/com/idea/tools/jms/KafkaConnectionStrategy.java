@@ -1,19 +1,18 @@
 package com.idea.tools.jms;
 
+import static com.idea.tools.dto.ServerType.KAFKA;
+
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.ZookeeperConfiguration;
 import com.idea.tools.utils.Assert;
 import io.confluent.kafka.jms.JMSClientConfig;
 import io.confluent.kafka.jms.MyKafkaConnectionFactory;
-
+import java.util.Optional;
+import java.util.Properties;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Message;
-import java.util.Optional;
-import java.util.Properties;
-
-import static com.idea.tools.dto.ServerType.KAFKA;
 
 public class KafkaConnectionStrategy extends AbstractConnectionStrategy {
 

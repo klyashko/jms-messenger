@@ -1,19 +1,18 @@
 package com.idea.tools.view;
 
+import static com.idea.tools.settings.Settings.settings;
+import static com.idea.tools.utils.GuiUtils.label;
+import static com.idea.tools.utils.Utils.filter;
+import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.MutableCollectionComboBoxModel;
-
-import javax.swing.*;
 import java.util.List;
-
-import static com.idea.tools.settings.Settings.settings;
-import static com.idea.tools.utils.GuiUtils.label;
-import static com.idea.tools.utils.Utils.filter;
-import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
+import javax.swing.*;
 
 public class JmsSettingsEditorPanel extends JPanel {
 

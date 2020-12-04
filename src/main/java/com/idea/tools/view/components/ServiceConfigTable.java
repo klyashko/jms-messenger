@@ -1,5 +1,12 @@
 package com.idea.tools.view.components;
 
+import static com.idea.tools.service.ServerService.serverService;
+import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
+import static com.intellij.ui.ToolbarDecorator.createDecorator;
+import static java.awt.BorderLayout.CENTER;
+import static java.util.Collections.sort;
+import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
+
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.markers.Listener;
 import com.idea.tools.utils.TableModelBuilder;
@@ -7,21 +14,13 @@ import com.idea.tools.view.ConfigurationPanel;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.table.JBTable;
-import org.jetbrains.annotations.Nullable;
-
+import java.awt.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import java.awt.*;
-import java.util.List;
-
-import static com.idea.tools.service.ServerService.serverService;
-import static com.intellij.openapi.actionSystem.ActionToolbarPosition.TOP;
-import static com.intellij.ui.ToolbarDecorator.createDecorator;
-import static java.awt.BorderLayout.CENTER;
-import static java.util.Collections.sort;
-import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
+import org.jetbrains.annotations.Nullable;
 
 public class ServiceConfigTable extends AddEditRemovePanel<ServerDto> implements Listener<ServerDto> {
 

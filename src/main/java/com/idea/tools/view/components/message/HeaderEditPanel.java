@@ -1,20 +1,19 @@
 package com.idea.tools.view.components.message;
 
-import com.idea.tools.dto.HeaderDto;
-import com.idea.tools.dto.MessageDto;
-
-import javax.swing.*;
-import java.util.function.Consumer;
-
 import static com.idea.tools.utils.GuiUtils.addSimpleListener;
 import static com.idea.tools.utils.Utils.getOrDefault;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
+import com.idea.tools.dto.HeaderDto;
+import com.idea.tools.dto.MessageDto;
+import java.util.function.Consumer;
+import javax.swing.*;
+
 public class HeaderEditPanel extends JPanel {
 
 	private HeaderDto header;
-	private Consumer<HeaderDto> handler;
+	private final Consumer<HeaderDto> handler;
 
 	private JPanel rootPanel;
 	private JTextField valueField;

@@ -1,16 +1,15 @@
 package com.idea.tools.view.button;
 
+import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
+import static com.intellij.util.IconUtil.getRemoveIcon;
+
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.task.RemoveMessageTask;
 import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.ui.AnActionButton;
-
-import javax.swing.*;
 import java.util.Collections;
-
-import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
-import static com.intellij.util.IconUtil.getRemoveIcon;
+import javax.swing.*;
 
 public class RemoveMessageButton extends AnActionButton {
 

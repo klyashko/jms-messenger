@@ -1,22 +1,27 @@
 package com.idea.tools.view;
 
+import static com.idea.tools.service.ServerService.serverService;
+import static com.intellij.ui.JBColor.BLACK;
+import static com.intellij.ui.JBColor.GREEN;
+import static com.intellij.ui.JBColor.RED;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.task.TestConnectionTask;
-import com.idea.tools.view.components.*;
+import com.idea.tools.view.components.ServerEditDestinationPanel;
+import com.idea.tools.view.components.ServerEditKafkaPanel;
+import com.idea.tools.view.components.ServerEditMainPanel;
+import com.idea.tools.view.components.ServerEditRabbitMQPanel;
+import com.idea.tools.view.components.ServerEditSslPanel;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
+import javax.swing.*;
 import lombok.Getter;
 import org.apache.commons.validator.routines.DomainValidator;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-
-import static com.idea.tools.service.ServerService.serverService;
-import static com.intellij.ui.JBColor.*;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class ServerEditPanel extends JPanel {
 

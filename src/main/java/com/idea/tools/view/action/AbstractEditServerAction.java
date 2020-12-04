@@ -1,16 +1,15 @@
 package com.idea.tools.view.action;
 
+import static com.intellij.util.IconUtil.getEditIcon;
+
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.view.ServerEditDialog;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
+import javax.swing.*;
 import lombok.AccessLevel;
 import lombok.Getter;
-
-import javax.swing.*;
-
-import static com.intellij.util.IconUtil.getEditIcon;
 
 public abstract class AbstractEditServerAction extends AbstractBrowserPanelAction {
 

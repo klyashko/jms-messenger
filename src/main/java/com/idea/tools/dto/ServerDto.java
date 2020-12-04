@@ -1,11 +1,10 @@
 package com.idea.tools.dto;
 
-import lombok.Data;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 @Data
 public class ServerDto implements Comparable<ServerDto> {

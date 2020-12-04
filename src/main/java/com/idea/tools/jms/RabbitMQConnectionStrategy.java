@@ -1,5 +1,8 @@
 package com.idea.tools.jms;
 
+import static com.idea.tools.dto.ServerType.RABBIT_MQ;
+import static com.idea.tools.utils.Utils.getOrDefault;
+
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.Assert;
@@ -9,15 +12,18 @@ import com.rabbitmq.jms.client.RMQMessage;
 import com.rabbitmq.jms.client.message.RMQBytesMessage;
 import com.rabbitmq.jms.client.message.RMQTextMessage;
 import com.rabbitmq.jms.util.WhiteListObjectInputStream;
-
-import javax.jms.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.util.Optional;
-
-import static com.idea.tools.dto.ServerType.RABBIT_MQ;
-import static com.idea.tools.utils.Utils.getOrDefault;
+import javax.jms.BytesMessage;
+import javax.jms.Connection;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Queue;
+import javax.jms.QueueBrowser;
+import javax.jms.Session;
 
 public class RabbitMQConnectionStrategy extends AbstractConnectionStrategy {
 

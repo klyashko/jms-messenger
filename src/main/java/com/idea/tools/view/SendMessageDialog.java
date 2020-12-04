@@ -4,12 +4,16 @@ import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.task.SendMessageTask;
 import com.idea.tools.utils.GuiUtils;
-import com.idea.tools.view.components.message.*;
+import com.idea.tools.view.components.message.SendMessageHeadersPanel;
+import com.idea.tools.view.components.message.SendMessageMainPanel;
+import com.idea.tools.view.components.message.SendMessagePayloadPanel;
+import com.idea.tools.view.components.message.ViewMessageHeadersPanel;
+import com.idea.tools.view.components.message.ViewMessageMainPanel;
+import com.idea.tools.view.components.message.ViewMessagePayloadPanel;
 import com.intellij.openapi.project.Project;
-
-import javax.swing.*;
 import java.util.Optional;
 import java.util.function.Supplier;
+import javax.swing.*;
 
 public class SendMessageDialog extends ViewMessageDialog {
 

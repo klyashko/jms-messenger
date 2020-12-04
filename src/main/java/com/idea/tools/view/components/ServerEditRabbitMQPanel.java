@@ -1,10 +1,9 @@
 package com.idea.tools.view.components;
 
-import com.idea.tools.dto.ServerDto;
-
-import javax.swing.*;
-
 import static com.idea.tools.utils.Utils.getOrDefault;
+
+import com.idea.tools.dto.ServerDto;
+import javax.swing.*;
 
 public class ServerEditRabbitMQPanel extends JPanel {
 	private JPanel rootPanel;

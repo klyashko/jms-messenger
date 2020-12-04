@@ -4,11 +4,10 @@ import com.idea.tools.view.ConfigurationPanel;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
+import javax.swing.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 
 public class JmsMessengerComponent implements ProjectComponent, SearchableConfigurable {
 

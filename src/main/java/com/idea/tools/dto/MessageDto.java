@@ -1,14 +1,13 @@
 package com.idea.tools.dto;
 
 import com.intellij.util.xmlb.annotations.Transient;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 @Data
 @ToString(exclude = {"destination", "headers"})

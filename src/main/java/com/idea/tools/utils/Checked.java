@@ -1,9 +1,16 @@
 package com.idea.tools.utils;
 
-import com.idea.tools.utils.function.*;
-
+import com.idea.tools.utils.function.ThrowingBiFunction;
+import com.idea.tools.utils.function.ThrowingConsumer;
+import com.idea.tools.utils.function.ThrowingFunction;
+import com.idea.tools.utils.function.ThrowingPredicate;
+import com.idea.tools.utils.function.ThrowingSupplier;
 import java.util.Optional;
-import java.util.function.*;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Checked {
 

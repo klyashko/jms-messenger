@@ -1,13 +1,12 @@
 package com.idea.tools.view.components;
 
-import com.idea.tools.dto.ServerDto;
-import com.idea.tools.dto.ZookeeperConfiguration;
-
-import javax.swing.*;
-
 import static com.idea.tools.utils.GuiUtils.createNumberInputField;
 import static com.idea.tools.utils.Utils.getOrDefault;
 import static com.idea.tools.utils.Utils.toInteger;
+
+import com.idea.tools.dto.ServerDto;
+import com.idea.tools.dto.ZookeeperConfiguration;
+import javax.swing.*;
 
 public class ServerEditKafkaPanel extends JPanel {
 

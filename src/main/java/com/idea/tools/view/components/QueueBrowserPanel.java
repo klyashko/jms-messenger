@@ -1,5 +1,9 @@
 package com.idea.tools.view.components;
 
+import static com.idea.tools.utils.GuiUtils.toolbar;
+import static java.awt.BorderLayout.CENTER;
+import static java.awt.BorderLayout.WEST;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.view.button.CopyButton;
@@ -11,21 +15,16 @@ import com.intellij.ui.table.JBTable;
 import com.intellij.ui.tabs.JBTabsPosition;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
-import lombok.Getter;
-
-import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
-
-import static com.idea.tools.utils.GuiUtils.toolbar;
-import static java.awt.BorderLayout.CENTER;
-import static java.awt.BorderLayout.WEST;
+import javax.swing.*;
+import lombok.Getter;
 
 public class QueueBrowserPanel extends JPanel {
 
     private final Project project;
 
-    private DestinationDto destination;
+    private final DestinationDto destination;
 
     @Getter
     private QueueBrowserTable queueBrowserTable;

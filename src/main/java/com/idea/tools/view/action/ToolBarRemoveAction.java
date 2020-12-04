@@ -1,18 +1,17 @@
 package com.idea.tools.view.action;
 
+import static com.idea.tools.service.DestinationService.destinationService;
+import static com.idea.tools.service.ServerService.serverService;
+import static com.idea.tools.service.TemplateService.templateService;
+import static com.intellij.util.IconUtil.getRemoveIcon;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
-
 import javax.swing.*;
-
-import static com.idea.tools.service.DestinationService.destinationService;
-import static com.idea.tools.service.ServerService.serverService;
-import static com.idea.tools.service.TemplateService.templateService;
-import static com.intellij.util.IconUtil.getRemoveIcon;
 
 public class ToolBarRemoveAction extends AbstractBrowserPanelAction {
 

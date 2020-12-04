@@ -1,12 +1,11 @@
 package com.idea.tools.run.configuration;
 
+import static com.idea.tools.utils.IconUtils.getJmsIcon;
+
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
-
-import static com.idea.tools.utils.IconUtils.getJmsIcon;
+import org.jetbrains.annotations.NotNull;
 
 public class JmsConfigurationType implements ConfigurationType {
     @Override

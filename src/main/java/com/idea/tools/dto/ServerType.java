@@ -1,11 +1,18 @@
 package com.idea.tools.dto;
 
-import lombok.Getter;
+import static com.idea.tools.dto.ConnectionType.ACTIVE_MQ_CONNECTION_TYPES;
+import static com.idea.tools.dto.ConnectionType.ARTEMIS_CONNECTION_TYPES;
+import static com.idea.tools.dto.ConnectionType.HORNETQ_CONNECTION_TYPES;
+import static com.idea.tools.dto.ConnectionType.KAFKA_CONNECTION_TYPES;
+import static com.idea.tools.dto.ConnectionType.RABBIT_MQ_CONNECTION_TYPES;
+import static com.idea.tools.utils.IconUtils.getActiveMqIcon;
+import static com.idea.tools.utils.IconUtils.getArtemisIcon;
+import static com.idea.tools.utils.IconUtils.getHornetIcon;
+import static com.idea.tools.utils.IconUtils.getKafkaIcon;
+import static com.idea.tools.utils.IconUtils.getRabbitMqIcon;
 
 import javax.swing.*;
-
-import static com.idea.tools.dto.ConnectionType.*;
-import static com.idea.tools.utils.IconUtils.*;
+import lombok.Getter;
 
 @Getter
 public enum ServerType {

@@ -1,16 +1,15 @@
 package com.idea.tools.utils;
 
 import com.intellij.ui.AddEditRemovePanel.TableModel;
-import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 
 public class TableModelBuilder<T> {
 
-    private List<Column<T>> columns = new ArrayList<>();
+    private final List<Column<T>> columns = new ArrayList<>();
 
     public TableModelBuilder<T> withColumn(String name, Function<T, Object> mapper) {
         columns.add(new Column<>(name, String.class, mapper));

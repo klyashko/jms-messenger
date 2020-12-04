@@ -1,29 +1,28 @@
 package com.idea.tools.view.components;
 
-import com.idea.tools.dto.DestinationDto;
-import com.idea.tools.utils.TableModelBuilder;
-import com.intellij.openapi.project.Project;
-import com.intellij.ui.AddEditRemovePanel;
-import com.intellij.ui.ToolbarDecorator;
-import com.intellij.ui.table.JBTable;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import java.awt.*;
-import java.util.List;
-
 import static com.idea.tools.service.DestinationService.destinationService;
 import static com.idea.tools.utils.Utils.sort;
 import static com.intellij.openapi.actionSystem.ActionToolbarPosition.LEFT;
 import static com.intellij.ui.ToolbarDecorator.createDecorator;
 import static java.awt.BorderLayout.CENTER;
 
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.utils.TableModelBuilder;
+import com.intellij.openapi.project.Project;
+import com.intellij.ui.AddEditRemovePanel;
+import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.table.JBTable;
+import java.awt.*;
+import java.util.List;
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import org.jetbrains.annotations.Nullable;
+
 public class DestinationTable extends AddEditRemovePanel<DestinationDto> {
 
     private final Project project;
 
-    private ServerEditDestinationPanel panel;
+    private final ServerEditDestinationPanel panel;
 
     public DestinationTable(Project project, ServerEditDestinationPanel panel, List<DestinationDto> data) {
         super(tableModel(), sort(data));

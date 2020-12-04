@@ -1,5 +1,12 @@
 package com.idea.tools.view.action;
 
+import static com.idea.tools.utils.GuiUtils.contentFactory;
+import static com.idea.tools.utils.GuiUtils.toolWindowManager;
+import static com.idea.tools.utils.IconUtils.getBrowseIcon;
+import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_ICON;
+import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_WINDOW_ID;
+import static com.intellij.openapi.wm.ToolWindowAnchor.BOTTOM;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.DestinationType;
 import com.idea.tools.task.LoadMessagesTask;
@@ -12,16 +19,8 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentManager;
-
-import javax.swing.*;
 import java.util.Optional;
-
-import static com.idea.tools.utils.GuiUtils.contentFactory;
-import static com.idea.tools.utils.GuiUtils.toolWindowManager;
-import static com.idea.tools.utils.IconUtils.getBrowseIcon;
-import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_ICON;
-import static com.idea.tools.view.QueueBrowseToolPanel.JMS_MESSENGER_BROWSER_WINDOW_ID;
-import static com.intellij.openapi.wm.ToolWindowAnchor.BOTTOM;
+import javax.swing.*;
 
 public abstract class AbstractBrowseDestinationAction extends AbstractBrowserPanelAction {
 

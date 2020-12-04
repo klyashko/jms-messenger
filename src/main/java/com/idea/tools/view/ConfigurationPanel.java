@@ -1,17 +1,16 @@
 package com.idea.tools.view;
 
+import static com.idea.tools.service.ServerService.serverService;
+import static com.idea.tools.settings.Settings.settings;
+
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.view.components.ServiceConfigTable;
 import com.intellij.openapi.project.Project;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
-
-import static com.idea.tools.service.ServerService.serverService;
-import static com.idea.tools.settings.Settings.settings;
+import javax.swing.*;
+import org.jetbrains.annotations.NotNull;
 
 public class ConfigurationPanel {
 

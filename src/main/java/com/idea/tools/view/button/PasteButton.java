@@ -1,19 +1,18 @@
 package com.idea.tools.view.button;
 
+import static com.idea.tools.utils.IconUtils.getPasteIcon;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.ui.AnActionButton;
-
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.Optional;
-
-import static com.idea.tools.utils.IconUtils.getPasteIcon;
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
 
 public class PasteButton extends AnActionButton {
 

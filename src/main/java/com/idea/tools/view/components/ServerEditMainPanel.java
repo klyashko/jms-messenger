@@ -1,18 +1,5 @@
 package com.idea.tools.view.components;
 
-import com.idea.tools.dto.ConnectionType;
-import com.idea.tools.dto.ServerDto;
-import com.idea.tools.dto.ServerType;
-import com.idea.tools.view.ServerEditPanel;
-import com.intellij.openapi.ui.ComboBox;
-import com.intellij.ui.EnumComboBoxModel;
-import com.intellij.ui.components.JBScrollPane;
-
-import javax.swing.*;
-import javax.swing.event.DocumentListener;
-import java.awt.event.ActionListener;
-import java.util.Objects;
-
 import static com.idea.tools.dto.ConnectionType.SSL;
 import static com.idea.tools.dto.ServerType.KAFKA;
 import static com.idea.tools.dto.ServerType.RABBIT_MQ;
@@ -23,9 +10,21 @@ import static com.idea.tools.utils.Utils.toInteger;
 import static java.awt.BorderLayout.CENTER;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
+import com.idea.tools.dto.ConnectionType;
+import com.idea.tools.dto.ServerDto;
+import com.idea.tools.dto.ServerType;
+import com.idea.tools.view.ServerEditPanel;
+import com.intellij.openapi.ui.ComboBox;
+import com.intellij.ui.EnumComboBoxModel;
+import com.intellij.ui.components.JBScrollPane;
+import java.awt.event.ActionListener;
+import java.util.Objects;
+import javax.swing.*;
+import javax.swing.event.DocumentListener;
+
 public class ServerEditMainPanel extends JPanel {
 
-	private ServerEditPanel serverEditPanel;
+	private final ServerEditPanel serverEditPanel;
 
 	private JPanel rootPanel;
 	private JComboBox<ServerType> typeComboBox;

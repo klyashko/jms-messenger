@@ -1,8 +1,7 @@
 package com.idea.tools.utils.function;
 
-import lombok.SneakyThrows;
-
 import java.util.function.Predicate;
+import lombok.SneakyThrows;
 
 @FunctionalInterface
 public interface ThrowingPredicate<T> extends Predicate<T> {

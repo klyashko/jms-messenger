@@ -1,12 +1,11 @@
 package com.idea.tools.view.button;
 
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.ui.AnActionButton;
-
-import javax.swing.*;
-
 import static com.idea.tools.utils.IconUtils.getLeftShiftIcon;
 import static com.idea.tools.utils.IconUtils.getRightShiftIcon;
+
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.ui.AnActionButton;
+import javax.swing.*;
 
 public class ShowHideButton extends AnActionButton {
 

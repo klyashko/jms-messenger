@@ -1,11 +1,10 @@
 package com.idea.tools.utils;
 
+import static com.intellij.util.ui.UIUtil.isUnderDarcula;
+
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.util.IconUtil;
-
 import javax.swing.*;
-
-import static com.intellij.util.ui.UIUtil.isUnderDarcula;
 
 public class IconUtils extends IconUtil {
 

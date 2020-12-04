@@ -1,18 +1,17 @@
 package com.idea.tools.view.action;
 
+import static com.idea.tools.settings.Settings.settings;
+import static com.idea.tools.utils.IconUtils.getRefreshIcon;
+
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.task.LoadQueuesTask;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 import java.util.Collections;
 import java.util.List;
-
-import static com.idea.tools.settings.Settings.settings;
-import static com.idea.tools.utils.IconUtils.getRefreshIcon;
+import javax.swing.*;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractReconnectAction extends AbstractBrowserPanelAction {
 

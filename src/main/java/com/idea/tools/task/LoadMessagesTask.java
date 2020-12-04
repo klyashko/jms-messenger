@@ -1,18 +1,17 @@
 package com.idea.tools.task;
 
+import static com.idea.tools.service.JmsService.jmsService;
+import static com.idea.tools.utils.GuiUtils.runInSwingThread;
+
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collections;
 import java.util.List;
-
-import static com.idea.tools.service.JmsService.jmsService;
-import static com.idea.tools.utils.GuiUtils.runInSwingThread;
+import org.jetbrains.annotations.NotNull;
 
 public class LoadMessagesTask extends Task.Backgroundable {
 

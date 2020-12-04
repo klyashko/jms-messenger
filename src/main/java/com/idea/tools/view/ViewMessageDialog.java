@@ -1,5 +1,10 @@
 package com.idea.tools.view;
 
+import static com.idea.tools.service.TemplateService.templateService;
+import static com.idea.tools.utils.GuiUtils.simpleListener;
+import static com.idea.tools.utils.Utils.consumer;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.TemplateMessageDto;
@@ -11,16 +16,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.impl.IdeGlassPaneImpl;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
+import java.util.Optional;
+import javax.swing.*;
 import lombok.AccessLevel;
 import lombok.Getter;
-
-import javax.swing.*;
-import java.util.Optional;
-
-import static com.idea.tools.service.TemplateService.templateService;
-import static com.idea.tools.utils.GuiUtils.simpleListener;
-import static com.idea.tools.utils.Utils.consumer;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ViewMessageDialog extends JFrame {
 

@@ -4,7 +4,6 @@ import com.idea.tools.dto.ServerDto;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.impl.IdeGlassPaneImpl;
 import com.intellij.ui.components.JBScrollPane;
-
 import javax.swing.*;
 
 public class ServerEditDialog extends JFrame {

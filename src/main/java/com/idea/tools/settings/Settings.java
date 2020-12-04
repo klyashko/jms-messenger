@@ -28,7 +28,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 			surroundValueWithTag = false,
 			surroundKeyWithTag = false
 	)
-	private Map<String, ServerDto> servers = new HashMap<>();
+	private final Map<String, ServerDto> servers = new HashMap<>();
 
 	public static Settings settings(Project project) {
 		Settings settings = ServiceManager.getService(project, Settings.class);

@@ -1,18 +1,17 @@
 package com.idea.tools.view.components;
 
+import static com.idea.tools.utils.Utils.sort;
+import static com.intellij.ui.ToolbarDecorator.createDecorator;
+import static java.awt.BorderLayout.CENTER;
+
 import com.idea.tools.dto.HeaderDto;
 import com.idea.tools.utils.TableModelBuilder;
 import com.intellij.ui.AddEditRemovePanel;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
-import org.jetbrains.annotations.Nullable;
-
 import java.awt.*;
 import java.util.List;
-
-import static com.idea.tools.utils.Utils.sort;
-import static com.intellij.ui.ToolbarDecorator.createDecorator;
-import static java.awt.BorderLayout.CENTER;
+import org.jetbrains.annotations.Nullable;
 
 public class HeaderViewTable extends AddEditRemovePanel<HeaderDto> {
 

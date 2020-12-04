@@ -1,13 +1,12 @@
 package com.idea.tools.dto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import static com.idea.tools.utils.Checked.biFunction;
 
+import java.util.function.BiFunction;
 import javax.jms.Destination;
 import javax.jms.Session;
-import java.util.function.BiFunction;
-
-import static com.idea.tools.utils.Checked.biFunction;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum DestinationType {

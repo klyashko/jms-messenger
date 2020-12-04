@@ -1,8 +1,7 @@
 package com.idea.tools.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.function.Function;
+import org.apache.commons.lang3.StringUtils;
 
 public class Assert {
 

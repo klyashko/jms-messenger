@@ -1,14 +1,13 @@
 package com.idea.tools.view.action;
 
+import static com.intellij.util.IconUtil.getAddIcon;
+
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.view.DestinationEditDialog;
 import com.idea.tools.view.ServersBrowseToolPanel;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
-
 import javax.swing.*;
-
-import static com.intellij.util.IconUtil.getAddIcon;
 
 public class PopupAddDestinationAction extends AbstractBrowserPanelAction {
 

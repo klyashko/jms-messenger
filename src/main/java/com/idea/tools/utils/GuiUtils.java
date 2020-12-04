@@ -1,5 +1,11 @@
 package com.idea.tools.utils;
 
+import static com.intellij.openapi.application.ApplicationManager.getApplication;
+import static javax.swing.JOptionPane.WARNING_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
+import static javax.swing.JOptionPane.showConfirmDialog;
+
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.application.Application;
@@ -8,17 +14,13 @@ import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.ContentFactory;
-
+import java.text.NumberFormat;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
-import java.text.NumberFormat;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import static com.intellij.openapi.application.ApplicationManager.getApplication;
-import static javax.swing.JOptionPane.*;
 
 public class GuiUtils {
 

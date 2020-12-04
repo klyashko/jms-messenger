@@ -1,18 +1,17 @@
 package com.idea.tools.view.components.message;
 
+import static com.idea.tools.utils.GuiUtils.createNumberInputField;
+import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
+import static java.awt.BorderLayout.CENTER;
+
 import com.idea.tools.dto.ContentType;
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
-
-import javax.swing.*;
 import java.awt.*;
 import java.util.Optional;
-
-import static com.idea.tools.utils.GuiUtils.createNumberInputField;
-import static com.intellij.ui.ScrollPaneFactory.createScrollPane;
-import static java.awt.BorderLayout.CENTER;
+import javax.swing.*;
 
 public class ViewMessageMainPanel extends JPanel {
 

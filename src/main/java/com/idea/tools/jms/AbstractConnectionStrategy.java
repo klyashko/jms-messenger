@@ -1,17 +1,27 @@
 package com.idea.tools.jms;
 
+import static com.idea.tools.dto.ContentType.TEXT;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.HeaderDto;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.Assert;
-
-import javax.jms.*;
-import java.lang.IllegalStateException;
-import java.util.*;
-
-import static com.idea.tools.dto.ContentType.TEXT;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import javax.jms.BytesMessage;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.QueueBrowser;
+import javax.jms.Session;
+import javax.jms.TextMessage;
 
 public abstract class AbstractConnectionStrategy implements ConnectionStrategy {
 

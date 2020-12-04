@@ -1,20 +1,22 @@
 package com.idea.tools.jms;
 
+import static com.idea.tools.dto.ConnectionType.HTTP;
+import static com.idea.tools.dto.ServerType.HORNETQ;
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.HOST_PROP_NAME;
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.HTTP_UPGRADE_ENABLED_PROP_NAME;
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.HTTP_UPGRADE_ENDPOINT_PROP_NAME;
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.PORT_PROP_NAME;
+
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.utils.Assert;
+import java.util.HashMap;
+import java.util.Map;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
 import org.hornetq.api.core.TransportConfiguration;
 import org.hornetq.core.client.impl.ServerLocatorImpl;
 import org.hornetq.jms.client.HornetQConnectionFactory;
 import org.jetbrains.annotations.NotNull;
-
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.idea.tools.dto.ConnectionType.HTTP;
-import static com.idea.tools.dto.ServerType.HORNETQ;
-import static org.hornetq.core.remoting.impl.netty.TransportConstants.*;
 
 public class HornetConnectionStrategy extends AbstractConnectionStrategy {
 

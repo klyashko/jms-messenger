@@ -1,12 +1,11 @@
 package com.idea.tools.dto;
 
-import lombok.RequiredArgsConstructor;
+import static com.idea.tools.utils.Checked.biFunction;
 
+import java.util.function.BiFunction;
 import javax.jms.Message;
 import javax.jms.Session;
-import java.util.function.BiFunction;
-
-import static com.idea.tools.utils.Checked.biFunction;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum ContentType {

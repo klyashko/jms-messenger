@@ -1,13 +1,13 @@
 package com.idea.tools.service;
 
+import static com.idea.tools.settings.Settings.settings;
+import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
+import static java.util.UUID.randomUUID;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.markers.Listener;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
-
-import static com.idea.tools.settings.Settings.settings;
-import static com.idea.tools.utils.GuiUtils.showYesNoDialog;
-import static java.util.UUID.randomUUID;
 
 public class DestinationService extends AbstractPersistedService<DestinationDto> {
 

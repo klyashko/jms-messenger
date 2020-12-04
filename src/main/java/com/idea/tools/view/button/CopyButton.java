@@ -1,15 +1,14 @@
 package com.idea.tools.view.button;
 
+import static com.idea.tools.utils.IconUtils.getCopyIcon;
+
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.ui.AnActionButton;
-
-import javax.swing.*;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-
-import static com.idea.tools.utils.IconUtils.getCopyIcon;
+import javax.swing.*;
+import javax.swing.text.JTextComponent;
 
 public class CopyButton extends AnActionButton {
 

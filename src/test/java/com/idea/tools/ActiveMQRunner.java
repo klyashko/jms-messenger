@@ -1,16 +1,22 @@
 package com.idea.tools;
 
+import static org.apache.activemq.command.ActiveMQDestination.createDestination;
+
+import java.net.URI;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
+import javax.jms.Session;
+import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.junit.Test;
-
-import javax.jms.*;
-import java.net.URI;
-
-import static org.apache.activemq.command.ActiveMQDestination.createDestination;
 
 public class ActiveMQRunner {
 

@@ -1,14 +1,13 @@
 package com.idea.tools.view.components.message;
 
-import com.idea.tools.dto.MessageDto;
-import com.idea.tools.view.components.HeaderTable;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Optional;
-
 import static com.idea.tools.utils.Utils.noneMatch;
 import static java.util.Collections.sort;
+
+import com.idea.tools.dto.MessageDto;
+import com.idea.tools.view.components.HeaderTable;
+import java.util.ArrayList;
+import java.util.Optional;
+import javax.swing.*;
 
 public class SendMessageHeadersPanel extends ViewMessageHeadersPanel {
 

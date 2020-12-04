@@ -1,13 +1,12 @@
 package com.idea.tools.view.components;
 
+import static com.intellij.openapi.fileChooser.FileChooserDescriptorFactory.createSingleFileDescriptor;
+
 import com.idea.tools.dto.SSLConfiguration;
 import com.idea.tools.dto.ServerDto;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.MacroAwareTextBrowseFolderListener;
-
 import javax.swing.*;
-
-import static com.intellij.openapi.fileChooser.FileChooserDescriptorFactory.createSingleFileDescriptor;
 
 public class ServerEditSslPanel extends JPanel {
 

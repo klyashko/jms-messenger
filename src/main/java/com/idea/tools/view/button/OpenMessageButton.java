@@ -1,13 +1,12 @@
 package com.idea.tools.view.button;
 
+import static com.idea.tools.utils.IconUtils.getReadMessageIcon;
+
 import com.idea.tools.view.ViewMessageDialog;
 import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.ui.AnActionButton;
-
 import javax.swing.*;
-
-import static com.idea.tools.utils.IconUtils.getReadMessageIcon;
 
 public class OpenMessageButton extends AnActionButton {
 

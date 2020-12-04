@@ -1,18 +1,17 @@
 package com.idea.tools.view.components;
 
-import com.idea.tools.dto.DestinationDto;
-import com.idea.tools.dto.DestinationType;
-import com.idea.tools.dto.ServerDto;
-import com.intellij.openapi.project.Project;
-
-import javax.swing.*;
-
 import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
 import static com.idea.tools.service.DestinationService.destinationService;
 import static com.idea.tools.task.LoadQueuesTask.createAndQueue;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.dto.DestinationType;
+import com.idea.tools.dto.ServerDto;
+import com.intellij.openapi.project.Project;
+import javax.swing.*;
 
 public class ServerEditDestinationPanel extends JPanel {
 

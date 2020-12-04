@@ -3,13 +3,12 @@ package com.idea.tools.run.configuration;
 import com.idea.tools.view.JmsSettingsEditorPanel;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
+import org.jetbrains.annotations.NotNull;
 
 public class JmsSettingsEditor extends SettingsEditor<JmsRunConfiguration> {
 
-    private JmsSettingsEditorPanel panel;
+    private final JmsSettingsEditorPanel panel;
 
     public JmsSettingsEditor(Project project, String templateId) {
         this.panel = new JmsSettingsEditorPanel(project, templateId);

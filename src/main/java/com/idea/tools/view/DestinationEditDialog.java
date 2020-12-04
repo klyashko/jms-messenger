@@ -1,25 +1,24 @@
 package com.idea.tools.view;
 
-import com.idea.tools.dto.DestinationDto;
-import com.idea.tools.dto.DestinationType;
-import com.idea.tools.dto.ServerDto;
-import com.idea.tools.utils.GuiUtils;
-import com.intellij.openapi.project.Project;
-
-import javax.swing.*;
-
 import static com.idea.tools.dto.DestinationType.QUEUE;
 import static com.idea.tools.service.DestinationService.destinationService;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static com.idea.tools.utils.Utils.getOrDefault;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.dto.DestinationType;
+import com.idea.tools.dto.ServerDto;
+import com.idea.tools.utils.GuiUtils;
+import com.intellij.openapi.project.Project;
+import javax.swing.*;
+
 public class DestinationEditDialog extends JFrame {
 
     private final Project project;
 
-    private ServerDto server;
-    private DestinationDto destination;
+    private final ServerDto server;
+    private final DestinationDto destination;
 
     private JPanel rootPanel;
     private JTextField nameField;

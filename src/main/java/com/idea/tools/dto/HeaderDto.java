@@ -1,13 +1,12 @@
 package com.idea.tools.dto;
 
+import static java.util.Comparator.nullsLast;
+
+import java.util.Comparator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Comparator;
-
-import static java.util.Comparator.nullsLast;
 
 @Data
 @NoArgsConstructor

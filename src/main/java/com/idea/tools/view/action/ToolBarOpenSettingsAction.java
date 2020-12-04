@@ -1,16 +1,15 @@
 package com.idea.tools.view.action;
 
 
+import static com.idea.tools.utils.IconUtils.getSettingsIcon;
+
 import com.idea.tools.JmsMessengerComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-
 import javax.swing.*;
-
-import static com.idea.tools.utils.IconUtils.getSettingsIcon;
 
 public class ToolBarOpenSettingsAction extends AnAction implements DumbAware {
 

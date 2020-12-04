@@ -1,18 +1,19 @@
 package com.idea.tools;
 
-import com.idea.tools.dto.ServerDto;
-import org.hornetq.api.core.TransportConfiguration;
-import org.hornetq.core.client.impl.ServerLocatorImpl;
-import org.hornetq.core.remoting.impl.netty.TransportConstants;
-import org.hornetq.jms.client.HornetQConnectionFactory;
-import org.junit.Test;
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.HOST_PROP_NAME;
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.HTTP_UPGRADE_ENABLED_PROP_NAME;
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.HTTP_UPGRADE_ENDPOINT_PROP_NAME;
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.PORT_PROP_NAME;
 
+import com.idea.tools.dto.ServerDto;
+import java.util.HashMap;
+import java.util.Map;
 import javax.jms.Connection;
 import javax.jms.JMSException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static org.hornetq.core.remoting.impl.netty.TransportConstants.*;
+import org.hornetq.api.core.TransportConfiguration;
+import org.hornetq.core.client.impl.ServerLocatorImpl;
+import org.hornetq.jms.client.HornetQConnectionFactory;
+import org.junit.Test;
 
 public class Tmp {
 

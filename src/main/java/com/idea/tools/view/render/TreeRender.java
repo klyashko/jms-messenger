@@ -1,18 +1,17 @@
 package com.idea.tools.view.render;
 
+import static com.idea.tools.utils.IconUtils.getTemplateIcon;
+import static com.intellij.ui.SimpleTextAttributes.REGULAR_ITALIC_ATTRIBUTES;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.DestinationType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.intellij.ui.ColoredTreeCellRenderer;
-import org.jetbrains.annotations.NotNull;
-
+import java.util.List;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.util.List;
-
-import static com.idea.tools.utils.IconUtils.getTemplateIcon;
-import static com.intellij.ui.SimpleTextAttributes.REGULAR_ITALIC_ATTRIBUTES;
+import org.jetbrains.annotations.NotNull;
 
 public class TreeRender extends ColoredTreeCellRenderer {
     @Override

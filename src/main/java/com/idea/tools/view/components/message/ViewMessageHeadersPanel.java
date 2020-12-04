@@ -1,14 +1,13 @@
 package com.idea.tools.view.components.message;
 
+import static java.util.Optional.empty;
+
 import com.idea.tools.dto.HeaderDto;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.view.components.HeaderViewTable;
-
-import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.Optional.empty;
+import javax.swing.*;
 
 public class ViewMessageHeadersPanel extends JPanel {
 

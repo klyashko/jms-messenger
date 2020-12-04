@@ -1,5 +1,7 @@
 package com.idea.tools.view;
 
+import static com.idea.tools.utils.IconUtils.getBrowseIcon;
+
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.view.components.QueueBrowserPanel;
 import com.idea.tools.view.components.QueueBrowserTable;
@@ -9,14 +11,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
-import org.apache.commons.lang3.tuple.Pair;
-
-import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.idea.tools.utils.IconUtils.getBrowseIcon;
+import javax.swing.*;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Disposable {
 
@@ -27,7 +26,7 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
     private JPanel rootPanel;
     private JBTabsImpl queuesTabPanel;
 
-    private Map<Pair<String, String>, TabInfo> queueTabs = new ConcurrentHashMap<>();
+    private final Map<Pair<String, String>, TabInfo> queueTabs = new ConcurrentHashMap<>();
 
     public QueueBrowseToolPanel(Project project) {
         super(true);

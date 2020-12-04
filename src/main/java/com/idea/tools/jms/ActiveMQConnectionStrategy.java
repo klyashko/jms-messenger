@@ -1,22 +1,25 @@
 package com.idea.tools.jms;
 
-import com.idea.tools.dto.*;
-import com.idea.tools.utils.Assert;
-import org.apache.activemq.ActiveMQConnection;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.ActiveMQSslConnectionFactory;
-import org.apache.activemq.advisory.DestinationSource;
-
-import javax.jms.Connection;
-import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-
 import static com.idea.tools.dto.ServerType.ACTIVE_MQ;
 import static com.idea.tools.utils.Checked.function;
 import static com.idea.tools.utils.Utils.toList;
 import static com.idea.tools.utils.Utils.uri;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
+import com.idea.tools.dto.ConnectionType;
+import com.idea.tools.dto.DestinationDto;
+import com.idea.tools.dto.DestinationType;
+import com.idea.tools.dto.SSLConfiguration;
+import com.idea.tools.dto.ServerDto;
+import com.idea.tools.utils.Assert;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import javax.jms.Connection;
+import org.apache.activemq.ActiveMQConnection;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.ActiveMQSslConnectionFactory;
+import org.apache.activemq.advisory.DestinationSource;
 
 public class ActiveMQConnectionStrategy extends AbstractConnectionStrategy {
 

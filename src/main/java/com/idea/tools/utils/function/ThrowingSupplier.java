@@ -1,9 +1,8 @@
 package com.idea.tools.utils.function;
 
-import lombok.SneakyThrows;
-
 import java.util.Optional;
 import java.util.function.Supplier;
+import lombok.SneakyThrows;
 
 @FunctionalInterface
 public interface ThrowingSupplier<T> extends Supplier<T> {

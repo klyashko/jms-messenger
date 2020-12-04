@@ -1,14 +1,13 @@
 package com.idea.tools.task;
 
+import static com.idea.tools.service.JmsService.jmsService;
+
 import com.idea.tools.dto.ServerDto;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.function.Consumer;
-
-import static com.idea.tools.service.JmsService.jmsService;
+import org.jetbrains.annotations.NotNull;
 
 public class TestConnectionTask extends Task.Backgroundable {
 

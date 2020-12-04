@@ -3,13 +3,12 @@ package com.idea.tools.jms;
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.MessageDto;
 import com.idea.tools.dto.ServerDto;
-
+import java.util.List;
+import java.util.Optional;
 import javax.jms.Connection;
 import javax.jms.Message;
 import javax.jms.QueueBrowser;
 import javax.jms.Session;
-import java.util.List;
-import java.util.Optional;
 
 public interface ConnectionStrategy {
 

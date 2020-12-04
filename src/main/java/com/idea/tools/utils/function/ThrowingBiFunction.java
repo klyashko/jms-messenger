@@ -1,9 +1,8 @@
 package com.idea.tools.utils.function;
 
-import lombok.SneakyThrows;
-
 import java.util.Optional;
 import java.util.function.BiFunction;
+import lombok.SneakyThrows;
 
 public interface ThrowingBiFunction<T, U, R> extends BiFunction<T, U, R> {
 

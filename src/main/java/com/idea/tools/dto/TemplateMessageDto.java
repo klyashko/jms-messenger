@@ -1,11 +1,10 @@
 package com.idea.tools.dto;
 
+import java.util.Comparator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Comparator;
 
 @Data
 @ToString(callSuper = true)
