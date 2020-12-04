@@ -61,9 +61,13 @@ Plugin supports:
         <projectConfigurable groupId="tools" groupWeight="110" dynamic="true" displayName="Jms Messenger"
                              id="preferences.jms.messenger" instance="com.idea.tools.JmsMessengerComponent"/>
 
+        <toolWindow id="Jms Messenger" secondary="false" anchor="right"
+                    factoryClass="com.idea.tools.JmsMessengerWindowManager"/>
+        <toolWindow id="Jms Browser" secondary="false" anchor="bottom" doNotActivateOnStart="false"
+                    factoryClass="com.idea.tools.JmsMessengerBrowserWindowFactory"/>
+
         <projectService serviceImplementation="com.idea.tools.view.ServersBrowseToolPanel"/>
         <projectService serviceImplementation="com.idea.tools.view.QueueBrowseToolPanel"/>
-        <projectService serviceImplementation="com.idea.tools.JmsMessengerWindowManager"/>
 
         <projectService serviceImplementation="com.idea.tools.settings.Settings"/>
         <projectService serviceImplementation="com.idea.tools.service.ServerService"/>

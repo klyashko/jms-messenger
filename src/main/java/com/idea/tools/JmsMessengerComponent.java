@@ -1,7 +1,6 @@
 package com.idea.tools;
 
 import com.idea.tools.view.ConfigurationPanel;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import javax.swing.*;
@@ -9,8 +8,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class JmsMessengerComponent implements ProjectComponent, SearchableConfigurable {
-
+public class JmsMessengerComponent implements SearchableConfigurable {
 
     private static final String MESSENGER_PLUGIN_NAME = "Messenger Plugin";
     private static final String MESSENGER_COMPONENT_NAME = "Messenger Component";
@@ -24,18 +22,6 @@ public class JmsMessengerComponent implements ProjectComponent, SearchableConfig
     }
 
     @Override
-    public void projectOpened() {
-        JmsMessengerWindowManager.of(project);
-    }
-
-    @Override
-    public void projectClosed() {
-        try {
-            JmsMessengerWindowManager.of(project).unregister();
-        } catch (Exception ignored) {}
-    }
-
-    @Override
     public JComponent createComponent() {
         if (configurationPanel == null) {
             configurationPanel = new ConfigurationPanel(project);
@@ -46,7 +32,6 @@ public class JmsMessengerComponent implements ProjectComponent, SearchableConfig
     @Override
     public boolean isModified() {
         return false;
-//        return configurationPanel != null && configurationPanel.isModified(jenkinsAppSettings, jenkinsSettings);
     }
 
     @Override
@@ -75,25 +60,8 @@ public class JmsMessengerComponent implements ProjectComponent, SearchableConfig
         return MESSENGER_PLUGIN_NAME;
     }
 
-//
-//    public Icon getIcon() {
-//        return null;
-//    }
 
-
-    public void reset() {
-//        configurationPanel.loadConfigurationData(jenkinsAppSettings, jenkinsSettings);
-    }
-
-
-    public void initComponent() {
-
-    }
-
-
-    public void disposeComponent() {
-
-    }
+    public void reset() { }
 
     @NotNull
     @Override

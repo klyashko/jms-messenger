@@ -3,10 +3,9 @@ package com.idea.tools.utils;
 import static com.intellij.util.ui.UIUtil.isUnderDarcula;
 
 import com.intellij.openapi.util.IconLoader;
-import com.intellij.util.IconUtil;
 import javax.swing.*;
 
-public class IconUtils extends IconUtil {
+public class IconUtils {
 
 	private static final String ICON_FOLDER = "/images/";
 

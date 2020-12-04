@@ -138,6 +138,26 @@ public class RabbitMQConnectionStrategy extends AbstractConnectionStrategy {
 		}
 
 		@Override
+		public long getJMSDeliveryTime() {
+			return 0;
+		}
+
+		@Override
+		public void setJMSDeliveryTime(long deliveryTime) {
+
+		}
+
+		@Override
+		public <T> T getBody(Class<T> c) {
+			return null;
+		}
+
+		@Override
+		public boolean isBodyAssignableTo(Class c) {
+			return false;
+		}
+
+		@Override
 		protected void readBody(ObjectInput inputStream, ByteArrayInputStream bin) throws IOException, ClassNotFoundException {
 			super.readBody(inputStream, bin);
 		}
