@@ -4,6 +4,14 @@
  * [-] Deleting functional
  * [\*] Improvement
  * [!] Bug fixing
+ 
+1.5.0 (04.12.2020)
+====================
+ * [\*] Refactoring based on plugin compatibility verification report
+ * [\*] org.jetbrains.intellij version update to 0.6.4
+ * [\*] Idea sandbox version upgrade to 2020.2.3
+ * [\*] Removing host validation (issue #11) 
+ * [!] IntelliJ Crash (issues #9 and #10)
 
 1.4.0 (12.08.2019)
 ====================
