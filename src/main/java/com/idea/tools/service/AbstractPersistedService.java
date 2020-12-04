@@ -1,13 +1,12 @@
 package com.idea.tools.service;
 
 import com.idea.tools.markers.Listener;
-
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class AbstractPersistedService<T> {
 
-    private List<Listener<T>> listeners = new LinkedList<>();
+    private final List<Listener<T>> listeners = new LinkedList<>();
 
     protected abstract void persist(T dto);
 

@@ -16,7 +16,7 @@ public class TestConnectionTask extends Task.Backgroundable {
     private final Consumer<Throwable> onFail;
 
     public TestConnectionTask(Project project, ServerDto server, Runnable onSuccess, Consumer<Throwable> onFail) {
-        super(project, "Test Connection");
+        super(project, "Test connection");
         this.server = server;
         this.onSuccess = onSuccess;
         this.onFail = onFail;
