@@ -1,10 +1,11 @@
 package com.idea.tools.dto;
 
+import lombok.Data;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import lombok.Data;
-import org.jetbrains.annotations.NotNull;
 
 @Data
 public class ServerDto implements Comparable<ServerDto> {
@@ -23,6 +24,8 @@ public class ServerDto implements Comparable<ServerDto> {
 	private List<DestinationDto> destinations = new ArrayList<>();
 
 	private ZookeeperConfiguration zookeeperConfiguration = new ZookeeperConfiguration();
+
+	private IbmConfiguration ibmConfiguration = new IbmConfiguration();
 
 	/**
 	 * RabbitMQ

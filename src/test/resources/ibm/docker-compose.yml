@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  ibmmq:
+    image: ibmcom/mq:latest
+    ports:
+      - "9443:9443"
+      - "1414:1414"
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=MQA01
+      - MQ_ADMIN_PASSWORD=admin
+      - MQ_APP_PASSWORD=admin
+    stdin_open: true
+    tty: true
+    restart: always
+    volumes:
+      - ~/.docker-conf/ibmmq/data/:/var/lib/ibmmq/
+      - ~/.docker-conf/ibmmq/log/:/var/log/ibmmq
+    networks:
+      - ibmmq_go_net
+
+networks:
+  ibmmq_go_net:
+    external: false
+    name: ibmmq_network

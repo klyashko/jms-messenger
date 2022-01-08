@@ -1,9 +1,10 @@
 package com.idea.tools.utils;
 
-import static com.intellij.util.ui.UIUtil.isUnderDarcula;
-
 import com.intellij.openapi.util.IconLoader;
+
 import javax.swing.*;
+
+import static com.intellij.util.ui.UIUtil.isUnderDarcula;
 
 public class IconUtils {
 
@@ -35,6 +36,10 @@ public class IconUtils {
 
 	public static Icon getRabbitMqIcon() {
 		return icon("rabbitmq.png");
+	}
+
+	public static Icon getIbmMqIcon() {
+		return icon("ibm.png");
 	}
 
 	public static Icon getJmsIcon() {

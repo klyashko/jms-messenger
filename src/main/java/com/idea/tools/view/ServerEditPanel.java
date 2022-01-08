@@ -1,25 +1,20 @@
 package com.idea.tools.view;
 
-import static com.idea.tools.service.ServerService.serverService;
-import static com.intellij.ui.JBColor.BLACK;
-import static com.intellij.ui.JBColor.GREEN;
-import static com.intellij.ui.JBColor.RED;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.task.TestConnectionTask;
-import com.idea.tools.view.components.ServerEditDestinationPanel;
-import com.idea.tools.view.components.ServerEditKafkaPanel;
-import com.idea.tools.view.components.ServerEditMainPanel;
-import com.idea.tools.view.components.ServerEditRabbitMQPanel;
-import com.idea.tools.view.components.ServerEditSslPanel;
+import com.idea.tools.view.components.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
-import javax.swing.*;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
+
+import static com.idea.tools.service.ServerService.serverService;
+import static com.intellij.ui.JBColor.*;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class ServerEditPanel extends JPanel {
 
@@ -46,12 +41,15 @@ public class ServerEditPanel extends JPanel {
     @Getter
     private TabInfo rabbitMQ;
     @Getter
+    private TabInfo ibm;
+    @Getter
     private TabInfo ssl;
     private ServerEditMainPanel mainPanel;
-    private ServerEditDestinationPanel destinationPanel;
     private ServerEditKafkaPanel kafkaPanel;
     private ServerEditRabbitMQPanel rabbitMQPanel;
+    private ServerEditIbmPanel ibmPanel;
     private ServerEditSslPanel sslPanel;
+    private ServerEditDestinationPanel destinationPanel;
 
     private JPanel rootPanel;
     private JPanel tabsPanel;
@@ -107,6 +105,11 @@ public class ServerEditPanel extends JPanel {
         rabbitMQ = new TabInfo(rabbitMQPanel);
         rabbitMQ.setText("RabbitMQ settings");
         tabs.addTab(rabbitMQ);
+
+        ibmPanel = new ServerEditIbmPanel(server);
+        ibm = new TabInfo(ibmPanel);
+        ibm.setText("IBM settings");
+        tabs.addTab(ibm);
 
         destinationPanel = new ServerEditDestinationPanel(project, server);
         destinations = new TabInfo(destinationPanel);
@@ -180,6 +183,7 @@ public class ServerEditPanel extends JPanel {
         sslPanel.fillServer(server);
         kafkaPanel.fillServer(server);
         rabbitMQPanel.fillServer(server);
+        ibmPanel.fillServer(server);
         destinationPanel.fillServer(server);
     }
 
@@ -188,6 +192,7 @@ public class ServerEditPanel extends JPanel {
         sslPanel.setValues(server);
         kafkaPanel.setValues(server);
         rabbitMQPanel.setValues(server);
+        ibmPanel.setValues(server);
         destinationPanel.setValues(server);
     }
 }

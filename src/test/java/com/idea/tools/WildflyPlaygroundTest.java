@@ -1,28 +1,26 @@
 package com.idea.tools;
 
-import static org.hornetq.core.remoting.impl.netty.TransportConstants.HOST_PROP_NAME;
-import static org.hornetq.core.remoting.impl.netty.TransportConstants.HTTP_UPGRADE_ENABLED_PROP_NAME;
-import static org.hornetq.core.remoting.impl.netty.TransportConstants.HTTP_UPGRADE_ENDPOINT_PROP_NAME;
-import static org.hornetq.core.remoting.impl.netty.TransportConstants.PORT_PROP_NAME;
-
 import com.idea.tools.dto.ServerDto;
-import java.util.HashMap;
-import java.util.Map;
-import javax.jms.Connection;
-import javax.jms.JMSException;
 import org.hornetq.api.core.TransportConfiguration;
 import org.hornetq.core.client.impl.ServerLocatorImpl;
 import org.hornetq.jms.client.HornetQConnectionFactory;
 import org.junit.Test;
 
-public class Tmp {
+import javax.jms.Connection;
+import javax.jms.JMSException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.hornetq.core.remoting.impl.netty.TransportConstants.*;
+
+public class WildflyPlaygroundTest {
 
     @Test
-	public void tmp(){
-		short s1 = 5;
-		short s0 = (short)0xaced;
-		System.out.println(String.format("invalid stream header: %04X%04X", s0, s1));
-	}
+    public void tmp() {
+        short s1 = 5;
+        short s0 = (short) 0xaced;
+        System.out.println(String.format("invalid stream header: %04X%04X", s0, s1));
+    }
 
     @Test
     public void wildflyConnection() throws JMSException {

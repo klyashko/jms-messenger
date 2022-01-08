@@ -16,6 +16,7 @@ public enum ConnectionType {
 	public static final ConnectionType[] ACTIVE_MQ_CONNECTION_TYPES = {TCP, SSL};
 	public static final ConnectionType[] KAFKA_CONNECTION_TYPES = {TCP};
 	public static final ConnectionType[] RABBIT_MQ_CONNECTION_TYPES = {TCP};
+	public static final ConnectionType[] IBM_MQ_CONNECTION_TYPES = {TCP};
 
 	private String extension;
 

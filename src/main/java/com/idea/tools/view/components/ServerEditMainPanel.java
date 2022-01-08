@@ -1,15 +1,5 @@
 package com.idea.tools.view.components;
 
-import static com.idea.tools.dto.ConnectionType.SSL;
-import static com.idea.tools.dto.ServerType.KAFKA;
-import static com.idea.tools.dto.ServerType.RABBIT_MQ;
-import static com.idea.tools.utils.GuiUtils.createNumberInputField;
-import static com.idea.tools.utils.GuiUtils.simpleListener;
-import static com.idea.tools.utils.Utils.getOrDefault;
-import static com.idea.tools.utils.Utils.toInteger;
-import static java.awt.BorderLayout.CENTER;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-
 import com.idea.tools.dto.ConnectionType;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.ServerType;
@@ -17,10 +7,20 @@ import com.idea.tools.view.ServerEditPanel;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.EnumComboBoxModel;
 import com.intellij.ui.components.JBScrollPane;
-import java.awt.event.ActionListener;
-import java.util.Objects;
+
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
+import java.awt.event.ActionListener;
+import java.util.Objects;
+
+import static com.idea.tools.dto.ConnectionType.SSL;
+import static com.idea.tools.dto.ServerType.*;
+import static com.idea.tools.utils.GuiUtils.createNumberInputField;
+import static com.idea.tools.utils.GuiUtils.simpleListener;
+import static com.idea.tools.utils.Utils.getOrDefault;
+import static com.idea.tools.utils.Utils.toInteger;
+import static java.awt.BorderLayout.CENTER;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class ServerEditMainPanel extends JPanel {
 
@@ -56,6 +56,7 @@ public class ServerEditMainPanel extends JPanel {
 	public void updateTabs() {
 		serverEditPanel.getKafka().setHidden(!KAFKA.equals(typeComboBox.getSelectedItem()));
 		serverEditPanel.getRabbitMQ().setHidden(!RABBIT_MQ.equals(typeComboBox.getSelectedItem()));
+		serverEditPanel.getIbm().setHidden(!IBM.equals(typeComboBox.getSelectedItem()));
 		serverEditPanel.getSsl().setHidden(!SSL.equals(connectionType.getSelectedItem()));
 	}
 
