@@ -29,6 +29,7 @@
  * HornetQ (via HTTP)
  * RabbitMQ (via TCP)
  * Kafka (via TCP)
+ * IBM MQ (via TCP)
  
 #### Limitation  
  Only sending messages is supported for kafka.
