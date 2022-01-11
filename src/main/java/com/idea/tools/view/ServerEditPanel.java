@@ -124,10 +124,13 @@ public class ServerEditPanel extends JPanel {
         connectionDetails.setColumns(2);
 
         saveButton.addActionListener(event -> {
-            fillServer(server);
-            serverService(project).saveOrUpdate(server);
+            ServerDto dto = new ServerDto();
+            dto.setId(server.getId());
+            fillServer(dto);
+            serverService(project).saveOrUpdate(dto);
             updateTabs();
             changesHasBeenSavedStatus();
+            this.server = dto;
         });
 
         cancelButton.addActionListener(event -> setValues());
