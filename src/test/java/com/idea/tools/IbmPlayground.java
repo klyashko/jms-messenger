@@ -50,6 +50,8 @@ public class IbmPlayground {
             cf.setStringProperty(WMQConstants.WMQ_APPLICATIONNAME, "JmsPutGet (JMS)");
 //            cf.setBooleanProperty(WMQConstants.USER_AUTHENTICATION_MQCSP, true);
 //            cf.setStringProperty(WMQConstants.USERID, APP_USER);
+            cf.setStringProperty(WMQConstants.USERID, APP_USER);
+            cf.setStringProperty(WMQConstants.PASSWORD, null);
 //            cf.setStringProperty(WMQConstants.PASSWORD, APP_PASSWORD);
             //cf.setStringProperty(WMQConstants.WMQ_SSL_CIPHER_SUITE, "*TLS12");
 
@@ -57,7 +59,8 @@ public class IbmPlayground {
 //            context = cf.createContext();
 //            destination = context.createQueue("queue:///" + QUEUE_NAME);
 
-            Connection c = cf.createConnection(APP_USER, APP_PASSWORD);
+//            Connection c = cf.createConnection(APP_USER, APP_PASSWORD);
+            Connection c = cf.createConnection();
 
             System.out.println(c);
 
