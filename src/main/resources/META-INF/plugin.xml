@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>jms-messenger</id>
-    <name>Jms messenger</name>
+    <name>Jms Messenger</name>
     <vendor email="kipill_90@mail.ru" url="https://github.com/klyashko/jms-messenger">
         Lyashko Kirill
     </vendor>
@@ -16,8 +16,8 @@ Plugin supports:
 </ul>
 <h4>Requirements:</h4>
 <ul>
- <li>Jdk 1.8 or higher</li>
- <li>Version of ide 2016 or higher</li>
+ <li>Jdk 13 or higher</li>
+ <li>Version of ide 2020 or higher</li>
 </ul>
 <h4>Usages:</h4>
  Designed to be used for development or testing purposes
@@ -30,6 +30,7 @@ Plugin supports:
  <li>HornetQ (via HTTP)</li>
  <li>RabbitMQ (via TCP)</li>
  <li>Kafka (via TCP)</li>
+ <li>IBM MQ (via TCP)</li>
 </ul>
 <h4>Limitation:</h4>
 <ul>
