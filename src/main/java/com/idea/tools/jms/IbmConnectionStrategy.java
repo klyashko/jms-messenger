@@ -9,6 +9,8 @@ import com.idea.tools.dto.ServerDto;
 import javax.jms.Connection;
 import javax.jms.JMSException;
 
+import static org.apache.commons.lang3.StringUtils.trimToNull;
+
 public class IbmConnectionStrategy extends AbstractConnectionStrategy {
 
     private static JmsConnectionFactory createJMSConnectionFactory(ServerDto server) throws JMSException {
@@ -21,12 +23,14 @@ public class IbmConnectionStrategy extends AbstractConnectionStrategy {
         cf.setIntProperty(WMQConstants.WMQ_CONNECTION_MODE, WMQConstants.WMQ_CM_CLIENT);
         cf.setStringProperty(WMQConstants.WMQ_QUEUE_MANAGER, ibm.getQueueManager());
         cf.setStringProperty(WMQConstants.WMQ_APPLICATIONNAME, "jms-messenger");
+        cf.setStringProperty(WMQConstants.USERID, trimToNull(server.getLogin()));
+        cf.setStringProperty(WMQConstants.PASSWORD, trimToNull(server.getPassword()));
         return cf;
     }
 
     @Override
     public Connection connect(ServerDto server) throws Exception {
-        return connect(server, createJMSConnectionFactory(server));
+        return createJMSConnectionFactory(server).createConnection();
     }
 
 }

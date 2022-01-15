@@ -9,8 +9,8 @@ services:
     environment:
       - LICENSE=accept
       - MQ_QMGR_NAME=MQA01
-      - MQ_ADMIN_PASSWORD=admin
-      - MQ_APP_PASSWORD=admin
+    #      - MQ_ADMIN_PASSWORD=admin
+    #      - MQ_APP_PASSWORD=admin
     stdin_open: true
     tty: true
     restart: always
