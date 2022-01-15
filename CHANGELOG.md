@@ -5,6 +5,13 @@
 * [\*] Improvement
 * [!] Bug fixing
 
+2.0.0 (15.01.2021)
+====================
+
+* [\*] Upgrade java version to 13
+* [!] Fix for unprotected IBM MQ connection (issue #13)
+* [!] Fix for server credentials update (issue #13)
+
 1.6.0 (08.01.2021)
 ====================
 

@@ -1,6 +1,6 @@
 ### Jms-messenger
 
-#### Current version 1.6.0
+#### Current version 2.0.0
 
 #### Repository
  [https://github.com/klyashko/jms-messenger](https://github.com/klyashko/jms-messenger)
@@ -16,7 +16,8 @@
    * sending messages
 
 #### Plugin Compatibility
- Plugin required java jdk 1.8 or higher and version of ide 2017 or higher
+
+Plugin required java jdk 13 or higher and version of ide 2017 or higher
  
 #### Usages
  Plugin designed to be used for development or testing purposes
