@@ -1,6 +1,6 @@
 ### Jms-messenger
 
-#### Current version 1.5.0
+#### Current version 2.0.0
 
 #### Repository
  [https://github.com/klyashko/jms-messenger](https://github.com/klyashko/jms-messenger)
@@ -29,6 +29,7 @@
  * HornetQ (via HTTP)
  * RabbitMQ (via TCP)
  * Kafka (via TCP)
+ * IBM MQ (via TCP)
  
 #### Limitation  
  Only sending messages is supported for kafka.

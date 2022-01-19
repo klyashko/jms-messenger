@@ -1,17 +1,30 @@
 ### Story
 
- * [+] Feature
- * [-] Deleting functional
- * [\*] Improvement
- * [!] Bug fixing
- 
+* [+] Feature
+* [-] Deleting functional
+* [\*] Improvement
+* [!] Bug fixing
+
+2.0.0 (15.01.2021)
+====================
+
+* [\*] Upgrade java version to 13
+* [!] Fix for unprotected IBM MQ connection (issue #13)
+* [!] Fix for server credentials update (issue #13)
+
+1.6.0 (08.01.2021)
+====================
+
+* [+] Feature request: IBM MQ support (issue #13)
+
 1.5.0 (04.12.2020)
 ====================
- * [\*] Refactoring based on plugin compatibility verification report
- * [\*] org.jetbrains.intellij version update to 0.6.4
- * [\*] Idea sandbox version upgrade to 2020.2.3
- * [\*] Removing host validation (issue #11) 
- * [!] IntelliJ Crash (issues #9 and #10)
+
+* [\*] Refactoring based on plugin compatibility verification report
+* [\*] org.jetbrains.intellij version update to 0.6.4
+* [\*] Idea sandbox version upgrade to 2020.2.3
+* [\*] Removing host validation (issue #11)
+* [!] IntelliJ Crash (issues #9 and #10)
 
 1.4.0 (12.08.2019)
 ====================
