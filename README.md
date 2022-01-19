@@ -1,6 +1,6 @@
 ### Jms-messenger
 
-#### Current version 2.0.0
+#### Current version 2.0.1
 
 #### Repository
  [https://github.com/klyashko/jms-messenger](https://github.com/klyashko/jms-messenger)

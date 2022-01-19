@@ -5,6 +5,11 @@
 * [\*] Improvement
 * [!] Bug fixing
 
+2.0.1 (20.01.2021)
+====================
+
+* [!] Version 2 no longer runs with IntelliJ default JDK runtime (issue #14)
+
 2.0.0 (15.01.2021)
 ====================
 
