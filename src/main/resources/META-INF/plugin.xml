@@ -16,7 +16,7 @@ Plugin supports:
 </ul>
 <h4>Requirements:</h4>
 <ul>
- <li>Jdk 1.8 or higher</li>
+ <li>Jdk 11 or higher</li>
  <li>Version of ide 2016 or higher</li>
 </ul>
 <h4>Usages:</h4>

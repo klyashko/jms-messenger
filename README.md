@@ -16,7 +16,7 @@
    * sending messages
 
 #### Plugin Compatibility
- Plugin required java jdk 1.8 or higher and version of ide 2017 or higher
+ Plugin required java jdk 11 or higher and version of ide 2017 or higher
  
 #### Usages
  Plugin designed to be used for development or testing purposes
