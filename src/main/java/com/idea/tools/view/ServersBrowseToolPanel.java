@@ -101,9 +101,11 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 	}
 
 	public void init() {
-		installActionsInToolbar();
-		installActionsInPopupMenu();
-		fillServerTree();
+		runInSwingThread(() -> {
+			installActionsInToolbar();
+			installActionsInPopupMenu();
+			fillServerTree();
+		});
 	}
 
 	private void installActionsInToolbar() {
@@ -143,92 +145,104 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 	}
 
 	private void addOrUpdateDestination(DestinationDto destination) {
-		ServerDto server = destination.getServer();
-		DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-		Enumeration<TreeNode> data = root.children();
+		runInSwingThread(() -> {
+			ServerDto server = destination.getServer();
+			DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+			DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+			Enumeration<TreeNode> data = root.children();
 
-		findServerNode(data, server).ifPresent(node -> {
-			node.removeAllChildren();
-			fillDestinationTypeTree(server, node);
-			model.nodeChanged(node);
-			model.reload(node);
+			findServerNode(data, server).ifPresent(node -> {
+				node.removeAllChildren();
+				fillDestinationTypeTree(server, node);
+				model.nodeChanged(node);
+				model.reload(node);
+			});
 		});
 	}
 
 	private void addOrUpdateTemplate(TemplateMessageDto template) {
-		DestinationDto destination = template.getDestination();
+		runInSwingThread(() -> {
+			DestinationDto destination = template.getDestination();
 
-		DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-		Enumeration<TreeNode> serverNodes = root.children();
+			DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+			DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+			Enumeration<TreeNode> serverNodes = root.children();
 
-		findDestinationNode(serverNodes, destination).ifPresent(node -> {
-			node.removeAllChildren();
-			fillTemplateTree(destination, node);
-			model.nodeChanged(node);
-			model.reload(node);
+			findDestinationNode(serverNodes, destination).ifPresent(node -> {
+				node.removeAllChildren();
+				fillTemplateTree(destination, node);
+				model.nodeChanged(node);
+				model.reload(node);
+			});
 		});
 	}
 
 	private void addOrUpdateServer() {
-		List<ServerDto> servers = settings.getServersList();
-		Collections.sort(servers);
+		runInSwingThread(() -> {
+			List<ServerDto> servers = settings.getServersList();
+			Collections.sort(servers);
 
-		DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-		root.removeAllChildren();
+			DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+			DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+			root.removeAllChildren();
 
-		root.setUserObject(servers);
+			root.setUserObject(servers);
 
-		servers.forEach(s -> {
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode(s);
-			fillDestinationTypeTree(s, node);
-			root.add(node);
-		});
+			servers.forEach(s -> {
+				DefaultMutableTreeNode node = new DefaultMutableTreeNode(s);
+				fillDestinationTypeTree(s, node);
+				root.add(node);
+			});
 
-		runInSwingThread(() -> model.reload(root));
-	}
-
-	private void removeServer(ServerDto server) {
-		DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-		Enumeration<TreeNode> data = root.children();
-
-		findServerNode(data, server).ifPresent(node -> {
-			root.remove(node);
 			model.reload(root);
 		});
 	}
 
-	private void removeDestination(DestinationDto destination) {
-		DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-		Supplier<Enumeration<TreeNode>> data = root::children;
+	private void removeServer(ServerDto server) {
+		runInSwingThread(() -> {
+			DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+			DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+			Enumeration<TreeNode> data = root.children();
 
-		findDestinationNode(data.get(), destination).ifPresent(queueNode -> {
-			DefaultMutableTreeNode typeNode = (DefaultMutableTreeNode) queueNode.getParent();
-			typeNode.remove(queueNode);
-			if (typeNode.getChildCount() > 0) {
-				model.reload(typeNode);
-			} else {
-				DefaultMutableTreeNode serverNode = (DefaultMutableTreeNode) typeNode.getParent();
-				serverNode.remove(typeNode);
-				model.reload(serverNode);
-			}
+			findServerNode(data, server).ifPresent(node -> {
+				root.remove(node);
+				model.reload(root);
+			});
+		});
+	}
+
+	private void removeDestination(DestinationDto destination) {
+		runInSwingThread(() -> {
+			DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+			DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+			Supplier<Enumeration<TreeNode>> data = root::children;
+
+			findDestinationNode(data.get(), destination).ifPresent(queueNode -> {
+				DefaultMutableTreeNode typeNode = (DefaultMutableTreeNode) queueNode.getParent();
+				typeNode.remove(queueNode);
+				if (typeNode.getChildCount() > 0) {
+					model.reload(typeNode);
+				} else {
+					DefaultMutableTreeNode serverNode = (DefaultMutableTreeNode) typeNode.getParent();
+					serverNode.remove(typeNode);
+					model.reload(serverNode);
+				}
+			});
 		});
 	}
 
 	private void removeTemplate(TemplateMessageDto template) {
-		DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+		runInSwingThread(() -> {
+			DefaultTreeModel model = (DefaultTreeModel) serversTree.getModel();
+			DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
 
-		Supplier<Enumeration<TreeNode>> data = root::children;
+			Supplier<Enumeration<TreeNode>> data = root::children;
 
-		findTemplateNode(data.get(), template).ifPresent(templateNode -> {
-			DefaultMutableTreeNode destinationNode = (DefaultMutableTreeNode) templateNode.getParent();
-			destinationNode.remove(templateNode);
-			model.reload(destinationNode);
+			findTemplateNode(data.get(), template).ifPresent(templateNode -> {
+				DefaultMutableTreeNode destinationNode = (DefaultMutableTreeNode) templateNode.getParent();
+				destinationNode.remove(templateNode);
+				model.reload(destinationNode);
+			});
 		});
 	}
 
@@ -270,21 +284,23 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 	}
 
 	private void fillServerTree() {
-		List<ServerDto> servers = settings.getServersList();
-		Collections.sort(servers);
+		runInSwingThread(() -> {
+			List<ServerDto> servers = settings.getServersList();
+			Collections.sort(servers);
 
-		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(servers);
-		DefaultTreeModel model = new DefaultTreeModel(rootNode);
+			DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(servers);
+			DefaultTreeModel model = new DefaultTreeModel(rootNode);
 
-		serversTree.setModel(model);
+			serversTree.setModel(model);
 
-		servers.forEach(s -> {
-			DefaultMutableTreeNode node = new DefaultMutableTreeNode(s);
-			fillDestinationTypeTree(s, node);
-			rootNode.add(node);
+			servers.forEach(s -> {
+				DefaultMutableTreeNode node = new DefaultMutableTreeNode(s);
+				fillDestinationTypeTree(s, node);
+				rootNode.add(node);
+			});
+
+			serversTree.setRootVisible(true);
 		});
-
-		serversTree.setRootVisible(true);
 	}
 
 	private void fillDestinationTypeTree(ServerDto server, DefaultMutableTreeNode serverNode) {
