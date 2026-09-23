@@ -5,6 +5,13 @@
 * [\*] Improvement
 * [!] Bug fixing
 
+2.1.0 (23.09.2026)
+====================
+
+* [\*] Target IntelliJ IDEA 2026.2 (since-build 262); older IDE versions are no longer supported
+* [\*] Migrate the build to IntelliJ Platform Gradle Plugin 2.x, Gradle 9.1, and Java 25
+* [!] Fix crash when opening the server tree / adding a connection in IDEA 2026.2 (issue #28)
+
 2.0.1 (20.01.2021)
 ====================
 

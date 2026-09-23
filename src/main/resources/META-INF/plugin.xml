@@ -16,8 +16,7 @@ Plugin supports:
 </ul>
 <h4>Requirements:</h4>
 <ul>
- <li>Jdk 11 or higher</li>
- <li>Version of ide 2026.2 or higher</li>
+ <li>IntelliJ IDEA 2026.2 or higher</li>
 </ul>
 <h4>Usages:</h4>
  Designed to be used for development or testing purposes
