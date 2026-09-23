@@ -11,7 +11,6 @@ import com.idea.tools.view.render.TreeRender;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.TreeSpeedSearch;
@@ -90,7 +89,7 @@ public class ServersBrowseToolPanel extends SimpleToolWindowPanel implements Dis
 	}
 
 	public static ServersBrowseToolPanel of(Project project) {
-		return ServiceManager.getService(project, ServersBrowseToolPanel.class);
+		return project.getService(ServersBrowseToolPanel.class);
 	}
 
 	@Override

@@ -17,7 +17,7 @@ Plugin supports:
 <h4>Requirements:</h4>
 <ul>
  <li>Jdk 11 or higher</li>
- <li>Version of ide 2020 or higher</li>
+ <li>Version of ide 2026.2 or higher</li>
 </ul>
 <h4>Usages:</h4>
  Designed to be used for development or testing purposes
@@ -43,20 +43,13 @@ Plugin supports:
  <a href="https://github.com/klyashko/jms-messenger/issues">Github</a> or contact me directly.
     ]]></description>
 
-    <!--<idea-version since-build="162" until-build="181.*"/>-->
+    <idea-version since-build="262"/>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products
-         To enable plugin in all products -->
     <depends>com.intellij.modules.lang</depends>
 
-    <project-components>
-        <component>
-            <implementation-class>com.idea.tools.JmsMessengerComponent</implementation-class>
-        </component>
-    </project-components>
-
     <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="jms" displayType="BALLOON"/>
+
         <configurationType implementation="com.idea.tools.run.configuration.JmsConfigurationType"/>
 
         <projectConfigurable groupId="tools" groupWeight="110" dynamic="true" displayName="Jms Messenger"

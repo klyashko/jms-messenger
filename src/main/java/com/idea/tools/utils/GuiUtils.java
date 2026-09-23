@@ -8,9 +8,9 @@ import static javax.swing.JOptionPane.showConfirmDialog;
 
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.startup.StartupManager;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.ContentFactory;
@@ -28,12 +28,8 @@ public class GuiUtils {
         return ToolWindowManager.getInstance(project);
     }
 
-    public static StartupManager startupManager(Project project) {
-        return StartupManager.getInstance(project);
-    }
-
     public static ContentFactory contentFactory() {
-        return ContentFactory.SERVICE.getInstance();
+        return ContentFactory.getInstance();
     }
 
     public static boolean showYesNoDialog(String msg) {
@@ -50,15 +46,17 @@ public class GuiUtils {
                                                    SimpleToolWindowPanel toolWindowPanel,
                                                    String toolBarName) {
 
-        JComponent actionToolbar = ActionManager.getInstance()
-                .createActionToolbar(toolBarName, actionGroup, true)
-                .getComponent();
+        ActionToolbar actionToolbar = ActionManager.getInstance()
+                .createActionToolbar(toolBarName, actionGroup, true);
+        actionToolbar.setTargetComponent(toolWindowPanel);
 
-        runInSwingThread(() -> toolWindowPanel.setToolbar(actionToolbar));
+        runInSwingThread(() -> toolWindowPanel.setToolbar(actionToolbar.getComponent()));
     }
 
     public static JComponent toolbar(ActionGroup actions, String place, boolean horizontal) {
-        return ActionManager.getInstance().createActionToolbar(place, actions, horizontal).getComponent();
+        ActionToolbar toolbar = ActionManager.getInstance().createActionToolbar(place, actions, horizontal);
+        toolbar.setTargetComponent(toolbar.getComponent());
+        return toolbar.getComponent();
     }
 
     public static <T> JLabel label(T value, Function<T, String> function) {

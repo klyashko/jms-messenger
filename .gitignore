@@ -1,3 +1,4 @@
+.intellijPlatform
 .gradle/
 gradle/wrapper/gradle-wrapper.jar
 .idea/

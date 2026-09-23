@@ -5,7 +5,7 @@ import static com.idea.tools.service.DestinationService.destinationService;
 import static com.idea.tools.task.LoadQueuesTask.createAndQueue;
 import static com.idea.tools.utils.GuiUtils.simpleListener;
 import static java.util.Collections.singletonList;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.DestinationType;

@@ -9,10 +9,9 @@ import com.idea.tools.markers.Listener;
 import com.intellij.credentialStore.CredentialAttributes;
 import com.intellij.credentialStore.Credentials;
 import com.intellij.ide.passwordSafe.PasswordSafe;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import java.util.Optional;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class ServerService extends AbstractPersistedService<ServerDto> {
 
@@ -43,7 +42,7 @@ public class ServerService extends AbstractPersistedService<ServerDto> {
 	}
 
 	public static ServerService serverService(Project project) {
-		return ServiceManager.getService(project, ServerService.class);
+		return project.getService(ServerService.class);
 	}
 
 	public static void storeCredentials(ServerDto dto) {

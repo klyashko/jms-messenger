@@ -13,7 +13,6 @@ import com.idea.tools.view.components.message.ViewMessageHeadersPanel;
 import com.idea.tools.view.components.message.ViewMessageMainPanel;
 import com.idea.tools.view.components.message.ViewMessagePayloadPanel;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.impl.IdeGlassPaneImpl;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
 import java.util.Optional;
@@ -74,10 +73,6 @@ public class ViewMessageDialog extends JFrame {
         tabs.addTab(new TabInfo(payloadPanel).setText("Payload"));
 
         tabPanel.add(tabs);
-
-        JRootPane rootPane = new JRootPane();
-        IdeGlassPaneImpl pane = new IdeGlassPaneImpl(rootPane);
-        setGlassPane(pane);
 
         actionButton(actionButton);
         closeAfterSendCheckBox(closeAfterSendCheckBox);

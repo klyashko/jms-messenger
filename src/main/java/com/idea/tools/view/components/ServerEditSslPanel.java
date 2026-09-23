@@ -4,8 +4,8 @@ import static com.intellij.openapi.fileChooser.FileChooserDescriptorFactory.crea
 
 import com.idea.tools.dto.SSLConfiguration;
 import com.idea.tools.dto.ServerDto;
+import com.intellij.openapi.ui.TextBrowseFolderListener;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.ui.MacroAwareTextBrowseFolderListener;
 import javax.swing.*;
 
 public class ServerEditSslPanel extends JPanel {
@@ -24,11 +24,11 @@ public class ServerEditSslPanel extends JPanel {
 
 	private void render(ServerDto server) {
 		keystoreField = new TextFieldWithBrowseButton();
-		keystoreField.addBrowseFolderListener(new MacroAwareTextBrowseFolderListener(createSingleFileDescriptor(), null));
+		keystoreField.addBrowseFolderListener(new TextBrowseFolderListener(createSingleFileDescriptor()));
 		keystorePanel.add(keystoreField);
 
 		truststoreField = new TextFieldWithBrowseButton();
-		truststoreField.addBrowseFolderListener(new MacroAwareTextBrowseFolderListener(createSingleFileDescriptor(), null));
+		truststoreField.addBrowseFolderListener(new TextBrowseFolderListener(createSingleFileDescriptor()));
 		trustStorePanel.add(truststoreField);
 
 		setValues(server);

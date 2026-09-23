@@ -6,7 +6,6 @@ import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.dto.ServerDto;
 import com.idea.tools.dto.TemplateMessageDto;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.project.Project;
@@ -31,7 +30,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 	private final Map<String, ServerDto> servers = new HashMap<>();
 
 	public static Settings settings(Project project) {
-		Settings settings = ServiceManager.getService(project, Settings.class);
+		Settings settings = project.getService(Settings.class);
 		settings.servers.forEach((id, server) -> {
 			credentials(server).ifPresent(credentials -> {
 				server.setLogin(credentials.getUserName());

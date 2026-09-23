@@ -6,7 +6,6 @@ import static java.util.UUID.randomUUID;
 
 import com.idea.tools.dto.TemplateMessageDto;
 import com.idea.tools.markers.Listener;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 
 public class TemplateService extends AbstractPersistedService<TemplateMessageDto> {
@@ -37,6 +36,6 @@ public class TemplateService extends AbstractPersistedService<TemplateMessageDto
     }
 
     public static TemplateService templateService(Project project) {
-        return ServiceManager.getService(project, TemplateService.class);
+        return project.getService(TemplateService.class);
     }
 }

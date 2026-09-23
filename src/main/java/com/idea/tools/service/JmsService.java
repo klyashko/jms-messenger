@@ -3,7 +3,6 @@ package com.idea.tools.service;
 import com.idea.tools.dto.*;
 import com.idea.tools.jms.*;
 import com.idea.tools.utils.Assert;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 
@@ -42,7 +41,7 @@ public class JmsService {
 	public JmsService(Project project) {this.project = project;}
 
 	public static JmsService jmsService(Project project) {
-		return ServiceManager.getService(project, JmsService.class);
+		return project.getService(JmsService.class);
 	}
 
 	public void testConnection(ServerDto server) throws Exception {

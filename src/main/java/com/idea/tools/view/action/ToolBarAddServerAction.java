@@ -3,6 +3,7 @@ package com.idea.tools.view.action;
 import static com.intellij.util.IconUtil.getAddIcon;
 
 import com.idea.tools.view.ServerEditDialog;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
@@ -23,6 +24,11 @@ public class ToolBarAddServerAction extends AnAction implements DumbAware {
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         ServerEditDialog.showDialog(project);
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
     }
 
 }

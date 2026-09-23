@@ -2,7 +2,6 @@ package com.idea.tools.view;
 
 import com.idea.tools.dto.ServerDto;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.impl.IdeGlassPaneImpl;
 import com.intellij.ui.components.JBScrollPane;
 import javax.swing.*;
 
@@ -32,12 +31,6 @@ public class ServerEditDialog extends JFrame {
 		ServerEditPanel panel = new ServerEditPanel(project, server);
 		panel.getCancelButton().setText("Close");
 		panel.getCancelButton().addActionListener(event -> dispose());
-
-		JRootPane rootPane = new JRootPane();
-		rootPane.setSize(panel.getWidth(), panel.getHeight());
-		IdeGlassPaneImpl pane = new IdeGlassPaneImpl(rootPane);
-		pane.setSize(panel.getWidth(), panel.getHeight());
-		setGlassPane(pane);
 
 		JBScrollPane scrollPane = new JBScrollPane(panel);
 		scrollPane.setSize(panel.getWidth(), panel.getHeight());

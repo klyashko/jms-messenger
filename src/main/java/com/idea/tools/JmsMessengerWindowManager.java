@@ -1,11 +1,10 @@
 package com.idea.tools;
 
 import static com.idea.tools.utils.GuiUtils.contentFactory;
-import static com.idea.tools.utils.GuiUtils.startupManager;
+import static com.idea.tools.utils.GuiUtils.runInSwingThread;
 import static com.idea.tools.utils.IconUtils.getJmsIcon;
 
 import com.idea.tools.view.ServersBrowseToolPanel;
-import com.intellij.openapi.project.DumbAwareRunnable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -28,6 +27,6 @@ public class JmsMessengerWindowManager implements ToolWindowFactory {
         ContentManager contentManager = toolWindow.getContentManager();
         contentManager.addContent(content);
 
-        startupManager(project).registerPostStartupActivity((DumbAwareRunnable) serversBrowseToolPanel::init);
+        runInSwingThread(serversBrowseToolPanel::init);
     }
 }

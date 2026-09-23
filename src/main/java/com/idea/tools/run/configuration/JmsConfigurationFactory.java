@@ -22,4 +22,10 @@ public class JmsConfigurationFactory extends ConfigurationFactory {
     public String getName() {
         return "Jms Configuration Factory";
     }
+
+    @NotNull
+    @Override
+    public String getId() {
+        return "JmsConfigurationFactory";
+    }
 }

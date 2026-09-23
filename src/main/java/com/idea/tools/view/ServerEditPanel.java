@@ -14,7 +14,7 @@ import javax.swing.*;
 
 import static com.idea.tools.service.ServerService.serverService;
 import static com.intellij.ui.JBColor.*;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class ServerEditPanel extends JPanel {
 

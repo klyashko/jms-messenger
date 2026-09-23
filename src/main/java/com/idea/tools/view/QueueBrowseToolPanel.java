@@ -6,7 +6,6 @@ import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.view.components.QueueBrowserPanel;
 import com.idea.tools.view.components.QueueBrowserTable;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.tabs.TabInfo;
@@ -35,7 +34,7 @@ public class QueueBrowseToolPanel extends SimpleToolWindowPanel implements Dispo
     }
 
     public static QueueBrowseToolPanel of(Project project) {
-        return ServiceManager.getService(project, QueueBrowseToolPanel.class);
+        return project.getService(QueueBrowseToolPanel.class);
     }
 
     private void render() {

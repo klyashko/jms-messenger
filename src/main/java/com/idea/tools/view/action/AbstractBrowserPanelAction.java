@@ -1,9 +1,11 @@
 package com.idea.tools.view.action;
 
 import com.idea.tools.view.ServersBrowseToolPanel;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.project.DumbAware;
 import javax.swing.*;
+import org.jetbrains.annotations.NotNull;
 
 abstract class AbstractBrowserPanelAction extends AnAction implements DumbAware {
 
@@ -16,6 +18,11 @@ abstract class AbstractBrowserPanelAction extends AnAction implements DumbAware 
 
     boolean isSelected(Class<?> clazz) {
         return serversPanel.getSelectedValue(clazz).isPresent();
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
     }
 
 }

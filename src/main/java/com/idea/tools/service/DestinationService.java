@@ -6,7 +6,6 @@ import static java.util.UUID.randomUUID;
 
 import com.idea.tools.dto.DestinationDto;
 import com.idea.tools.markers.Listener;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 
 public class DestinationService extends AbstractPersistedService<DestinationDto> {
@@ -36,7 +35,7 @@ public class DestinationService extends AbstractPersistedService<DestinationDto>
     }
 
     public static DestinationService destinationService(Project project) {
-        return ServiceManager.getService(project, DestinationService.class);
+        return project.getService(DestinationService.class);
     }
 
 }

@@ -3,9 +3,8 @@ package com.idea.tools.task;
 import static com.idea.tools.service.JmsService.jmsService;
 
 import com.idea.tools.dto.MessageDto;
-import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
@@ -40,14 +39,18 @@ public class SendMessageTask extends Task.Backgroundable {
     @Override
     public void onSuccess() {
         String content = String.format(SEND_SUCCESS_TEMPLATE, message.getDestination().getName());
-        Notifications.Bus.notify(new Notification("jms", "Success", content, NotificationType.INFORMATION));
+        NotificationGroupManager.getInstance().getNotificationGroup("jms")
+                .createNotification("Success", content, NotificationType.INFORMATION)
+                .notify(getProject());
         onSuccess.run();
     }
 
     @Override
     public void onThrowable(@NotNull Throwable error) {
         String content = String.format(SEND_FAIL_TEMPLATE, error.getMessage());
-        Notifications.Bus.notify(new Notification("jms", "Failure", content, NotificationType.ERROR));
+        NotificationGroupManager.getInstance().getNotificationGroup("jms")
+                .createNotification("Failure", content, NotificationType.ERROR)
+                .notify(getProject());
         LOGGER.error("An exception has been thrown during a message sending", error);
     }
 }
