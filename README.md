@@ -16,8 +16,26 @@
    * sending messages
 
 #### Plugin Compatibility
- Plugin required java jdk 11 or higher and version of ide 2017 or higher
- 
+ Plugin requires version of ide 2026.2 or higher
+
+#### Building
+ The Gradle wrapper jar is not committed to this repository, so `./gradlew` will not work in a fresh clone
+ until it is generated once with a locally installed Gradle 9.1 or higher:
+
+```bash
+gradle wrapper --gradle-version 9.1.0 --distribution-type bin
+```
+
+ After that:
+
+```bash
+./gradlew build   # compiles and packages the plugin into build/distributions
+./gradlew runIde  # starts a sandbox IDE with the plugin installed
+```
+
+ Gradle itself has to run on JDK 17 or 21. The Java 25 toolchain used to compile the plugin is provisioned
+ automatically, so it does not need to be installed up front.
+
 #### Usages
  Plugin designed to be used for development or testing purposes
 
