@@ -1,7 +1,5 @@
 .gradle/
+gradle/wrapper/gradle-wrapper.jar
 .idea/
 build/
-gradle/
 out/
-
-gradle.properties
